@@ -354,6 +354,15 @@
                 {{ task.error }}
               </div>
 
+              <!-- Completed -->
+              <div v-if="task.status === 'completed' && task.filename" class="mt-2 text-sm text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-3 py-2">
+                <div class="flex items-center gap-2">
+                  <CheckCircle class="w-4 h-4" />
+                  <span>已下载: {{ task.filename }}</span>
+                </div>
+                <p class="text-xs text-emerald-500/70 mt-1">文件保存在浏览器默认下载目录</p>
+              </div>
+
               <!-- Actions -->
               <div v-if="task.status === 'paused'" class="mt-3 flex gap-2">
                 <button
@@ -425,7 +434,8 @@ import {
   Inbox,
   Film,
   Code,
-  Loader2
+  Loader2,
+  CheckCircle
 } from 'lucide-vue-next';
 import type { DownloadTask, DownloadOptions } from '~/types';
 

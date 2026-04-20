@@ -13,6 +13,7 @@ export interface DownloadTask {
   speed: number;
   eta: number;
   error?: string;
+  filename?: string;
   createdAt: number;
   updatedAt: number;
 }

@@ -125,11 +125,12 @@ export function useDownloader() {
 
     // 合并并保存
     task.status = 'merging';
-    await mergeAndSave(downloadedSegments, task, options);
+    const filename = await mergeAndSave(downloadedSegments, task, options);
     
     task.status = 'completed';
     task.progress = 100;
     task.updatedAt = Date.now();
+    task.filename = filename;
   }
 
   async function downloadSegment(
@@ -176,7 +177,8 @@ export function useDownloader() {
 
     // 保存文件
     const blob = new Blob([merged], { type: 'video/mp2t' });
-    const filename = `${task.title || 'video'}_${Date.now()}.ts`;
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    const filename = `${task.title || 'video'}_${timestamp}.ts`;
     
     // 触发下载
     const url = URL.createObjectURL(blob);
@@ -187,6 +189,13 @@ export function useDownloader() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    
+    // 显示下载完成提示
+    console.log(`[M3U8 Downloader] 文件已下载: ${filename}`);
+    console.log(`[M3U8 Downloader] 保存位置: 浏览器默认下载目录 (通常是 Downloads 文件夹)`);
+    
+    // 返回文件名供显示
+    return filename;
   }
 
   function pauseTask(task: DownloadTask) {

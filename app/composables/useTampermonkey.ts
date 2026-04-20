@@ -124,6 +124,8 @@ declare global {
         url: string;
         domain: string;
       };
+      // 新增：fetch 代理（在下载器页面使用）
+      fetchProxy?: (url: string, options?: any) => Promise<any>;
     };
     autoFillM3U8?: (url: string, title: string | null) => void;
   }

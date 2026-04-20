@@ -16,15 +16,28 @@ export function parseM3U8(content: string, baseUrl: string): M3U8Playlist {
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
+    if (!line) continue;
 
     if (line.startsWith('#EXT-X-VERSION:')) {
-      playlist.version = parseInt(line.split(':')[1]);
+      const versionStr = line.split(':')[1];
+      if (versionStr) {
+        playlist.version = parseInt(versionStr);
+      }
     } else if (line.startsWith('#EXT-X-TARGETDURATION:')) {
-      playlist.targetDuration = parseInt(line.split(':')[1]);
+      const durationStr = line.split(':')[1];
+      if (durationStr) {
+        playlist.targetDuration = parseInt(durationStr);
+      }
     } else if (line.startsWith('#EXT-X-MEDIA-SEQUENCE:')) {
-      playlist.mediaSequence = parseInt(line.split(':')[1]);
+      const sequenceStr = line.split(':')[1];
+      if (sequenceStr) {
+        playlist.mediaSequence = parseInt(sequenceStr);
+      }
     } else if (line.startsWith('#EXT-X-PLAYLIST-TYPE:')) {
-      playlist.playlistType = line.split(':')[1] as 'VOD' | 'EVENT';
+      const typeStr = line.split(':')[1];
+      if (typeStr) {
+        playlist.playlistType = typeStr as 'VOD' | 'EVENT';
+      }
     } else if (line.startsWith('#EXT-X-KEY:')) {
       const keyAttrs = parseAttributes(line.substring('#EXT-X-KEY:'.length));
       encryption = {
@@ -63,7 +76,9 @@ function parseAttributes(attrString: string): Record<string, string> {
   let match;
   
   while ((match = regex.exec(attrString)) !== null) {
-    attrs[match[1]] = match[2];
+    if (match[1] && match[2]) {
+      attrs[match[1]] = match[2];
+    }
   }
   
   return attrs;
@@ -109,6 +124,8 @@ export function parseMasterPlaylist(content: string, baseUrl: string): Array<{
   }> = {};
 
   for (const line of lines) {
+    if (!line) continue;
+    
     if (line.startsWith('#EXT-X-STREAM-INF:')) {
       const attrs = parseAttributes(line.substring('#EXT-X-STREAM-INF:'.length));
       currentInfo = {
