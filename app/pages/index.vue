@@ -529,8 +529,22 @@ function getStatusText(status: DownloadTask['status']) {
 }
 
 onMounted(() => {
-  (window as Window & { autoFillM3U8?: (url: string, title: string | null) => void }).autoFillM3U8 = (url: string, _title: string | null) => {
-    m3u8Url.value = url;
-  };
+  // 暴露全局函数供油猴脚本调用
+  if (typeof window !== 'undefined') {
+    (window as Window & { autoFillM3U8?: (url: string, title: string | null) => void }).autoFillM3U8 = (url: string, _title: string | null) => {
+      m3u8Url.value = url;
+    };
+  }
+
+  // 处理 URL 参数中的 M3U8 链接
+  const route = useRoute();
+  const urlParam = route.query.url as string;
+  const titleParam = route.query.title as string;
+
+  if (urlParam) {
+    m3u8Url.value = decodeURIComponent(urlParam);
+    // 可以自动开始下载或显示确认对话框
+    console.log('[M3U8 Downloader] 从 URL 参数获取到 M3U8:', urlParam);
+  }
 });
 </script>

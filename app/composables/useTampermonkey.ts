@@ -9,7 +9,23 @@ export function useTampermonkey() {
   const isTampermonkeyAvailable = ref(false);
 
   onMounted(() => {
-    checkTampermonkey();
+    // 轮询检查油猴脚本是否可用（因为脚本可能在页面加载后才注入）
+    const checkInterval = setInterval(() => {
+      checkTampermonkey();
+      if (isTampermonkeyAvailable.value) {
+        clearInterval(checkInterval);
+        console.log('[M3U8 Downloader] 油猴脚本已检测到');
+      }
+    }, 500);
+
+    // 最多检查 10 秒
+    setTimeout(() => {
+      clearInterval(checkInterval);
+      if (!isTampermonkeyAvailable.value) {
+        console.log('[M3U8 Downloader] 油猴脚本未检测到');
+      }
+    }, 10000);
+
     window.addEventListener('message', handleMessage);
     checkUrlParams();
   });
@@ -37,34 +53,47 @@ export function useTampermonkey() {
   }
 
   function checkUrlParams() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const m3u8Url = urlParams.get('url');
-    const title = urlParams.get('title');
-
-    if (m3u8Url) {
-      autoFillM3U8(m3u8Url, title);
-    }
+    // URL 参数处理已移至 index.vue 页面中
+    // 避免在 composable 中直接调用页面级函数
   }
 
   async function fetchM3U8(url: string): Promise<string> {
-    if (!window.QiuyunM3U8Helper?.fetchM3U8) {
-      throw new Error('油猴脚本未安装或未启用，请安装秋云 M3U8 下载助手脚本');
+    // 优先使用油猴脚本（可跨域）
+    if (window.QiuyunM3U8Helper?.fetchM3U8) {
+      return await window.QiuyunM3U8Helper.fetchM3U8(url);
     }
-    return await window.QiuyunM3U8Helper.fetchM3U8(url);
+    // 降级：使用普通 fetch（可能因 CORS 失败）
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return await response.text();
   }
 
   async function fetchSegment(url: string): Promise<ArrayBuffer> {
-    if (!window.QiuyunM3U8Helper?.fetchSegment) {
-      throw new Error('油猴脚本未安装或未启用');
+    // 优先使用油猴脚本（可跨域）
+    if (window.QiuyunM3U8Helper?.fetchSegment) {
+      return await window.QiuyunM3U8Helper.fetchSegment(url);
     }
-    return await window.QiuyunM3U8Helper.fetchSegment(url);
+    // 降级：使用普通 fetch（可能因 CORS 失败）
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return await response.arrayBuffer();
   }
 
   async function fetchKey(url: string): Promise<ArrayBuffer> {
-    if (!window.QiuyunM3U8Helper?.fetchKey) {
-      throw new Error('油猴脚本未安装或未启用');
+    // 优先使用油猴脚本（可跨域）
+    if (window.QiuyunM3U8Helper?.fetchKey) {
+      return await window.QiuyunM3U8Helper.fetchKey(url);
     }
-    return await window.QiuyunM3U8Helper.fetchKey(url);
+    // 降级：使用普通 fetch（可能因 CORS 失败）
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return await response.arrayBuffer();
   }
 
   return {
