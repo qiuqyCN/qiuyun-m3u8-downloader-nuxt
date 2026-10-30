@@ -1,6 +1,9 @@
 import type { DownloadTask, DownloadOptions } from '~/types';
 import { parseM3U8, isMasterPlaylist, parseMasterPlaylist } from '~/utils/m3u8-parser';
 import { decryptAES128 } from '~/utils/crypto';
+import { fetchCoverBlob, saveImageBlob } from '~/utils/cover';
+import { createDirectoryWriter, writeBlobToDirectory } from '~/utils/stream-save';
+import type { StreamWriter } from '~/utils/stream-save';
 import { triggerRef } from 'vue';
 
 export function useDownloader() {
@@ -25,6 +28,7 @@ export function useDownloader() {
       },
       speed: 0,
       eta: 0,
+      coverUrl: options.coverUrl,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
@@ -81,12 +85,18 @@ export function useDownloader() {
 
   async function downloadPlaylist(task: DownloadTask, content: string, options: DownloadOptions) {
     const playlist = parseM3U8(content, task.url);
-    
-    task.segments.total = playlist.segments.length;
+    const segments = playlist.segments.slice(options.startSegmentIndex);
+
+    task.segments.total = segments.length;
+    task.segments.downloaded = 0;
     task.status = 'downloading';
     refresh();
 
-    // ========== 关键：先下载 fMP4 初始化片段 ==========
+    // 统一文件名（视频与封面共用）
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    const fileBase = `${sanitizeFilename(options.filename || task.title || 'video')}_${timestamp}`;
+
+    // ========== 先下载 fMP4 初始化片段 ==========
     let initSegmentData: ArrayBuffer | null = null;
     if (playlist.initSegment) {
       console.log(`[M3U8] 下载 fMP4 init segment: ${playlist.initSegment}`);
@@ -96,9 +106,6 @@ export function useDownloader() {
       console.log(`[M3U8] init segment: ${initSegmentData.byteLength} bytes, type=${ftyp} (应为 ftyp)`);
     }
 
-    const segments = playlist.segments.slice(options.startSegmentIndex);
-    const downloadedSegments: (ArrayBuffer | null)[] = new Array(segments.length).fill(null);
-    
     // 预加载所有 key（去重缓存）
     const keyCache = new Map<string, ArrayBuffer>();
     for (const seg of segments) {
@@ -110,18 +117,86 @@ export function useDownloader() {
         }
       }
     }
-    
-    console.log(`[M3U8] 共 ${segments.length} 个媒体分片开始下载...`);
 
-    // 并发下载
-    const concurrency = options.maxConcurrentSegments;
+    // ========== 保存方式：流式写盘 / 内存合并 ==========
+    const dir = options.directoryHandle;
+    let streamMode = !!dir;
+    let writer: StreamWriter | null = null;
+
+    // 流式模式只缓存"已下载但尚未按序写盘"的分片，内存占用有上限
+    const pending = new Map<number, ArrayBuffer>();
+    const collected: (ArrayBuffer | null)[] = new Array(segments.length).fill(null);
+    let nextWrite = 0;
+
+    // 有 init segment 时格式已知，可立即创建目标文件
+    if (streamMode && dir && initSegmentData) {
+      const { ext } = detectFormat(playlist.initSegment || '', initSegmentData);
+      try {
+        writer = await createDirectoryWriter(dir, fileBase, ext);
+        await writer.write(initSegmentData);
+        console.log(`[M3U8] 流式写入开始: ${writer.filename}`);
+      } catch (error) {
+        console.error('[M3U8] 创建目标文件失败，回退内存合并:', error);
+        streamMode = false;
+      }
+    }
+
+    const concurrency = Math.max(1, options.maxConcurrentSegments);
+    // 限制"领先写盘位置"的分片数量，避免乱序下载导致内存堆积
+    const maxBuffered = Math.max(concurrency * 2, 16);
     const queue = segments.map((seg, idx) => ({ seg, idx }));
     const inProgress = new Set<Promise<void>>();
 
+    const commit = (idx: number, data: ArrayBuffer) => {
+      if (streamMode) pending.set(idx, data);
+      else collected[idx] = data;
+    };
+
+    // 按序写盘
+    const flush = async () => {
+      if (!streamMode || !dir) return;
+
+      while (pending.has(nextWrite)) {
+        const data = pending.get(nextWrite)!;
+        pending.delete(nextWrite);
+
+        if (!writer && data.byteLength > 0) {
+          const { ext } = detectFormat(segments[nextWrite]?.url || '', data);
+          try {
+            writer = await createDirectoryWriter(dir, fileBase, ext);
+            console.log(`[M3U8] 流式写入开始: ${writer.filename}`);
+          } catch (error) {
+            // 尚未写入任何数据，可安全回退内存合并
+            console.error('[M3U8] 创建目标文件失败，回退内存合并:', error);
+            streamMode = false;
+            pending.forEach((buf, i) => { collected[i] = buf; });
+            pending.clear();
+            return;
+          }
+        }
+
+        if (writer && data.byteLength > 0) {
+          try {
+            await writer.write(data);
+          } catch (error) {
+            await writer.abort().catch(() => {});
+            throw error;
+          }
+        }
+        nextWrite++;
+      }
+    };
+
+    console.log(`[M3U8] 共 ${segments.length} 个媒体分片开始下载...`);
+
     while (queue.length > 0 || inProgress.size > 0) {
-      while (inProgress.size < concurrency && queue.length > 0) {
+      while (
+        inProgress.size < concurrency &&
+        queue.length > 0 &&
+        queue[0]!.idx - nextWrite < maxBuffered
+      ) {
         const { seg, idx } = queue.shift()!;
-        
+
         const promise = downloadSegment(seg.url, options.maxRetries)
           .then(async (rawData) => {
             let data = rawData;
@@ -132,7 +207,7 @@ export function useDownloader() {
                 data = await decryptAES128(data, keyData, iv);
               }
             }
-            downloadedSegments[idx] = data;
+            commit(idx, data);
             task.segments.downloaded++;
             task.progress = Math.round((task.segments.downloaded / task.segments.total) * 100);
             task.updatedAt = Date.now();
@@ -141,27 +216,49 @@ export function useDownloader() {
           .catch((error) => {
             console.error(`[M3U8] 分片#${idx} 下载失败:`, seg.url, error);
             task.segments.failed.push(idx);
-            downloadedSegments[idx] = new ArrayBuffer(0);
+            commit(idx, new ArrayBuffer(0));
           })
           .finally(() => { inProgress.delete(promise); });
-        
+
         inProgress.add(promise);
       }
+
       if (inProgress.size > 0) await Promise.race(inProgress);
+      await flush();
     }
 
-    const validSegments = downloadedSegments.filter(
+    await flush();
+
+    // ========== 流式模式：关闭文件 ==========
+    if (streamMode && writer) {
+      task.status = 'merging';
+      refresh();
+
+      await writer.close();
+      task.savedToDirectory = true;
+
+      const filename = writer.filename;
+      task.status = 'completed';
+      task.progress = 100;
+      task.updatedAt = Date.now();
+      task.filename = filename;
+      refresh();
+
+      saveCover(task, options, fileBase, dir);
+      return;
+    }
+
+    // ========== 回退：内存合并 ==========
+    const validSegments = collected.filter(
       (s): s is ArrayBuffer => s !== null && s.byteLength > 0
     );
     if (validSegments.length === 0) throw new Error('没有可合并的分片');
 
-    // ========== 组装最终分片数组 ==========
     // 如果有 init segment，必须放在最前面
-    const allSegments: ArrayBuffer[] = initSegmentData 
+    const allSegments: ArrayBuffer[] = initSegmentData
       ? [initSegmentData, ...validSegments]
       : validSegments;
 
-    // 检测格式（优先用 init segment）
     const formatSource: ArrayBuffer = initSegmentData ?? validSegments[0]!;
     const formatUrl = initSegmentData ? (playlist.initSegment || '') : (segments[0]?.url || '');
     const { ext, mime } = detectFormat(formatUrl, formatSource);
@@ -169,14 +266,57 @@ export function useDownloader() {
 
     task.status = 'merging';
     refresh();
-    
-    const filename = await mergeAndSave(allSegments, task, { ...options, ext, mime });
-    
+
+    const filename = await mergeAndSave(allSegments, task, { ...options, ext, mime, fileBase });
+
     task.status = 'completed';
     task.progress = 100;
     task.updatedAt = Date.now();
     task.filename = filename;
     refresh();
+
+    saveCover(task, options, fileBase, dir);
+  }
+
+  /** 保存封面（优先写入所选目录，否则走浏览器下载） */
+  function saveCover(
+    task: DownloadTask,
+    options: DownloadOptions,
+    fileBase: string,
+    dir?: FileSystemDirectoryHandle
+  ) {
+    if (options.downloadCover === false) {
+      console.log('[M3U8] 已关闭封面下载');
+      return;
+    }
+    if (!task.coverUrl) {
+      console.warn('[M3U8] 未获取到封面地址，跳过封面下载');
+      return;
+    }
+
+    fetchCoverBlob(task.coverUrl).then(async (result) => {
+      if (!result) {
+        console.warn('[M3U8] 封面获取失败，跳过保存');
+        return;
+      }
+
+      const { blob, ext } = result;
+      const filename = `${fileBase}.${ext}`;
+      if (dir) {
+        try {
+          await writeBlobToDirectory(dir, filename, blob);
+          console.log(`[M3U8] 封面已保存到所选目录: ${filename}`);
+          return;
+        } catch (error) {
+          console.error('[M3U8] 封面写入目录失败，改为浏览器下载:', error);
+        }
+      }
+      saveImageBlob(blob, filename);
+    });
+  }
+
+  function sanitizeFilename(name: string): string {
+    return name.replace(/[\\/:*?"<>|]/g, '_').trim() || 'video';
   }
 
   /** 根据分片 URL 和首字节判断是 TS 还是 fMP4 */
@@ -231,7 +371,7 @@ export function useDownloader() {
   async function mergeAndSave(
     segments: ArrayBuffer[], 
     task: DownloadTask, 
-    options: DownloadOptions & { ext?: string; mime?: string }
+    options: DownloadOptions & { ext?: string; mime?: string; fileBase?: string }
   ): Promise<string> {
     const ext = options.ext || 'ts';
     const mime = options.mime || 'video/mp2t';
@@ -250,7 +390,8 @@ export function useDownloader() {
 
     const blob = new Blob([merged], { type: mime });
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-    const filename = `${task.title || 'video'}_${timestamp}.${ext}`;
+    const base = options.fileBase || `${task.title || 'video'}_${timestamp}`;
+    const filename = `${base}.${ext}`;
     
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

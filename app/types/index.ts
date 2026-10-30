@@ -14,6 +14,12 @@ export interface DownloadTask {
   eta: number;
   error?: string;
   filename?: string;
+  /** 封面图原始地址（来自视频页面元信息） */
+  coverUrl?: string;
+  /** 封面缩略图预览加载失败（不影响真正的封面下载） */
+  coverPreviewFailed?: boolean;
+  /** 是否已流式保存到用户所选目录 */
+  savedToDirectory?: boolean;
   createdAt: number;
   updatedAt: number;
 }
@@ -28,6 +34,12 @@ export interface DownloadOptions {
   convertToMp4: boolean;
   outputPath: string;
   filename?: string;
+  /** 封面图地址 */
+  coverUrl?: string;
+  /** 是否同时下载封面 */
+  downloadCover?: boolean;
+  /** 流式下载的目标目录（File System Access API） */
+  directoryHandle?: FileSystemDirectoryHandle;
 }
 
 export interface M3U8Segment {

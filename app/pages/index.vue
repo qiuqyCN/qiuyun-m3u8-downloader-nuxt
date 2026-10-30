@@ -273,6 +273,42 @@
                 />
               </button>
             </div>
+
+            <div class="flex items-center justify-between py-3 border-t border-border">
+              <div>
+                <span class="text-sm text-foreground">同时下载封面</span>
+                <p class="text-xs text-muted-foreground">
+                  {{ coverUrl ? '已从视频页面获取封面' : '未获取到封面，将跳过' }}
+                </p>
+              </div>
+              <button
+                @click="downloadCover = !downloadCover"
+                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-background"
+                :class="downloadCover ? 'bg-violet-500' : 'bg-muted'"
+              >
+                <span
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                  :class="downloadCover ? 'translate-x-6' : 'translate-x-1'"
+                />
+              </button>
+            </div>
+
+            <div v-if="supportsDirectoryPicker" class="flex items-center justify-between py-3 border-t border-border">
+              <div>
+                <span class="text-sm text-foreground">流式下载（选择保存目录）</span>
+                <p class="text-xs text-muted-foreground">边下边写，大文件不占内存；视频与封面同目录</p>
+              </div>
+              <button
+                @click="streamDownload = !streamDownload"
+                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-background"
+                :class="streamDownload ? 'bg-violet-500' : 'bg-muted'"
+              >
+                <span
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                  :class="streamDownload ? 'translate-x-6' : 'translate-x-1'"
+                />
+              </button>
+            </div>
           </div>
 
           <!-- Download Button -->
@@ -321,8 +357,16 @@
             >
               <div class="flex items-start justify-between mb-3">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                    <Film class="w-5 h-5 text-muted-foreground" />
+                  <div class="w-10 h-10 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
+                    <img
+                      v-if="task.coverUrl && !task.coverPreviewFailed"
+                      :src="task.coverUrl"
+                      alt="封面"
+                      class="w-10 h-10 object-cover"
+                      referrerpolicy="no-referrer"
+                      @error="task.coverPreviewFailed = true"
+                    />
+                    <Film v-else class="w-5 h-5 text-muted-foreground" />
                   </div>
                   <div>
                     <p class="font-medium text-foreground text-sm">{{ task.title }}</p>
@@ -379,7 +423,9 @@
                   <CheckCircle class="w-4 h-4" />
                   <span>已下载: {{ task.filename }}</span>
                 </div>
-                <p class="text-xs text-emerald-500/70 mt-1">文件保存在浏览器默认下载目录</p>
+                <p class="text-xs text-emerald-500/70 mt-1">
+                  {{ task.savedToDirectory ? '已保存到所选目录' : '文件保存在浏览器默认下载目录' }}
+                </p>
               </div>
 
               <!-- Actions -->
@@ -457,6 +503,7 @@ import {
   CheckCircle
 } from 'lucide-vue-next';
 import type { DownloadTask, DownloadOptions } from '~/types';
+import { isDirectoryPickerSupported, pickSaveDirectory } from '~/utils/stream-save';
 
 // 页面元数据
 definePageMeta({
@@ -474,6 +521,10 @@ const maxConcurrentSegments = ref(15);
 const maxRetries = ref(3);
 const startSegmentIndex = ref(0);
 const convertToMp4 = ref(false);
+const downloadCover = ref(true);
+const streamDownload = ref(true);
+const supportsDirectoryPicker = ref(false);
+const coverUrl = ref('');
 const showOptions = ref(false);
 const showTampermonkeyHelp = ref(false);
 
@@ -509,6 +560,12 @@ async function startDownload() {
     filename = titleParam || extractTitleFromUrl(url) || '未命名视频';
   }
 
+  // 流式下载：在用户点击后立即弹出目录选择（需保留用户手势）
+  let directoryHandle: FileSystemDirectoryHandle | undefined;
+  if (streamDownload.value && supportsDirectoryPicker.value) {
+    directoryHandle = (await pickSaveDirectory()) || undefined;
+  }
+
   const options: DownloadOptions = {
     inputType: inputType.value,
     url: inputType.value === 'url' ? m3u8Url.value : '',
@@ -519,6 +576,9 @@ async function startDownload() {
     startSegmentIndex: startSegmentIndex.value,
     convertToMp4: convertToMp4.value,
     outputPath: '',
+    coverUrl: coverUrl.value || undefined,
+    downloadCover: downloadCover.value,
+    directoryHandle,
   };
 
   const task = await createTask(options);
@@ -579,9 +639,14 @@ function getStatusText(status: DownloadTask['status']) {
 }
 
 onMounted(() => {
+  supportsDirectoryPicker.value = isDirectoryPickerSupported();
+
   const route = useRoute();
+  // 注意：Vue Router 已经对 query 解码过一次，这里不能再 decodeURIComponent，
+  // 否则签名参数里的 %2F 等会被二次解码破坏，导致封面/M3U8 地址失效。
   const urlParam = route.query.url as string;
   const titleParam = route.query.title as string;
+  const coverParam = route.query.cover as string;
 
   // 暴露全局函数供油猴脚本调用（视频页面点击下载按钮时会调用）
   if (typeof window !== 'undefined') {
@@ -594,12 +659,17 @@ onMounted(() => {
 
   // 从 URL 参数获取 M3U8 链接
   if (urlParam) {
-    m3u8Url.value = decodeURIComponent(urlParam);
+    m3u8Url.value = urlParam;
     console.log('[M3U8] 从 URL 参数获取到 M3U8:', urlParam);
   }
   // 从 URL 参数获取标题
   if (titleParam && !customFilename.value) {
-    customFilename.value = decodeURIComponent(titleParam);
+    customFilename.value = titleParam;
+  }
+  // 从 URL 参数获取封面
+  if (coverParam) {
+    coverUrl.value = coverParam;
+    console.log('[M3U8] 从 URL 参数获取到封面:', coverUrl.value);
   }
 });
 </script>
