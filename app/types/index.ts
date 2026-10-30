@@ -34,6 +34,13 @@ export interface M3U8Segment {
   url: string;
   duration: number;
   title?: string;
+  sequenceNumber?: number;
+  encryption?: {
+    method: 'AES-128';
+    uri?: string;
+    iv?: string;
+    ivBuffer?: ArrayBuffer;
+  };
 }
 
 export interface M3U8Playlist {
@@ -41,6 +48,8 @@ export interface M3U8Playlist {
   targetDuration?: number;
   mediaSequence?: number;
   playlistType?: 'VOD' | 'EVENT';
+  /** fMP4 初始化片段 URL（#EXT-X-MAP） */
+  initSegment?: string;
   segments: M3U8Segment[];
   encryption?: {
     method: 'AES-128' | 'NONE';

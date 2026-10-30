@@ -153,6 +153,17 @@
             </div>
           </div>
 
+          <!-- File Name Input -->
+          <div>
+            <label class="block text-sm font-medium text-muted-foreground mb-2">文件名称 <span class="text-muted-foreground/60 text-xs">（可选）</span></label>
+            <input
+              v-model="customFilename"
+              type="text"
+              placeholder="留空则使用视频标题"
+              class="w-full px-4 py-3 bg-background border border-input rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all text-sm"
+            />
+          </div>
+
           <!-- Options Toggle -->
           <div>
             <button
@@ -336,17 +347,25 @@
               </div>
               
               <!-- Progress -->
-              <div v-if="task.status === 'downloading' || task.status === 'merging'" class="space-y-2">
-                <div class="flex items-center justify-between text-xs">
-                  <span class="text-muted-foreground">{{ task.progress }}%</span>
-                  <span class="text-muted-foreground/70">{{ task.segments.downloaded }}/{{ task.segments.total }} 分片</span>
+              <div v-if="task.status === 'downloading' || task.status === 'merging' || task.status === 'parsing'" class="space-y-2">
+                <div v-if="task.status === 'parsing'" class="text-xs text-muted-foreground animate-pulse">
+                  正在解析 M3U8 播放列表...
                 </div>
-                <div class="h-1.5 bg-muted rounded-full overflow-hidden">
-                  <div 
-                    class="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 transition-all duration-300"
-                    :style="{ width: `${task.progress}%` }"
-                  />
+                <div v-else-if="task.status === 'merging'" class="text-xs text-muted-foreground animate-pulse">
+                  正在合并 {{ task.segments.downloaded }} 个分片...
                 </div>
+                <template v-else>
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="text-muted-foreground font-medium">{{ task.progress }}%</span>
+                    <span class="text-muted-foreground/70">{{ task.segments.downloaded }}/{{ task.segments.total }} 分片</span>
+                  </div>
+                  <div class="h-2 bg-muted rounded-full overflow-hidden">
+                    <div 
+                      class="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 transition-all duration-300"
+                      :style="{ width: `${Math.max(1, task.progress)}%` }"
+                    />
+                  </div>
+                </template>
               </div>
 
               <!-- Error -->
@@ -448,6 +467,7 @@ const { isTampermonkeyAvailable, createTask, startDownload: startDownloadTask, t
 
 const inputType = ref<'url' | 'file'>('url');
 const m3u8Url = ref('');
+const customFilename = ref('');
 const selectedFile = ref<File | null | undefined>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 const maxConcurrentSegments = ref(15);
@@ -480,10 +500,20 @@ function handleFileDrop(event: DragEvent) {
 async function startDownload() {
   if (!canDownload.value) return;
 
+  // 优先使用自定义名称，否则从 URL 或 title 参数推导
+  let filename = customFilename.value.trim();
+  if (!filename) {
+    const url = inputType.value === 'url' ? m3u8Url.value : '';
+    const route = useRoute();
+    const titleParam = route.query.title as string;
+    filename = titleParam || extractTitleFromUrl(url) || '未命名视频';
+  }
+
   const options: DownloadOptions = {
     inputType: inputType.value,
     url: inputType.value === 'url' ? m3u8Url.value : '',
     file: inputType.value === 'file' ? selectedFile.value! : undefined,
+    filename,
     maxConcurrentSegments: maxConcurrentSegments.value,
     maxRetries: maxRetries.value,
     startSegmentIndex: startSegmentIndex.value,
@@ -493,6 +523,16 @@ async function startDownload() {
 
   const task = await createTask(options);
   await startDownloadTask(task, options);
+}
+
+function extractTitleFromUrl(url: string): string {
+  try {
+    const pathname = new URL(url).pathname;
+    const lastSeg = pathname.split('/').filter(Boolean).pop() || '';
+    return lastSeg.replace(/\.(m3u8|ts|m4s|mp4)$/i, '') || '未命名视频';
+  } catch {
+    return '';
+  }
 }
 
 function clearCompleted() {
@@ -539,22 +579,27 @@ function getStatusText(status: DownloadTask['status']) {
 }
 
 onMounted(() => {
-  // 暴露全局函数供油猴脚本调用
-  if (typeof window !== 'undefined') {
-    (window as Window & { autoFillM3U8?: (url: string, title: string | null) => void }).autoFillM3U8 = (url: string, _title: string | null) => {
-      m3u8Url.value = url;
-    };
-  }
-
-  // 处理 URL 参数中的 M3U8 链接
   const route = useRoute();
   const urlParam = route.query.url as string;
   const titleParam = route.query.title as string;
 
+  // 暴露全局函数供油猴脚本调用（视频页面点击下载按钮时会调用）
+  if (typeof window !== 'undefined') {
+    (window as Window & { autoFillM3U8?: (url: string, title: string | null) => void }).autoFillM3U8 = (url: string, title: string | null) => {
+      m3u8Url.value = url;
+      if (title) customFilename.value = title;
+      console.log('[M3U8] autoFillM3U8 被调用:', url, title);
+    };
+  }
+
+  // 从 URL 参数获取 M3U8 链接
   if (urlParam) {
     m3u8Url.value = decodeURIComponent(urlParam);
-    // 可以自动开始下载或显示确认对话框
-    console.log('[M3U8 Downloader] 从 URL 参数获取到 M3U8:', urlParam);
+    console.log('[M3U8] 从 URL 参数获取到 M3U8:', urlParam);
+  }
+  // 从 URL 参数获取标题
+  if (titleParam && !customFilename.value) {
+    customFilename.value = decodeURIComponent(titleParam);
   }
 });
 </script>
