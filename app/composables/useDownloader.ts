@@ -6,6 +6,11 @@ import { createDirectoryWriter, writeBlobToDirectory } from '~/utils/stream-save
 import type { StreamWriter } from '~/utils/stream-save';
 import { triggerRef } from 'vue';
 
+/** 已被用户取消的任务 id（下载循环据此立即退出） */
+const cancelledTaskIds = new Set<string>();
+/** 正在写入的文件句柄，取消时用于中止并删除半成品 */
+const activeWriters = new Map<string, StreamWriter>();
+
 export function useDownloader() {
   const tasks = ref<DownloadTask[]>([]);
   const currentTask = ref<DownloadTask | null>(null);
@@ -84,6 +89,12 @@ export function useDownloader() {
   }
 
   async function downloadPlaylist(task: DownloadTask, content: string, options: DownloadOptions) {
+    // 解析阶段就被删除的任务，直接退出，不创建任何文件
+    if (cancelledTaskIds.has(task.id)) {
+      cancelledTaskIds.delete(task.id);
+      return;
+    }
+
     const playlist = parseM3U8(content, task.url);
     const segments = playlist.segments.slice(options.startSegmentIndex);
 
@@ -93,7 +104,7 @@ export function useDownloader() {
     refresh();
 
     // 统一文件名（视频与封面共用）
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    const timestamp = localTimestamp();
     const fileBase = `${sanitizeFilename(options.filename || task.title || 'video')}_${timestamp}`;
 
     // ========== 先下载 fMP4 初始化片段 ==========
@@ -120,6 +131,7 @@ export function useDownloader() {
 
     // ========== 保存方式：流式写盘 / 内存合并 ==========
     const dir = options.directoryHandle;
+    if (dir) task.dirName = dir.name;
     let streamMode = !!dir;
     let writer: StreamWriter | null = null;
 
@@ -133,6 +145,7 @@ export function useDownloader() {
       const { ext } = detectFormat(playlist.initSegment || '', initSegmentData);
       try {
         writer = await createDirectoryWriter(dir, fileBase, ext);
+        activeWriters.set(task.id, writer);
         await writer.write(initSegmentData);
         console.log(`[M3U8] 流式写入开始: ${writer.filename}`);
       } catch (error) {
@@ -164,6 +177,7 @@ export function useDownloader() {
           const { ext } = detectFormat(segments[nextWrite]?.url || '', data);
           try {
             writer = await createDirectoryWriter(dir, fileBase, ext);
+            activeWriters.set(task.id, writer);
             console.log(`[M3U8] 流式写入开始: ${writer.filename}`);
           } catch (error) {
             // 尚未写入任何数据，可安全回退内存合并
@@ -189,7 +203,7 @@ export function useDownloader() {
 
     console.log(`[M3U8] 共 ${segments.length} 个媒体分片开始下载...`);
 
-    while (queue.length > 0 || inProgress.size > 0) {
+    while ((queue.length > 0 || inProgress.size > 0) && !cancelledTaskIds.has(task.id)) {
       while (
         inProgress.size < concurrency &&
         queue.length > 0 &&
@@ -227,6 +241,19 @@ export function useDownloader() {
       await flush();
     }
 
+    // ========== 用户取消：中止写入并删除半成品 ==========
+    if (cancelledTaskIds.has(task.id)) {
+      cancelledTaskIds.delete(task.id);
+      const activeWriter = activeWriters.get(task.id);
+      activeWriters.delete(task.id);
+      if (activeWriter) {
+        await activeWriter.abort().catch(() => {});
+        if (dir) await dir.removeEntry(activeWriter.filename).catch(() => {});
+      }
+      console.log(`[M3U8] 任务已取消: ${task.id}`);
+      return;
+    }
+
     await flush();
 
     // ========== 流式模式：关闭文件 ==========
@@ -235,6 +262,7 @@ export function useDownloader() {
       refresh();
 
       await writer.close();
+      activeWriters.delete(task.id);
       task.savedToDirectory = true;
 
       const filename = writer.filename;
@@ -319,6 +347,12 @@ export function useDownloader() {
     return name.replace(/[\\/:*?"<>|]/g, '_').trim() || 'video';
   }
 
+  /** 本地时区时间戳 YYYYMMDDHHmmss（toISOString 是 UTC，会造成 8 小时偏差） */
+  function localTimestamp(date: Date = new Date()): string {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}`;
+  }
+
   /** 根据分片 URL 和首字节判断是 TS 还是 fMP4 */
   function detectFormat(firstUrl: string, firstSegment: ArrayBuffer): { ext: string; mime: string } {
     const url = firstUrl.toLowerCase();
@@ -389,7 +423,7 @@ export function useDownloader() {
     console.log(`[M3U8] 输出格式: .${ext} (${mime}), 首字节: 0x${merged[0]?.toString(16) ?? 'N/A'}`);
 
     const blob = new Blob([merged], { type: mime });
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    const timestamp = localTimestamp();
     const base = options.fileBase || `${task.title || 'video'}_${timestamp}`;
     const filename = `${base}.${ext}`;
     
@@ -421,6 +455,12 @@ export function useDownloader() {
   }
 
   function cancelTask(task: DownloadTask) {
+    // 进行中的任务先打取消标记，下载循环会在当前批次结束后立即退出
+    if (task.status === 'parsing' || task.status === 'downloading' || task.status === 'merging' || task.status === 'paused') {
+      cancelledTaskIds.add(task.id);
+      task.status = 'cancelled';
+    }
+
     const index = tasks.value.findIndex(t => t.id === task.id);
     if (index > -1) {
       tasks.value.splice(index, 1);

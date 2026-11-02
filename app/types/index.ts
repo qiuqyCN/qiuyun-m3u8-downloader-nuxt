@@ -20,6 +20,8 @@ export interface DownloadTask {
   coverPreviewFailed?: boolean;
   /** 是否已流式保存到用户所选目录 */
   savedToDirectory?: boolean;
+  /** 流式保存的目录名称（用于"打开目录"） */
+  dirName?: string;
   createdAt: number;
   updatedAt: number;
 }

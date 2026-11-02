@@ -155,13 +155,16 @@
 
           <!-- File Name Input -->
           <div>
-            <label class="block text-sm font-medium text-muted-foreground mb-2">文件名称 <span class="text-muted-foreground/60 text-xs">（可选）</span></label>
+            <label class="block text-sm font-medium text-muted-foreground mb-2">文件名称 <span class="text-red-500">*</span></label>
             <input
               v-model="customFilename"
               type="text"
-              placeholder="留空则使用视频标题"
-              class="w-full px-4 py-3 bg-background border border-input rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all text-sm"
+              placeholder="必填，例如：视频标题_20261030"
+              class="w-full px-4 py-3 bg-background border rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all text-sm"
+              :class="nameError ? 'border-red-500/60' : 'border-input'"
+              @input="nameError = false"
             />
+            <p v-if="nameError" class="mt-2 text-xs text-red-500">请填写文件名称后再开始下载</p>
           </div>
 
           <!-- Options Toggle -->
@@ -362,8 +365,9 @@
                       v-if="task.coverUrl && !task.coverPreviewFailed"
                       :src="task.coverUrl"
                       alt="封面"
-                      class="w-10 h-10 object-cover"
+                      class="w-10 h-10 object-cover cursor-zoom-in"
                       referrerpolicy="no-referrer"
+                      @click="previewImage = task.coverUrl || null"
                       @error="task.coverPreviewFailed = true"
                     />
                     <Film v-else class="w-5 h-5 text-muted-foreground" />
@@ -423,9 +427,11 @@
                   <CheckCircle class="w-4 h-4" />
                   <span>已下载: {{ task.filename }}</span>
                 </div>
-                <p class="text-xs text-emerald-500/70 mt-1">
-                  {{ task.savedToDirectory ? '已保存到所选目录' : '文件保存在浏览器默认下载目录' }}
-                </p>
+                <div class="flex items-center justify-between gap-2 mt-1">
+                  <p class="text-xs text-emerald-500/70 truncate" :title="task.dirName">
+                    {{ task.savedToDirectory ? `已保存到所选目录「${task.dirName || '默认'}」` : '文件保存在浏览器默认下载目录' }}
+                  </p>
+                </div>
               </div>
 
               <!-- Actions -->
@@ -476,6 +482,28 @@ downloader.<span class="text-blue-500">start</span>(m3u8Url, options);</pre>
         </div>
       </div>
     </div>
+
+    <!-- 封面放大预览 -->
+    <Teleport to="body">
+      <div
+        v-if="previewImage"
+        class="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6 cursor-zoom-out"
+        @click="previewImage = null"
+      >
+        <img
+          :src="previewImage"
+          alt="封面预览"
+          class="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl"
+          referrerpolicy="no-referrer"
+        />
+        <button
+          class="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+          @click.stop="previewImage = null"
+        >
+          <X class="w-5 h-5" />
+        </button>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -515,6 +543,8 @@ const { isTampermonkeyAvailable, createTask, startDownload: startDownloadTask, t
 const inputType = ref<'url' | 'file'>('url');
 const m3u8Url = ref('');
 const customFilename = ref('');
+const nameError = ref(false);
+const previewImage = ref<string | null>(null);
 const selectedFile = ref<File | null | undefined>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 const maxConcurrentSegments = ref(15);
@@ -551,14 +581,13 @@ function handleFileDrop(event: DragEvent) {
 async function startDownload() {
   if (!canDownload.value) return;
 
-  // 优先使用自定义名称，否则从 URL 或 title 参数推导
-  let filename = customFilename.value.trim();
-  if (!filename) {
-    const url = inputType.value === 'url' ? m3u8Url.value : '';
-    const route = useRoute();
-    const titleParam = route.query.title as string;
-    filename = titleParam || extractTitleFromUrl(url) || '未命名视频';
+  // 文件名称必填
+  if (!customFilename.value.trim()) {
+    nameError.value = true;
+    return;
   }
+
+  const filename = customFilename.value.trim();
 
   // 流式下载：在用户点击后立即弹出目录选择（需保留用户手势）
   let directoryHandle: FileSystemDirectoryHandle | undefined;
@@ -583,15 +612,15 @@ async function startDownload() {
 
   const task = await createTask(options);
   await startDownloadTask(task, options);
-}
 
-function extractTitleFromUrl(url: string): string {
-  try {
-    const pathname = new URL(url).pathname;
-    const lastSeg = pathname.split('/').filter(Boolean).pop() || '';
-    return lastSeg.replace(/\.(m3u8|ts|m4s|mp4)$/i, '') || '未命名视频';
-  } catch {
-    return '';
+  // 下载完成后清空「新建下载」表单，避免带着上一条链接重复提交
+  if (task.status === 'completed') {
+    m3u8Url.value = '';
+    customFilename.value = '';
+    coverUrl.value = '';
+    selectedFile.value = null;
+    startSegmentIndex.value = 0;
+    if (fileInput.value) fileInput.value.value = '';
   }
 }
 
