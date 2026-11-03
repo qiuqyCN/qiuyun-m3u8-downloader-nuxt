@@ -4,7 +4,7 @@
 
 一个 M3U8（HLS）视频下载工具，由两部分组成：
 
-- **Web 下载器**（`qiuyun-m3u8-downloader-nuxt/`）：Nuxt 4 单页应用，负责解析播放列表、并发下载分片、AES-128 解密、fMP4 初始化段处理、合并输出，支持流式写盘与封面下载。
+- **Web 下载器**（本仓库）：Nuxt 4 单页应用，负责解析播放列表、并发下载分片、AES-128 解密、fMP4 初始化段处理、合并输出，支持流式写盘与封面下载。
 - **油猴脚本**（`qiuyun-m3u8-detector.user.js`）：在视频页自动检测 M3U8，悬浮按钮展示码率列表，一键跳转下载器；同时为下载器页面提供跨域请求代理（`GM_xmlhttpRequest`），绕过防盗链与 CORS。
 
 ## 功能特性
@@ -22,20 +22,18 @@
 ## 目录结构
 
 ```
-qiuyun-m3u8-downloader/
-├── qiuyun-m3u8-downloader-nuxt/     # Web 下载器（Nuxt 4 + TailwindCSS v4）
-│   ├── app/                         # 页面、composables、工具函数
-│   ├── docker/                      # Docker 部署配置（见下文 Docker 部署）
-│   └── package.json
-├── qiuyun-m3u8-downloader-script/   # 油猴脚本
-│   └── qiuyun-m3u8-detector.user.js
-└── dist/                            # 静态部署包输出目录
+qiuyun-m3u8-downloader-nuxt/
+├── app/                           # 页面、composables、工具函数
+├── docker/                        # Docker 部署配置（见下文 Docker 部署）
+├── qiuyun-m3u8-detector.user.js   # 油猴脚本（GreasyFork 已发布）
+├── package.json
+└── README.md
 ```
 
 ## 油猴脚本安装
 
 1. 浏览器安装 [Tampermonkey](https://www.tampermonkey.net/) 扩展。
-2. 新建脚本，将 `qiuyun-m3u8-detector.user.js` 全文粘贴保存。
+2. 从 [GreasyFork](https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js) 一键安装（推荐，可自动更新），或新建脚本将 `qiuyun-m3u8-detector.user.js` 全文粘贴保存。
 3. 脚本中下载器地址由常量控制，按需修改：
 
 ```js

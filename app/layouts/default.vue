@@ -23,7 +23,7 @@
             <Moon v-else class="w-5 h-5" />
           </button>
           <a 
-            href="https://github.com/qiuyun-m3u8-downloader" 
+            href="https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt" 
             target="_blank"
             class="p-2 text-muted-foreground hover:text-foreground transition-colors"
           >
