@@ -349,7 +349,7 @@
 
             <div class="pt-4 border-t border-border">
               <p class="text-xs text-muted-foreground">
-                © 2024 秋云 M3U8 下载器 · 基于 MIT 协议开源
+                © 2026 秋云 M3U8 下载器 · 基于 MIT 协议开源
               </p>
             </div>
           </div>

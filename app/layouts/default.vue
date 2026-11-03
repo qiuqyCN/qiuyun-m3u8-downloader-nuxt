@@ -49,7 +49,7 @@
     <footer class="border-t border-border mt-12">
       <div class="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
         <p class="text-muted-foreground text-sm">
-          © 2024 秋云 M3U8 下载器 · 免费开源
+          © 2026 秋云 M3U8 下载器 · 免费开源
         </p>
         <div class="flex items-center gap-4">
           <a href="#" class="text-muted-foreground hover:text-foreground text-sm transition-colors">文档</a>

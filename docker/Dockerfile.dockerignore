@@ -1,0 +1,7 @@
+# 与 docker/Dockerfile 配套（BuildKit 自动识别同名 .dockerignore）
+# 上下文是 nuxt 项目目录
+node_modules
+.nuxt
+.output
+.git
+*.md
