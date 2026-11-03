@@ -19,7 +19,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Settings Navigation -->
       <div class="lg:col-span-1">
-        <div class="bg-card border border-border rounded-2xl overflow-hidden sticky top-24">
+        <div class="bg-card border border-border rounded-2xl overflow-hidden lg:sticky lg:top-24">
           <div class="p-4 border-b border-border">
             <h2 class="font-semibold text-foreground">设置分类</h2>
           </div>
@@ -64,6 +64,7 @@
                   <span class="text-sm font-medium">{{ t.label }}</span>
                 </button>
               </div>
+              <p class="text-xs text-muted-foreground mt-3">主题即时生效，无需保存</p>
             </div>
           </div>
         </div>
@@ -77,51 +78,6 @@
             </h2>
           </div>
           <div class="p-6 space-y-6">
-            <!-- Download Path -->
-            <div>
-              <label class="block text-sm font-medium text-foreground mb-2">默认下载路径</label>
-              <div class="flex gap-2">
-                <input
-                  v-model="settings.downloadPath"
-                  type="text"
-                  placeholder="D:\\Downloads\\M3U8"
-                  class="flex-1 px-4 py-2.5 bg-background border border-input rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all"
-                >
-                <button
-                  @click="selectDirectory"
-                  class="px-4 py-2.5 bg-muted border border-input rounded-xl text-foreground hover:bg-accent transition-colors"
-                >
-                  <Folder class="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            <!-- Concurrent Tasks -->
-            <div>
-              <label class="block text-sm font-medium text-foreground mb-2">同时下载任务数</label>
-              <div class="flex items-center gap-2 max-w-[200px]">
-                <button
-                  @click="settings.maxConcurrentTasks = Math.max(1, settings.maxConcurrentTasks - 1)"
-                  class="w-10 h-10 flex items-center justify-center bg-muted border border-input rounded-xl text-muted-foreground hover:text-foreground hover:border-border transition-colors"
-                >
-                  <Minus class="w-4 h-4" />
-                </button>
-                <input
-                  v-model.number="settings.maxConcurrentTasks"
-                  type="number"
-                  min="1"
-                  max="5"
-                  class="flex-1 text-center bg-background border border-input rounded-xl py-2.5 text-foreground focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
-                >
-                <button
-                  @click="settings.maxConcurrentTasks = Math.min(5, settings.maxConcurrentTasks + 1)"
-                  class="w-10 h-10 flex items-center justify-center bg-muted border border-input rounded-xl text-muted-foreground hover:text-foreground hover:border-border transition-colors"
-                >
-                  <Plus class="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
             <!-- Default Segments -->
             <div>
               <label class="block text-sm font-medium text-foreground mb-2">默认同时请求片段数</label>
@@ -174,122 +130,11 @@
               </div>
             </div>
 
-            <!-- Auto Start -->
-            <div class="flex items-center justify-between py-3 border-t border-border">
-              <div>
-                <span class="text-sm font-medium text-foreground">自动开始下载</span>
-                <p class="text-xs text-muted-foreground mt-0.5">添加任务后立即开始下载</p>
-              </div>
-              <button
-                @click="settings.autoStartDownload = !settings.autoStartDownload"
-                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-background"
-                :class="settings.autoStartDownload ? 'bg-violet-500' : 'bg-muted'"
-              >
-                <span
-                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
-                  :class="settings.autoStartDownload ? 'translate-x-6' : 'translate-x-1'"
-                />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Network Settings -->
-        <div v-show="activeSection === 'network'" class="bg-card border border-border rounded-2xl overflow-hidden">
-          <div class="p-6 border-b border-border">
-            <h2 class="text-lg font-semibold text-foreground flex items-center gap-2">
-              <Globe class="w-5 h-5 text-violet-500" />
-              网络设置
-            </h2>
-          </div>
-          <div class="p-6 space-y-6">
-            <!-- Proxy Toggle -->
-            <div class="flex items-center justify-between">
-              <div>
-                <span class="text-sm font-medium text-foreground">使用代理</span>
-                <p class="text-xs text-muted-foreground mt-0.5">通过代理服务器下载</p>
-              </div>
-              <button
-                @click="settings.proxy.enabled = !settings.proxy.enabled"
-                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-background"
-                :class="settings.proxy.enabled ? 'bg-violet-500' : 'bg-muted'"
-              >
-                <span
-                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
-                  :class="settings.proxy.enabled ? 'translate-x-6' : 'translate-x-1'"
-                />
-              </button>
-            </div>
-
-            <!-- Proxy URL -->
-            <div v-if="settings.proxy.enabled">
-              <label class="block text-sm font-medium text-foreground mb-2">代理地址</label>
-              <input
-                v-model="settings.proxy.url"
-                type="text"
-                placeholder="http://127.0.0.1:7890"
-                class="w-full px-4 py-2.5 bg-background border border-input rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all"
-              >
-            </div>
-
-            <!-- Timeout -->
-            <div class="pt-4 border-t border-border">
-              <label class="block text-sm font-medium text-foreground mb-2">超时时间（秒）</label>
-              <div class="flex items-center gap-2 max-w-[200px]">
-                <button
-                  @click="settings.timeout = Math.max(10, settings.timeout - 5)"
-                  class="w-10 h-10 flex items-center justify-center bg-muted border border-input rounded-xl text-muted-foreground hover:text-foreground hover:border-border transition-colors"
-                >
-                  <Minus class="w-4 h-4" />
-                </button>
-                <input
-                  v-model.number="settings.timeout"
-                  type="number"
-                  min="10"
-                  max="120"
-                  class="flex-1 text-center bg-background border border-input rounded-xl py-2.5 text-foreground focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
-                >
-                <button
-                  @click="settings.timeout = Math.min(120, settings.timeout + 5)"
-                  class="w-10 h-10 flex items-center justify-center bg-muted border border-input rounded-xl text-muted-foreground hover:text-foreground hover:border-border transition-colors"
-                >
-                  <Plus class="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Output Settings -->
-        <div v-show="activeSection === 'output'" class="bg-card border border-border rounded-2xl overflow-hidden">
-          <div class="p-6 border-b border-border">
-            <h2 class="text-lg font-semibold text-foreground flex items-center gap-2">
-              <FileOutput class="w-5 h-5 text-violet-500" />
-              输出设置
-            </h2>
-          </div>
-          <div class="p-6 space-y-6">
-            <!-- Default Format -->
-            <div>
-              <label class="block text-sm font-medium text-foreground mb-2">默认格式</label>
-              <div class="grid grid-cols-3 gap-3">
-                <button
-                  v-for="format in ['ts', 'mp4', 'mkv']"
-                  :key="format"
-                  @click="defaultFormat = format"
-                  class="py-3 px-4 rounded-xl border transition-all capitalize"
-                  :class="defaultFormat === format ? 'bg-violet-500/10 border-violet-500 text-violet-500' : 'bg-background border-input text-muted-foreground hover:border-border'"
-                >
-                  {{ format }}
-                </button>
-              </div>
-            </div>
-
             <!-- Notification -->
-            <div class="flex items-center justify-between py-3 border-t border-border">
+            <div class="flex items-center justify-between pt-6 border-t border-border">
               <div>
                 <span class="text-sm font-medium text-foreground">下载完成通知</span>
-                <p class="text-xs text-muted-foreground mt-0.5">下载完成后显示系统通知</p>
+                <p class="text-xs text-muted-foreground mt-0.5">下载完成或失败后显示系统通知（首次会请求浏览器通知权限）</p>
               </div>
               <button
                 @click="settings.enableNotification = !settings.enableNotification"
@@ -320,7 +165,7 @@
               </div>
               <div>
                 <h3 class="text-xl font-bold text-foreground">秋云 M3U8 下载器</h3>
-                <p class="text-muted-foreground">版本 1.0.0</p>
+                <p class="text-muted-foreground">版本 {{ appVersion }}</p>
               </div>
             </div>
 
@@ -338,13 +183,13 @@
                 <Github class="w-4 h-4" />
                 GitHub
               </a>
-              <a
-                href="#"
+              <NuxtLink
+                to="/docs"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-muted border border-input rounded-xl text-foreground hover:bg-accent transition-colors"
               >
                 <BookOpen class="w-4 h-4" />
                 文档
-              </a>
+              </NuxtLink>
             </div>
 
             <div class="pt-4 border-t border-border">
@@ -356,7 +201,7 @@
         </div>
 
         <!-- Save Button -->
-        <div class="flex justify-end">
+        <div v-show="activeSection !== 'about'" class="flex justify-end">
           <button
             @click="saveSettings"
             class="px-6 py-3 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-xl font-medium hover:from-violet-600 hover:to-fuchsia-600 transition-all shadow-lg shadow-violet-500/25"
@@ -366,22 +211,26 @@
         </div>
       </div>
     </div>
+
+    <!-- Save Toast -->
+    <Transition name="toast">
+      <div v-if="showToast" class="fixed bottom-4 right-4 px-4 py-3 bg-emerald-500 text-white rounded-xl shadow-lg z-50">
+        设置已保存
+      </div>
+    </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import {
   ArrowLeft,
   Settings,
   Download,
-  Globe,
-  FileOutput,
   Info,
   Cloud,
   Github,
   BookOpen,
-  Folder,
   Minus,
   Plus,
   Palette,
@@ -391,10 +240,18 @@ import {
 } from 'lucide-vue-next';
 import type { AppSettings } from '~/types';
 import type { Theme } from '~/composables/useTheme';
+import { defaultSettings, loadSettings, persistSettings } from '~/composables/useSettings';
+import { version as appVersion } from '~~/package.json';
 
 // 页面元数据
 definePageMeta({
   layout: 'default'
+});
+
+// 设置页是用户个人配置，不参与收录
+useSeoMeta({
+  title: '设置 - 秋云 M3U8 下载器',
+  robots: 'noindex, nofollow',
 });
 
 const { theme, setTheme } = useTheme();
@@ -408,67 +265,62 @@ const themeOptions = [
 const sections = [
   { id: 'appearance', name: '外观', icon: Palette },
   { id: 'download', name: '下载设置', icon: Download },
-  { id: 'network', name: '网络设置', icon: Globe },
-  { id: 'output', name: '输出设置', icon: FileOutput },
   { id: 'about', name: '关于', icon: Info },
 ];
 
 const activeSection = ref('appearance');
 
-const settings = ref<AppSettings>({
-  downloadPath: '',
-  maxConcurrentTasks: 3,
-  defaultMaxConcurrentSegments: 15,
-  defaultMaxRetries: 3,
-  autoStartDownload: true,
-  proxy: {
-    enabled: false,
-    url: '',
-  },
-  timeout: 30,
-  defaultConvertToMp4: false,
-  keepTempFiles: false,
-  enableNotification: true,
-  tampermonkey: {
-    scriptUrl: '',
-    installUrl: 'https://www.tampermonkey.net/',
-    enabled: true,
-  },
-});
+// 支持 /settings?section=about 深链
+const route = useRoute();
+function applySectionQuery() {
+  const s = route.query.section;
+  if (typeof s === 'string' && sections.some(sec => sec.id === s)) {
+    activeSection.value = s;
+  }
+}
 
-const defaultFormat = ref('ts');
+onMounted(applySectionQuery);
+watch(() => route.query.section, applySectionQuery);
+
+const settings = ref<AppSettings>({ ...defaultSettings });
 
 onMounted(() => {
-  const saved = localStorage.getItem('qiuyun-settings');
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      settings.value = { ...settings.value, ...parsed };
-    } catch {
-      console.error('Failed to parse settings');
-    }
-  }
+  settings.value = loadSettings();
 });
 
-async function selectDirectory() {
-  try {
-    // @ts-ignore
-    const dirHandle = await window.showDirectoryPicker?.();
-    if (dirHandle) {
-      settings.value.downloadPath = dirHandle.name;
-    }
-  } catch {
-    // 用户取消
-  }
+const showToast = ref(false);
+let toastTimer: ReturnType<typeof setTimeout> | undefined;
+
+function clampNumber(value: number, min: number, max: number, fallback: number): number {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, Math.round(n)));
 }
 
 function saveSettings() {
-  localStorage.setItem('qiuyun-settings', JSON.stringify(settings.value));
-  // Show success notification
-  const notification = document.createElement('div');
-  notification.className = 'fixed bottom-4 right-4 px-4 py-3 bg-emerald-500 text-white rounded-xl shadow-lg z-50 animate-slide-in';
-  notification.textContent = '设置已保存';
-  document.body.appendChild(notification);
-  setTimeout(() => notification.remove(), 3000);
+  settings.value.defaultMaxConcurrentSegments = clampNumber(
+    settings.value.defaultMaxConcurrentSegments, 1, 32, defaultSettings.defaultMaxConcurrentSegments
+  );
+  settings.value.defaultMaxRetries = clampNumber(
+    settings.value.defaultMaxRetries, 0, 10, defaultSettings.defaultMaxRetries
+  );
+  persistSettings(settings.value);
+
+  showToast.value = true;
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { showToast.value = false; }, 3000);
 }
 </script>
+
+<style scoped>
+.toast-enter-active,
+.toast-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+</style>

@@ -73,22 +73,10 @@ export interface M3U8Playlist {
 }
 
 export interface AppSettings {
-  downloadPath: string;
-  maxConcurrentTasks: number;
+  /** 默认同时下载片段数（首页并发输入框的初始值） */
   defaultMaxConcurrentSegments: number;
+  /** 默认失败重试次数 */
   defaultMaxRetries: number;
-  autoStartDownload: boolean;
-  proxy: {
-    enabled: boolean;
-    url: string;
-  };
-  timeout: number;
-  defaultConvertToMp4: boolean;
-  keepTempFiles: boolean;
+  /** 下载完成/失败时发送系统通知 */
   enableNotification: boolean;
-  tampermonkey: {
-    scriptUrl: string;
-    installUrl: string;
-    enabled: boolean;
-  };
 }

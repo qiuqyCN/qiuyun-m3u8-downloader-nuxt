@@ -66,13 +66,6 @@
               <Download class="w-4 h-4" />
               安装油猴
             </a>
-            <button 
-              @click="showTampermonkeyHelp = true"
-              class="inline-flex items-center gap-2 px-4 py-2 border border-border text-foreground text-sm rounded-lg hover:bg-accent transition-colors"
-            >
-              <BookOpen class="w-4 h-4" />
-              使用教程
-            </button>
           </div>
         </div>
       </div>
@@ -449,36 +442,66 @@
       </div>
     </div>
 
-    <!-- Code Example Section -->
+    <!-- Quick Start Guide -->
     <div class="mt-8 bg-card border border-border rounded-2xl overflow-hidden">
       <div class="p-6 border-b border-border">
         <h2 class="text-lg font-semibold text-foreground flex items-center gap-2">
-          <Code class="w-5 h-5 text-violet-500" />
+          <Rocket class="w-5 h-5 text-violet-500" />
           快速开始
         </h2>
+        <p class="text-sm text-muted-foreground mt-1">第一次使用？按下面 4 步操作即可。</p>
       </div>
       <div class="p-6">
-        <div class="bg-muted/50 rounded-xl p-4 font-mono text-sm overflow-x-auto border border-border">
-          <div class="flex items-center gap-2 mb-3 pb-3 border-b border-border">
-            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-            <span class="ml-2 text-muted-foreground text-xs">usage.js</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Step 1 -->
+          <div class="relative bg-muted/40 border border-border rounded-xl p-4">
+            <div class="w-8 h-8 rounded-full bg-violet-500 text-white text-sm font-bold flex items-center justify-center mb-3">1</div>
+            <h3 class="text-sm font-semibold text-foreground mb-1.5 flex items-center gap-1.5">
+              <Puzzle class="w-4 h-4 text-violet-500" />
+              安装 Tampermonkey
+            </h3>
+            <p class="text-xs text-muted-foreground leading-relaxed mb-2.5">浏览器扩展，用于运行检测脚本。Chrome / Edge / Firefox 商店均可安装。</p>
+            <a href="https://www.tampermonkey.net/" target="_blank" class="inline-flex items-center gap-1 text-xs text-violet-500 hover:text-violet-600 font-medium">
+              前往官网 <ArrowUpRight class="w-3 h-3" />
+            </a>
           </div>
-          <pre class="text-foreground"><span class="text-violet-500">// 1. 安装油猴脚本</span>
-<span class="text-muted-foreground">// 访问任意视频网站，脚本会自动检测 M3U8</span>
-
-<span class="text-emerald-500">const</span> m3u8Url = <span class="text-amber-500">"https://example.com/video.m3u8"</span>;
-
-<span class="text-violet-500">// 2. 粘贴到下载器并配置参数</span>
-<span class="text-emerald-500">const</span> options = {
-  maxConcurrentSegments: <span class="text-amber-500">15</span>,  <span class="text-muted-foreground">// 同时下载片段数</span>
-  maxRetries: <span class="text-amber-500">3</span>,              <span class="text-muted-foreground">// 失败重试次数</span>
-  convertToMp4: <span class="text-amber-500">false</span>         <span class="text-muted-foreground">// 是否转码</span>
-};
-
-<span class="text-violet-500">// 3. 开始下载</span>
-downloader.<span class="text-blue-500">start</span>(m3u8Url, options);</pre>
+          <!-- Step 2 -->
+          <div class="relative bg-muted/40 border border-border rounded-xl p-4">
+            <div class="w-8 h-8 rounded-full bg-violet-500 text-white text-sm font-bold flex items-center justify-center mb-3">2</div>
+            <h3 class="text-sm font-semibold text-foreground mb-1.5 flex items-center gap-1.5">
+              <FileCode class="w-4 h-4 text-violet-500" />
+              安装油猴脚本
+            </h3>
+            <p class="text-xs text-muted-foreground leading-relaxed mb-2.5">「秋云 M3U8 下载助手」，负责在视频页自动检测并跳转到这里。</p>
+            <a href="https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js" target="_blank" class="inline-flex items-center gap-1 text-xs text-violet-500 hover:text-violet-600 font-medium">
+              GreasyFork 一键安装 <ArrowUpRight class="w-3 h-3" />
+            </a>
+          </div>
+          <!-- Step 3 -->
+          <div class="relative bg-muted/40 border border-border rounded-xl p-4">
+            <div class="w-8 h-8 rounded-full bg-violet-500 text-white text-sm font-bold flex items-center justify-center mb-3">3</div>
+            <h3 class="text-sm font-semibold text-foreground mb-1.5 flex items-center gap-1.5">
+              <MonitorPlay class="w-4 h-4 text-violet-500" />
+              打开视频页面
+            </h3>
+            <p class="text-xs text-muted-foreground leading-relaxed">页面右侧会出现悬浮按钮，数字角标表示检测到的视频数。点击按钮，选择清晰度后点「下载」。</p>
+          </div>
+          <!-- Step 4 -->
+          <div class="relative bg-muted/40 border border-border rounded-xl p-4">
+            <div class="w-8 h-8 rounded-full bg-violet-500 text-white text-sm font-bold flex items-center justify-center mb-3">4</div>
+            <h3 class="text-sm font-semibold text-foreground mb-1.5 flex items-center gap-1.5">
+              <Download class="w-4 h-4 text-violet-500" />
+              回到本页下载
+            </h3>
+            <p class="text-xs text-muted-foreground leading-relaxed">链接、标题、封面已自动填好，确认文件名称后点击上方「开始下载」即可。</p>
+          </div>
+        </div>
+        <!-- 手动模式提示 -->
+        <div class="mt-4 flex items-start gap-2.5 bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
+          <ClipboardPaste class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+          <p class="text-xs text-muted-foreground leading-relaxed">
+            <span class="text-foreground font-medium">没装脚本也能用：</span>直接把 M3U8 链接粘贴到上方「M3U8 链接」输入框，填写文件名称后开始下载。脚本的作用是自动检测和绕过部分网站的跨域限制。
+          </p>
         </div>
       </div>
     </div>
@@ -514,7 +537,6 @@ import {
   Shield,
   Activity,
   Zap,
-  BookOpen,
   Link,
   FileText,
   Upload,
@@ -526,12 +548,18 @@ import {
   List,
   Inbox,
   Film,
-  Code,
+  Rocket,
+  Puzzle,
+  FileCode,
+  MonitorPlay,
+  ArrowUpRight,
+  ClipboardPaste,
   Loader2,
   CheckCircle
 } from 'lucide-vue-next';
-import type { DownloadTask, DownloadOptions } from '~/types';
+import type { DownloadTask, DownloadOptions, AppSettings } from '~/types';
 import { isDirectoryPickerSupported, pickSaveDirectory } from '~/utils/stream-save';
+import { defaultSettings, loadSettings } from '~/composables/useSettings';
 
 // 页面元数据
 definePageMeta({
@@ -556,7 +584,24 @@ const streamDownload = ref(true);
 const supportsDirectoryPicker = ref(false);
 const coverUrl = ref('');
 const showOptions = ref(false);
-const showTampermonkeyHelp = ref(false);
+const appSettings = ref<AppSettings>({ ...defaultSettings });
+
+/** 下载完成/失败后发送系统通知（需在设置中开启） */
+async function notifyTask(task: DownloadTask) {
+  if (!appSettings.value.enableNotification) return;
+  if (typeof window === 'undefined' || !('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    await Notification.requestPermission();
+  }
+  if (Notification.permission !== 'granted') return;
+  const ok = task.status === 'completed';
+  new Notification(ok ? '下载完成' : '下载失败', {
+    body: ok
+      ? `${task.filename || task.title}${task.dirName ? ` 已保存到「${task.dirName}」` : ''}`
+      : `${task.title}：${task.error || '未知错误'}`,
+    tag: task.id,
+  });
+}
 
 const canDownload = computed(() => {
   if (inputType.value === 'url') {
@@ -612,6 +657,7 @@ async function startDownload() {
 
   const task = await createTask(options);
   await startDownloadTask(task, options);
+  await notifyTask(task);
 
   // 下载完成后清空「新建下载」表单，避免带着上一条链接重复提交
   if (task.status === 'completed') {
@@ -669,6 +715,11 @@ function getStatusText(status: DownloadTask['status']) {
 
 onMounted(() => {
   supportsDirectoryPicker.value = isDirectoryPickerSupported();
+
+  // 应用设置页保存的默认值（并发数 / 重试次数 / 通知）
+  appSettings.value = loadSettings();
+  maxConcurrentSegments.value = appSettings.value.defaultMaxConcurrentSegments;
+  maxRetries.value = appSettings.value.defaultMaxRetries;
 
   const route = useRoute();
   // 注意：Vue Router 已经对 query 解码过一次，这里不能再 decodeURIComponent，

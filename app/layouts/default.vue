@@ -52,9 +52,9 @@
           © 2026 秋云 M3U8 下载器 · 免费开源
         </p>
         <div class="flex items-center gap-4">
-          <a href="#" class="text-muted-foreground hover:text-foreground text-sm transition-colors">文档</a>
-          <a href="#" class="text-muted-foreground hover:text-foreground text-sm transition-colors">反馈</a>
-          <a href="#" class="text-muted-foreground hover:text-foreground text-sm transition-colors">关于</a>
+          <NuxtLink to="/docs" class="text-muted-foreground hover:text-foreground text-sm transition-colors">文档</NuxtLink>
+          <a href="https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues" target="_blank" rel="noopener" class="text-muted-foreground hover:text-foreground text-sm transition-colors">反馈</a>
+          <NuxtLink to="/settings?section=about" class="text-muted-foreground hover:text-foreground text-sm transition-colors">关于</NuxtLink>
         </div>
       </div>
     </footer>
