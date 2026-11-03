@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         秋云 M3U8 下载助手
 // @namespace    https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt
-// @version      1.0.0
+// @version      1.0.3
 // @description  自动检测网页 M3U8 视频并提供下载功能，配合秋云 M3U8 下载器使用
 // @author       Qiuyun
 // @match        *://*/*
@@ -18,9 +18,9 @@
 // @connect      *
 // @run-at       document-start
 // @supportURL   https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues
-// @homepageURL  https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt
-// @updateURL    https://raw.githubusercontent.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/main/qiuyun-m3u8-downloader-script/qiuyun-m3u8-detector.user.js
-// @downloadURL  https://raw.githubusercontent.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/main/qiuyun-m3u8-downloader-script/qiuyun-m3u8-detector.user.js
+// @homepageURL  https://m3u8.qiuyun.dev
+// @downloadURL https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js
+// @updateURL https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.meta.js
 // @license MIT
 // ==/UserScript==
 
