@@ -307,16 +307,67 @@
             </div>
           </div>
 
-          <!-- Download Button -->
-          <button
-            @click="startDownload"
-            :disabled="!canDownload || isDownloading"
-            class="w-full py-3.5 px-4 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-xl font-medium hover:from-violet-600 hover:to-fuchsia-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg shadow-violet-500/25"
+          <!-- Download & Preview Buttons -->
+          <div class="flex gap-3">
+            <button
+              @click="startDownload"
+              :disabled="!canDownload || isDownloading"
+              class="flex-1 py-3.5 px-4 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-xl font-medium hover:from-violet-600 hover:to-fuchsia-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg shadow-violet-500/25"
+            >
+              <Loader2 v-if="isDownloading" class="w-5 h-5 animate-spin" />
+              <Download v-else class="w-5 h-5" />
+              {{ isDownloading ? '下载中...' : '开始下载' }}
+            </button>
+            <button
+              @click="() => openPreview()"
+              :disabled="!canPreview || previewCheckStatus === 'checking'"
+              class="py-3.5 px-4 bg-background border border-input text-foreground rounded-xl font-medium hover:bg-muted transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              title="在线预览 M3U8 视频"
+            >
+              <Loader2 v-if="previewCheckStatus === 'checking'" class="w-5 h-5 animate-spin" />
+              <Play v-else class="w-5 h-5" />
+              {{ previewCheckStatus === 'checking' ? '检测中...' : '预览' }}
+            </button>
+          </div>
+
+          <!-- 预览预检失败提示条 -->
+          <div
+            v-if="previewCheckStatus === 'failed'"
+            class="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 space-y-3"
           >
-            <Loader2 v-if="isDownloading" class="w-5 h-5 animate-spin" />
-            <Download v-else class="w-5 h-5" />
-            {{ isDownloading ? '下载中...' : '开始下载' }}
-          </button>
+            <div class="flex items-start gap-2.5">
+              <ShieldAlert class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+              <div class="text-sm leading-relaxed">
+                <p class="font-medium text-amber-500 mb-1">此 M3U8 源无法在线预览</p>
+                <p class="text-muted-foreground">
+                  {{ previewCheckError }}
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <button
+                @click="openPreview(true)"
+                class="px-3 py-1.5 bg-muted hover:bg-border text-foreground rounded-lg transition-colors inline-flex items-center gap-1.5"
+              >
+                <Play class="w-3.5 h-3.5" />
+                仍然尝试预览
+              </button>
+              <button
+                @click="previewCheckStatus = 'idle'"
+                class="px-3 py-1.5 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                忽略
+              </button>
+              <a
+                href="https://www.tampermonkey.net/"
+                target="_blank"
+                class="ml-auto text-amber-500 hover:text-amber-600 transition-colors inline-flex items-center gap-1"
+              >
+                安装油猴脚本自动绕过跨域
+                <ArrowUpRight class="w-3 h-3" />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -527,6 +578,33 @@
         </button>
       </div>
     </Teleport>
+
+    <!-- M3U8 播放器预览模态框 -->
+    <Teleport to="body">
+      <div
+        v-if="playerPreviewUrl"
+        class="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
+        @click.self="closePreview"
+      >
+        <div class="w-full max-w-5xl bg-card border border-border rounded-2xl overflow-hidden shadow-2xl">
+          <div class="flex items-center justify-between px-5 py-3 border-b border-border bg-background/50">
+            <div class="flex-1 min-w-0 mr-4">
+              <p class="font-medium text-foreground truncate">{{ playerPreviewTitle || '视频预览' }}</p>
+              <p class="text-xs text-muted-foreground truncate" :title="playerPreviewUrl">{{ playerPreviewUrl }}</p>
+            </div>
+            <button
+              class="w-9 h-9 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center flex-shrink-0"
+              @click="closePreview"
+            >
+              <X class="w-4 h-4" />
+            </button>
+          </div>
+          <div class="bg-black">
+            <M3U8Player :src="playerPreviewUrl" />
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -555,11 +633,14 @@ import {
   ArrowUpRight,
   ClipboardPaste,
   Loader2,
-  CheckCircle
+  CheckCircle,
+  Play,
+  ShieldAlert
 } from 'lucide-vue-next';
 import type { DownloadTask, DownloadOptions, AppSettings } from '~/types';
 import { isDirectoryPickerSupported, pickSaveDirectory } from '~/utils/stream-save';
 import { defaultSettings, loadSettings } from '~/composables/useSettings';
+import M3U8Player from '~/components/M3U8Player.vue';
 
 // 页面元数据
 definePageMeta({
@@ -567,6 +648,7 @@ definePageMeta({
 });
 
 const { isTampermonkeyAvailable, createTask, startDownload: startDownloadTask, tasks, cancelTask, resumeTask, currentTask, isDownloading } = useDownloader();
+const { fetchM3U8 } = useTampermonkey();
 
 const inputType = ref<'url' | 'file'>('url');
 const m3u8Url = ref('');
@@ -585,6 +667,63 @@ const supportsDirectoryPicker = ref(false);
 const coverUrl = ref('');
 const showOptions = ref(false);
 const appSettings = ref<AppSettings>({ ...defaultSettings });
+
+// 预览播放器状态
+const playerPreviewUrl = ref('');
+const playerPreviewTitle = ref('');
+const previewCheckStatus = ref<'idle' | 'checking' | 'failed'>('idle');
+const previewCheckError = ref('');
+
+const canPreview = computed(() => {
+  if (inputType.value === 'url') return m3u8Url.value.trim().length > 0;
+  // 文件输入：本地 m3u8 没上传到服务器，浏览器无法作为流媒体播放源，不支持预览
+  return false;
+});
+
+/**
+ * 预检 m3u8 是否可从浏览器 fetch 到（跨域探测）
+ *  - 成功 → 弹窗播放
+ *  - 失败 → 不弹窗，在表单下方显示提示条
+ *  - force=true → 跳过预检直接弹窗
+ */
+async function openPreview(force = false) {
+  if (!canPreview.value) return;
+  const url = m3u8Url.value.trim();
+  const title = customFilename.value.trim() || '视频预览';
+
+  if (force) {
+    playerPreviewUrl.value = url;
+    playerPreviewTitle.value = title;
+    document.body.style.overflow = 'hidden';
+    previewCheckStatus.value = 'idle';
+    return;
+  }
+
+  previewCheckStatus.value = 'checking';
+  previewCheckError.value = '';
+
+  try {
+    await fetchM3U8(url);
+    // fetch 成功 = CORS OK 或同源，可以弹
+    playerPreviewUrl.value = url;
+    playerPreviewTitle.value = title;
+    document.body.style.overflow = 'hidden';
+    previewCheckStatus.value = 'idle';
+  } catch (err) {
+    // fetch 失败通常是 CORS，但也可能是链接过期/服务器拒绝
+    const msg = err instanceof Error ? err.message : '未知错误';
+    previewCheckError.value =
+      `浏览器无法访问此 M3U8 源（${msg}）。` +
+      `在线播放需要服务器允许跨域 (CORS)，或安装油猴脚本自动绕过。`;
+    previewCheckStatus.value = 'failed';
+  }
+}
+
+function closePreview() {
+  playerPreviewUrl.value = '';
+  playerPreviewTitle.value = '';
+  document.body.style.overflow = '';
+}
 
 /** 下载完成/失败后发送系统通知（需在设置中开启） */
 async function notifyTask(task: DownloadTask) {
