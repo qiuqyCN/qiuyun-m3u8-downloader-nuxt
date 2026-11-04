@@ -12,7 +12,8 @@ export function parseM3U8(content: string, baseUrl: string): M3U8Playlist {
   };
 
   let currentSegment: Partial<M3U8Segment> = {};
-  let encryption: M3U8Playlist['encryption'];
+  // 局部加密状态：METHOD=NONE 时直接置 undefined，此处永远是 AES-128 才保留
+  let encryption: { method: 'AES-128'; uri?: string; iv?: string } | undefined;
   let mediaSequence = 0;
 
   for (let i = 1; i < lines.length; i++) {
@@ -108,15 +109,19 @@ function hexToBufferLE(hex: string): ArrayBuffer {
 
 function parseAttributes(attrString: string): Record<string, string> {
   const attrs: Record<string, string> = {};
-  const regex = /([A-Z-]+)="([^"]+)"/g;
+  // HLS (RFC 8216) 中属性值有两种形式：
+  //   quoted-string  -> NAME="value"       （URI / CODECS 等，值里可含逗号）
+  //   unquoted       -> NAME=value          （METHOD / BANDWIDTH / RESOLUTION / IV 等）
+  // 匹配优先级：先吃引号包住的内容，否则吃到逗号或空白为止
+  const regex = /([A-Z0-9-]+)=(?:"([^"]*)"|([^,\s]+))/gi;
   let match;
-  
+
   while ((match = regex.exec(attrString)) !== null) {
-    if (match[1] && match[2]) {
-      attrs[match[1]] = match[2];
-    }
+    const name = match[1]!;
+    const value = match[2] !== undefined ? match[2] : match[3];
+    if (value !== undefined) attrs[name] = value;
   }
-  
+
   return attrs;
 }
 
