@@ -256,7 +256,7 @@
             <div class="flex items-center justify-between py-3 border-t border-border">
               <div>
                 <span class="text-sm text-foreground">转为 MP4 格式</span>
-                <p class="text-xs text-muted-foreground">实验性功能，可能不稳定</p>
+                <p class="text-xs text-muted-foreground">TS 无损转封装为 MP4，不重新编码（要求源为 H.264/AAC 等 MP4 兼容编码）</p>
               </div>
               <button
                 @click="convertToMp4 = !convertToMp4"
@@ -421,8 +421,8 @@
                   <span>已下载: {{ task.filename }}</span>
                 </div>
                 <div class="flex items-center justify-between gap-2 mt-1">
-                  <p class="text-xs text-emerald-500/70 truncate" :title="task.dirName">
-                    {{ task.savedToDirectory ? `已保存到所选目录「${task.dirName || '默认'}」` : '文件保存在浏览器默认下载目录' }}
+                  <p class="text-xs text-emerald-500/70 break-all" :title="task.dirName">
+                    {{ task.savedToDirectory ? `已保存到所选目录「${task.dirName || '默认'}」（浏览器安全限制，仅显示目录名）` : '文件保存在浏览器默认下载目录' }}
                   </p>
                 </div>
               </div>
@@ -638,6 +638,8 @@ async function startDownload() {
   let directoryHandle: FileSystemDirectoryHandle | undefined;
   if (streamDownload.value && supportsDirectoryPicker.value) {
     directoryHandle = (await pickSaveDirectory()) || undefined;
+    // 用户取消了目录选择：直接放弃本次下载，不静默回退为浏览器下载
+    if (!directoryHandle) return;
   }
 
   const options: DownloadOptions = {

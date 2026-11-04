@@ -160,9 +160,7 @@
           </div>
           <div class="p-6 space-y-6">
             <div class="flex items-center gap-4">
-              <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
-                <Cloud class="w-8 h-8 text-white" />
-              </div>
+              <img src="/favicon.png" alt="秋云 M3U8 下载器" class="w-16 h-16 rounded-2xl" />
               <div>
                 <h3 class="text-xl font-bold text-foreground">秋云 M3U8 下载器</h3>
                 <p class="text-muted-foreground">版本 {{ appVersion }}</p>
@@ -228,7 +226,6 @@ import {
   Settings,
   Download,
   Info,
-  Cloud,
   Github,
   BookOpen,
   Minus,

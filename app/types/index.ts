@@ -2,7 +2,7 @@ export interface DownloadTask {
   id: string;
   url: string;
   title: string;
-  status: 'pending' | 'parsing' | 'downloading' | 'paused' | 'merging' | 'completed' | 'error';
+  status: 'pending' | 'parsing' | 'downloading' | 'paused' | 'merging' | 'completed' | 'error' | 'cancelled';
   progress: number;
   segments: {
     total: number;

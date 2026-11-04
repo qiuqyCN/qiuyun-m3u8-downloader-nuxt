@@ -4,6 +4,7 @@ import { decryptAES128 } from '~/utils/crypto';
 import { fetchCoverBlob, saveImageBlob } from '~/utils/cover';
 import { createDirectoryWriter, writeBlobToDirectory } from '~/utils/stream-save';
 import type { StreamWriter } from '~/utils/stream-save';
+import { TsToMp4Transmuxer } from '~/utils/ts-to-mp4';
 import { triggerRef } from 'vue';
 
 /** 已被用户取消的任务 id（下载循环据此立即退出） */
@@ -70,7 +71,10 @@ export function useDownloader() {
           (current.bandwidth || 0) > (best.bandwidth || 0) ? current : best
         );
         task.url = bestVariant.url;
-        task.title = `${task.title}_${bestVariant.resolution || 'unknown'}`;
+        // 主播放列表声明了 RESOLUTION 才追加到标题，避免出现 "xxx_unknown"
+        if (bestVariant.resolution) {
+          task.title = `${task.title}_${bestVariant.resolution}`;
+        }
         
         // 重新获取媒体播放列表
         const mediaContent = await fetchM3U8(task.url);
@@ -140,6 +144,20 @@ export function useDownloader() {
     const collected: (ArrayBuffer | null)[] = new Array(segments.length).fill(null);
     let nextWrite = 0;
 
+    // TS → MP4 无损转封装（fMP4 源本身即 MP4，会自动跳过）
+    const wantMp4 = options.convertToMp4 === true;
+    // m3u8 EXTINF 之和 = 精确总时长。mux.js 写出的 init segment 中 mvhd/tkhd/mdhd
+    // duration 恒为 0xFFFFFFFF（≈13 小时），导致文件管理器时长错误、进度条异常，
+    // 这里传入真实时长供转封装器补写
+    const mp4DurationSeconds = wantMp4
+      ? segments.reduce((sum, s) => sum + (s.duration > 0 ? s.duration : 0), 0)
+      : 0;
+    let transmuxer: TsToMp4Transmuxer | null = null;
+    // 流式推迟 flush：每连续 push 2 片 TS 后 flush 一次
+    // 这样 flush 产出里，上一片末帧被当前片首帧 PTS 校正，duration 精确
+    // 当前片末帧仍用 mux.js 分片内平均 duration 估算（偏差 < 1ms/片，累积可忽略）
+    let consecutiveTsPushes = 0;
+
     // 有 init segment 时格式已知，可立即创建目标文件
     if (streamMode && dir && initSegmentData) {
       const { ext } = detectFormat(playlist.initSegment || '', initSegmentData);
@@ -173,28 +191,65 @@ export function useDownloader() {
         const data = pending.get(nextWrite)!;
         pending.delete(nextWrite);
 
-        if (!writer && data.byteLength > 0) {
-          const { ext } = detectFormat(segments[nextWrite]?.url || '', data);
-          try {
-            writer = await createDirectoryWriter(dir, fileBase, ext);
-            activeWriters.set(task.id, writer);
-            console.log(`[M3U8] 流式写入开始: ${writer.filename}`);
-          } catch (error) {
-            // 尚未写入任何数据，可安全回退内存合并
-            console.error('[M3U8] 创建目标文件失败，回退内存合并:', error);
-            streamMode = false;
-            pending.forEach((buf, i) => { collected[i] = buf; });
-            pending.clear();
-            return;
-          }
-        }
+        const isTs = detectFormat(segments[nextWrite]?.url || '', data).ext === 'ts';
+        const doRemux = wantMp4 && isTs && data.byteLength > 0;
 
-        if (writer && data.byteLength > 0) {
-          try {
-            await writer.write(data);
-          } catch (error) {
-            await writer.abort().catch(() => {});
-            throw error;
+        if (doRemux) {
+          // TS→MP4 流式转封装：推迟一片 flush，上一片末帧被当前片首帧校正
+          transmuxer ??= new TsToMp4Transmuxer(mp4DurationSeconds || undefined);
+          transmuxer.pushOnly(data);
+          consecutiveTsPushes++;
+
+          // 累计 2 片才 flush：上一片精确（被当前片首帧校正），当前片用分片内平均估算
+          if (consecutiveTsPushes >= 2) {
+            const chunks = transmuxer.flush();
+            if (chunks.length === 0) {
+              throw new Error('TS 转封装失败：源编码可能不兼容 MP4 容器，请关闭"转为 MP4"后重试');
+            }
+            if (!writer) {
+              writer = await createDirectoryWriter(dir, fileBase, 'mp4');
+              activeWriters.set(task.id, writer);
+              console.log(`[M3U8] 流式转封装写入开始: ${writer.filename}`);
+            }
+            for (const c of chunks) {
+              if (c.byteLength > 0) await writer.write(c);
+            }
+            consecutiveTsPushes = 0;
+          }
+        } else {
+          // 非转封装分支：先 flush 之前缓冲的 TS 转封装数据（如果有）
+          if (transmuxer && consecutiveTsPushes > 0) {
+            const chunks = transmuxer.flush();
+            if (!writer) writer = await createDirectoryWriter(dir, fileBase, 'mp4');
+            for (const c of chunks) {
+              if (c.byteLength > 0) await writer.write(c);
+            }
+            consecutiveTsPushes = 0;
+            transmuxer = null; // 切分支后不再转封装
+          }
+          // fMP4 源 / 未开启转封装：直接按序写盘
+          if (!writer && data.byteLength > 0) {
+            const ext = detectFormat(segments[nextWrite]?.url || '', data).ext;
+            try {
+              writer = await createDirectoryWriter(dir, fileBase, ext);
+              activeWriters.set(task.id, writer);
+              console.log(`[M3U8] 流式写入开始: ${writer.filename}`);
+            } catch (error) {
+              console.error('[M3U8] 创建目标文件失败，回退内存合并:', error);
+              streamMode = false;
+              pending.forEach((buf, i) => { collected[i] = buf; });
+              pending.clear();
+              return;
+            }
+          }
+
+          if (writer && data.byteLength > 0) {
+            try {
+              await writer.write(data);
+            } catch (error) {
+              await writer.abort().catch(() => {});
+              throw error;
+            }
           }
         }
         nextWrite++;
@@ -256,6 +311,23 @@ export function useDownloader() {
 
     await flush();
 
+    // flush 最后残留的转封装数据（比如只积了 1 片没到 flush 阈值）
+    if (streamMode && transmuxer && consecutiveTsPushes > 0) {
+      const chunks = (transmuxer as TsToMp4Transmuxer).flush();
+      if (chunks.length > 0) {
+        if (!writer && dir) {
+          writer = await createDirectoryWriter(dir, fileBase, 'mp4');
+          activeWriters.set(task.id, writer);
+        }
+        if (writer) {
+          for (const c of chunks) {
+            if (c.byteLength > 0) await writer.write(c);
+          }
+        }
+      }
+      consecutiveTsPushes = 0;
+    }
+
     // ========== 流式模式：关闭文件 ==========
     if (streamMode && writer) {
       task.status = 'merging';
@@ -283,14 +355,29 @@ export function useDownloader() {
     if (validSegments.length === 0) throw new Error('没有可合并的分片');
 
     // 如果有 init segment，必须放在最前面
-    const allSegments: ArrayBuffer[] = initSegmentData
-      ? [initSegmentData, ...validSegments]
-      : validSegments;
-
     const formatSource: ArrayBuffer = initSegmentData ?? validSegments[0]!;
     const formatUrl = initSegmentData ? (playlist.initSegment || '') : (segments[0]?.url || '');
-    const { ext, mime } = detectFormat(formatUrl, formatSource);
+    let { ext, mime } = detectFormat(formatUrl, formatSource);
     console.log(`[M3U8] 输出格式: .${ext} (${mime}), init=${!!initSegmentData}`);
+
+    // TS → MP4 转封装（内存模式：全部分片按序推入）
+    let allSegments: ArrayBuffer[] = initSegmentData
+      ? [initSegmentData, ...validSegments]
+      : validSegments;
+    if (wantMp4 && ext === 'ts') {
+      try {
+        const t = new TsToMp4Transmuxer(mp4DurationSeconds || undefined);
+        for (const seg of validSegments) t.pushOnly(seg);
+        const remuxed = t.flush();
+        if (remuxed.length === 0) throw new Error('转封装未产出数据');
+        allSegments = remuxed;
+        ext = 'mp4';
+        mime = 'video/mp4';
+        console.log(`[M3U8] 已转封装为 MP4: ${remuxed.length} 个数据块`);
+      } catch (error) {
+        console.warn('[M3U8] TS 转封装失败（编码可能不兼容 MP4），回退保存原始 TS:', error);
+      }
+    }
 
     task.status = 'merging';
     refresh();
