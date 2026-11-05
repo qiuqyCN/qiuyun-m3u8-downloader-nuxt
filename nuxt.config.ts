@@ -10,7 +10,30 @@ const siteDescription = '免费开源的 M3U8 视频在线下载工具。配合�
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['shadcn-nuxt'],
+  modules: ['shadcn-nuxt', '@nuxtjs/i18n'],
+  i18n: {
+    locales: [
+      // language 用纯语言码，避免同时输出 zh 与 zh-CN 两条重复的 hreflang
+      { code: 'zh', language: 'zh', name: '简体中文', file: 'zh.ts' },
+      { code: 'zh-TW', language: 'zh-TW', name: '繁體中文', file: 'zh-TW.ts' },
+      { code: 'en', language: 'en', name: 'English', file: 'en.ts' },
+      { code: 'es', language: 'es', name: 'Español', file: 'es.ts' },
+      { code: 'pt', language: 'pt', name: 'Português', file: 'pt.ts' },
+      { code: 'ru', language: 'ru', name: 'Русский', file: 'ru.ts' },
+      { code: 'id', language: 'id', name: 'Bahasa Indonesia', file: 'id.ts' },
+      { code: 'vi', language: 'vi', name: 'Tiếng Việt', file: 'vi.ts' },
+      { code: 'ja', language: 'ja', name: '日本語', file: 'ja.ts' },
+      { code: 'ko', language: 'ko', name: '한국어', file: 'ko.ts' },
+      { code: 'de', language: 'de', name: 'Deutsch', file: 'de.ts' },
+      { code: 'fr', language: 'fr', name: 'Français', file: 'fr.ts' },
+    ],
+    defaultLocale: 'zh',
+    // 中文无前缀（/、/play），英文带 /en 前缀（/en、/en/play），URL 全部为 ASCII
+    strategy: 'prefix_except_default',
+    baseUrl: siteUrl,
+    // 关闭自动语言检测与跳转，避免爬虫被重定向到另一语言版本
+    detectBrowserLanguage: false,
+  },
   app: {
     head: {
       htmlAttrs: { lang: 'zh-CN' },

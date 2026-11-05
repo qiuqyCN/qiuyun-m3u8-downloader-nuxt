@@ -2,16 +2,16 @@
   <div>
     <!-- Page Header -->
     <div class="flex items-center gap-4 mb-8">
-      <NuxtLink to="/" class="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors">
+      <NuxtLinkLocale to="/" class="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors">
         <ArrowLeft class="w-5 h-5" />
-      </NuxtLink>
+      </NuxtLinkLocale>
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
           <BookOpen class="w-6 h-6 text-white" />
         </div>
         <div>
-          <h1 class="text-lg font-bold text-foreground">使用文档</h1>
-          <p class="text-xs text-muted-foreground">与 GitHub README 同步</p>
+          <h1 class="text-lg font-bold text-foreground">{{ $t('docs.heading') }}</h1>
+          <p class="text-xs text-muted-foreground">{{ $t('docs.subheading') }}</p>
         </div>
       </div>
       <a
@@ -20,8 +20,8 @@
         rel="noopener"
         class="ml-auto inline-flex items-center gap-2 px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg transition-colors"
       >
-        <Github class="w-3.5 h-3.5" />
-        在 GitHub 查看
+        <LucideGithub class="w-3.5 h-3.5" />
+        {{ $t('docs.githubLink') }}
       </a>
     </div>
 
@@ -35,17 +35,19 @@
 import { marked } from 'marked';
 // 打包时内联 README.md，与 GitHub 仓库内容保持一致，无运行时网络依赖
 import readme from '../../README.md?raw';
-import { ArrowLeft, BookOpen, Github } from 'lucide-vue-next';
+import { ArrowLeft, BookOpen, LucideGithub } from 'lucide-vue-next';
 
 definePageMeta({
   layout: 'default'
 });
 
+const { t } = useI18n();
+
 useSeoMeta({
-  title: '使用文档 - 秋云 M3U8 下载器',
-  description: '秋云 M3U8 下载器完整使用文档：油猴脚本安装、视频自动检测、Docker 与静态部署教程、常见问题。',
-  ogTitle: '使用文档 - 秋云 M3U8 下载器',
-  ogDescription: '秋云 M3U8 下载器完整使用文档：油猴脚本安装、视频自动检测、Docker 与静态部署教程、常见问题。',
+  title: () => t('docs.pageTitle'),
+  description: () => t('docs.description'),
+  ogTitle: () => t('docs.pageTitle'),
+  ogDescription: () => t('docs.description'),
   ogUrl: 'https://m3u8.qiuyun.dev/docs',
 });
 

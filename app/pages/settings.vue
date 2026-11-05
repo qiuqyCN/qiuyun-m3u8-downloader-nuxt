@@ -2,16 +2,16 @@
   <div>
     <!-- Page Header -->
     <div class="flex items-center gap-4 mb-8">
-      <NuxtLink to="/" class="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors">
+      <NuxtLinkLocale to="/" class="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors">
         <ArrowLeft class="w-5 h-5" />
-      </NuxtLink>
+      </NuxtLinkLocale>
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
           <Settings class="w-6 h-6 text-white" />
         </div>
         <div>
-          <h1 class="text-lg font-bold text-foreground">设置</h1>
-          <p class="text-xs text-muted-foreground">自定义下载器行为</p>
+          <h1 class="text-lg font-bold text-foreground">{{ $t('settings.heading') }}</h1>
+          <p class="text-xs text-muted-foreground">{{ $t('settings.subheading') }}</p>
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@
       <div class="lg:col-span-1">
         <div class="bg-card border border-border rounded-2xl overflow-hidden lg:sticky lg:top-24">
           <div class="p-4 border-b border-border">
-            <h2 class="font-semibold text-foreground">设置分类</h2>
+            <h2 class="font-semibold text-foreground">{{ $t('settings.navTitle') }}</h2>
           </div>
           <nav class="p-2">
             <button
@@ -45,13 +45,13 @@
           <div class="p-6 border-b border-border">
             <h2 class="text-lg font-semibold text-foreground flex items-center gap-2">
               <Palette class="w-5 h-5 text-violet-500" />
-              外观设置
+              {{ $t('settings.appearance.title') }}
             </h2>
           </div>
           <div class="p-6 space-y-6">
             <!-- Theme Selection -->
             <div>
-              <label class="block text-sm font-medium text-foreground mb-3">主题模式</label>
+              <label class="block text-sm font-medium text-foreground mb-3">{{ $t('settings.appearance.label') }}</label>
               <div class="grid grid-cols-3 gap-3">
                 <button
                   v-for="t in themeOptions"
@@ -64,7 +64,7 @@
                   <span class="text-sm font-medium">{{ t.label }}</span>
                 </button>
               </div>
-              <p class="text-xs text-muted-foreground mt-3">主题即时生效，无需保存</p>
+              <p class="text-xs text-muted-foreground mt-3">{{ $t('settings.appearance.hint') }}</p>
             </div>
           </div>
         </div>
@@ -74,13 +74,13 @@
           <div class="p-6 border-b border-border">
             <h2 class="text-lg font-semibold text-foreground flex items-center gap-2">
               <Download class="w-5 h-5 text-violet-500" />
-              下载设置
+              {{ $t('settings.download.title') }}
             </h2>
           </div>
           <div class="p-6 space-y-6">
             <!-- Default Segments -->
             <div>
-              <label class="block text-sm font-medium text-foreground mb-2">默认同时请求片段数</label>
+              <label class="block text-sm font-medium text-foreground mb-2">{{ $t('settings.download.concurrentLabel') }}</label>
               <div class="flex items-center gap-2 max-w-[200px]">
                 <button
                   @click="settings.defaultMaxConcurrentSegments = Math.max(1, settings.defaultMaxConcurrentSegments - 1)"
@@ -106,7 +106,7 @@
 
             <!-- Default Retries -->
             <div>
-              <label class="block text-sm font-medium text-foreground mb-2">默认最大重试次数</label>
+              <label class="block text-sm font-medium text-foreground mb-2">{{ $t('settings.download.retriesLabel') }}</label>
               <div class="flex items-center gap-2 max-w-[200px]">
                 <button
                   @click="settings.defaultMaxRetries = Math.max(0, settings.defaultMaxRetries - 1)"
@@ -133,8 +133,8 @@
             <!-- Notification -->
             <div class="flex items-center justify-between pt-6 border-t border-border">
               <div>
-                <span class="text-sm font-medium text-foreground">下载完成通知</span>
-                <p class="text-xs text-muted-foreground mt-0.5">下载完成或失败后显示系统通知（首次会请求浏览器通知权限）</p>
+                <span class="text-sm font-medium text-foreground">{{ $t('settings.download.notifyLabel') }}</span>
+                <p class="text-xs text-muted-foreground mt-0.5">{{ $t('settings.download.notifyDesc') }}</p>
               </div>
               <button
                 @click="settings.enableNotification = !settings.enableNotification"
@@ -155,21 +155,20 @@
           <div class="p-6 border-b border-border">
             <h2 class="text-lg font-semibold text-foreground flex items-center gap-2">
               <Info class="w-5 h-5 text-violet-500" />
-              关于
+              {{ $t('settings.about.title') }}
             </h2>
           </div>
           <div class="p-6 space-y-6">
             <div class="flex items-center gap-4">
-              <img src="/favicon.png" alt="秋云 M3U8 下载器" class="w-16 h-16 rounded-2xl" />
+              <img src="/favicon.png" :alt="$t('settings.about.alt')" class="w-16 h-16 rounded-2xl" />
               <div>
-                <h3 class="text-xl font-bold text-foreground">秋云 M3U8 下载器</h3>
-                <p class="text-muted-foreground">版本 {{ appVersion }}</p>
+                <h3 class="text-xl font-bold text-foreground">{{ $t('settings.about.productName') }}</h3>
+                <p class="text-muted-foreground">{{ $t('settings.about.versionLabel') }} {{ appVersion }}</p>
               </div>
             </div>
 
             <p class="text-muted-foreground text-sm leading-relaxed">
-              一个简洁优雅的 M3U8 视频下载工具，支持自动检测、批量下载、格式转换等功能。
-              采用纯前端架构，配合油猴脚本实现跨域下载，无需服务器，完全免费。
+              {{ $t('settings.about.intro') }}
             </p>
 
             <div class="flex gap-3">
@@ -178,21 +177,21 @@
                 target="_blank"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-muted border border-input rounded-xl text-foreground hover:bg-accent transition-colors"
               >
-                <Github class="w-4 h-4" />
+                <LucideGithub class="w-4 h-4" />
                 GitHub
               </a>
-              <NuxtLink
+              <NuxtLinkLocale
                 to="/docs"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-muted border border-input rounded-xl text-foreground hover:bg-accent transition-colors"
               >
                 <BookOpen class="w-4 h-4" />
-                文档
-              </NuxtLink>
+                {{ $t('settings.about.docsBtn') }}
+              </NuxtLinkLocale>
             </div>
 
             <div class="pt-4 border-t border-border">
               <p class="text-xs text-muted-foreground">
-                © 2026 秋云 M3U8 下载器 · 基于 MIT 协议开源
+                {{ $t('settings.about.copyright', { year: currentYear }) }}
               </p>
             </div>
           </div>
@@ -204,7 +203,7 @@
             @click="saveSettings"
             class="px-6 py-3 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-xl font-medium hover:from-violet-600 hover:to-fuchsia-600 transition-all shadow-lg shadow-violet-500/25"
           >
-            保存设置
+            {{ $t('settings.save') }}
           </button>
         </div>
       </div>
@@ -213,20 +212,20 @@
     <!-- Save Toast -->
     <Transition name="toast">
       <div v-if="showToast" class="fixed bottom-4 right-4 px-4 py-3 bg-emerald-500 text-white rounded-xl shadow-lg z-50">
-        设置已保存
+        {{ $t('settings.savedToast') }}
       </div>
     </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import {
   ArrowLeft,
   Settings,
   Download,
   Info,
-  Github,
+  LucideGithub,
   BookOpen,
   Minus,
   Plus,
@@ -240,6 +239,9 @@ import type { Theme } from '~/composables/useTheme';
 import { defaultSettings, loadSettings, persistSettings } from '~/composables/useSettings';
 import { version as appVersion } from '~~/package.json';
 
+const { t } = useI18n();
+const currentYear = new Date().getFullYear();
+
 // 页面元数据
 definePageMeta({
   layout: 'default'
@@ -247,23 +249,23 @@ definePageMeta({
 
 // 设置页是用户个人配置，不参与收录
 useSeoMeta({
-  title: '设置 - 秋云 M3U8 下载器',
+  title: () => t('settings.pageTitle'),
   robots: 'noindex, nofollow',
 });
 
 const { theme, setTheme } = useTheme();
 
-const themeOptions = [
-  { value: 'light' as Theme, label: '亮色', icon: Sun },
-  { value: 'dark' as Theme, label: '暗色', icon: Moon },
-  { value: 'system' as Theme, label: '跟随系统', icon: Monitor },
-];
+const themeOptions = computed(() => [
+  { value: 'light' as Theme, label: t('settings.appearance.themes.light'), icon: Sun },
+  { value: 'dark' as Theme, label: t('settings.appearance.themes.dark'), icon: Moon },
+  { value: 'system' as Theme, label: t('settings.appearance.themes.system'), icon: Monitor },
+]);
 
-const sections = [
-  { id: 'appearance', name: '外观', icon: Palette },
-  { id: 'download', name: '下载设置', icon: Download },
-  { id: 'about', name: '关于', icon: Info },
-];
+const sections = computed(() => [
+  { id: 'appearance', name: t('settings.sections.appearance'), icon: Palette },
+  { id: 'download', name: t('settings.sections.download'), icon: Download },
+  { id: 'about', name: t('settings.sections.about'), icon: Info },
+]);
 
 const activeSection = ref('appearance');
 
@@ -271,7 +273,7 @@ const activeSection = ref('appearance');
 const route = useRoute();
 function applySectionQuery() {
   const s = route.query.section;
-  if (typeof s === 'string' && sections.some(sec => sec.id === s)) {
+  if (typeof s === 'string' && sections.value.some(sec => sec.id === s)) {
     activeSection.value = s;
   }
 }

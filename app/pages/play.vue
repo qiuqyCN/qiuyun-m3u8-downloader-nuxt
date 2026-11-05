@@ -7,7 +7,7 @@
         class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft class="w-4 h-4" />
-        返回
+        {{ $t('play.back') }}
       </button>
 
       <h1
@@ -24,7 +24,7 @@
         class="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-violet-500 hover:bg-violet-600 text-white rounded-lg transition-colors"
       >
         <Download class="w-4 h-4" />
-        下载
+        {{ $t('play.download') }}
       </a>
       <div v-else class="w-[72px]" />
     </div>
@@ -46,7 +46,7 @@
     <!-- 预检中 -->
     <div v-else-if="url && checkStatus === 'checking'" class="bg-card border border-border rounded-2xl p-12 flex flex-col items-center justify-center gap-4">
       <Loader2 class="w-10 h-10 text-violet-500 animate-spin" />
-      <p class="text-muted-foreground">正在检测 M3U8 源可用性...</p>
+      <p class="text-muted-foreground">{{ $t('play.checking') }}</p>
       <p class="text-xs text-muted-foreground/70 break-all max-w-md text-center" :title="url">{{ url }}</p>
     </div>
 
@@ -57,7 +57,7 @@
           <ShieldAlert class="w-8 h-8 text-amber-500" />
         </div>
         <div class="space-y-2">
-          <h2 class="text-lg font-semibold text-foreground">此 M3U8 源无法在线预览</h2>
+          <h2 class="text-lg font-semibold text-foreground">{{ $t('play.corsBlocked') }}</h2>
           <p class="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
             {{ checkError }}
           </p>
@@ -68,25 +68,25 @@
             class="inline-flex items-center gap-2 px-4 py-2 bg-muted hover:bg-border text-foreground text-sm rounded-lg transition-colors"
           >
             <RefreshCw class="w-4 h-4" />
-            重新检测
+            {{ $t('play.retry') }}
           </button>
           <button
             @click="forcePlay"
             class="inline-flex items-center gap-2 px-4 py-2 bg-background border border-input hover:bg-muted text-foreground text-sm rounded-lg transition-colors"
           >
             <Play class="w-4 h-4" />
-            仍然尝试播放
+            {{ $t('play.stillTry') }}
           </button>
           <a
             :href="downloadUrl"
             class="inline-flex items-center gap-2 px-4 py-2 bg-violet-500 hover:bg-violet-600 text-white text-sm rounded-lg transition-colors"
           >
             <Download class="w-4 h-4" />
-            直接下载
+            {{ $t('play.directDownload') }}
           </a>
         </div>
         <p class="text-xs text-muted-foreground/70 pt-2">
-          💡 安装 <a href="https://www.tampermonkey.net/" target="_blank" class="text-violet-500 hover:text-violet-600 underline">油猴脚本</a> 可自动绕过跨域限制
+          {{ $t('play.tmHint') }}
         </p>
       </div>
       <div class="px-5 py-3 border-t border-border bg-muted/30">
@@ -99,9 +99,9 @@
       <div class="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
         <Play class="w-7 h-7 text-muted-foreground" />
       </div>
-      <p class="text-foreground font-medium mb-1">请粘贴 M3U8 链接</p>
+      <p class="text-foreground font-medium mb-1">{{ $t('play.enterUrl') }}</p>
       <p class="text-muted-foreground text-sm mb-4">
-        或者直接访问 <span class="font-mono text-violet-500">/play?url=你的M3U8链接&title=标题</span>
+        {{ $t('play.enterUrlSub') }}
       </p>
       <div class="max-w-xl mx-auto space-y-3">
         <textarea
@@ -117,7 +117,7 @@
         >
           <Loader2 v-if="checkStatus === 'checking'" class="w-5 h-5 animate-spin" />
           <Play v-else class="w-5 h-5" />
-          {{ checkStatus === 'checking' ? '检测中...' : '开始播放' }}
+          {{ checkStatus === 'checking' ? $t('play.checking') : $t('play.startPlay') }}
         </button>
       </div>
     </div>
@@ -133,7 +133,20 @@ definePageMeta({ layout: 'default' });
 
 const route = useRoute();
 const router = useRouter();
+const localePath = useLocalePath();
 const { fetchM3U8 } = useTampermonkey();
+const { t } = useI18n();
+
+const SITE_URL = 'https://m3u8.qiuyun.dev';
+
+// 页面级 SEO 元数据（跟随当前语言）
+useSeoMeta({
+  title: () => t('play.seoTitle'),
+  description: () => t('play.seoDescription'),
+  ogTitle: () => t('play.seoTitle'),
+  ogDescription: () => t('play.seoDescription'),
+  ogUrl: () => `${SITE_URL}${localePath('/play')}`,
+});
 
 const url = ref('');
 const title = ref('');
@@ -143,27 +156,26 @@ const checkError = ref('');
 
 /** 内置示例：支持 CORS 的 Mux 官方测试流 */
 const DEMO_URL = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
-const DEMO_TITLE = 'Mux 官方测试流（支持跨域）';
 
 const downloadUrl = computed(() => {
   if (!url.value) return '#';
   const params = new URLSearchParams();
   params.set('url', url.value);
   if (title.value) params.set('title', title.value);
-  return `/?${params.toString()}`;
+  return `${localePath('/')}?${params.toString()}`;
 });
 
 function gotoDownload(src: string) {
   const params = new URLSearchParams();
   params.set('url', src);
   if (title.value) params.set('title', title.value);
-  router.push({ path: '/', query: Object.fromEntries(params.entries()) });
+  router.push({ path: localePath('/'), query: Object.fromEntries(params.entries()) });
 }
 
 function playManual() {
   const u = manualUrl.value.trim();
   if (!u) return;
-  router.push({ path: '/play', query: { url: u, title: title.value || undefined } });
+  router.push({ path: localePath('/play'), query: { url: u, title: title.value || undefined } });
 }
 
 async function doCheck(targetUrl: string) {
@@ -173,10 +185,8 @@ async function doCheck(targetUrl: string) {
     await fetchM3U8(targetUrl);
     checkStatus.value = 'ok';
   } catch (err) {
-    const msg = err instanceof Error ? err.message : '未知错误';
-    checkError.value =
-      `浏览器无法访问此 M3U8 源（${msg}）。` +
-      `在线播放需要服务器允许跨域 (CORS)，或安装油猴脚本自动绕过。`;
+    const msg = err instanceof Error ? err.message : 'Unknown error';
+    checkError.value = t('play.corsTip') + ` (${msg})`;
     checkStatus.value = 'failed';
   }
 }
@@ -186,7 +196,6 @@ function retryCheck() {
 }
 
 function forcePlay() {
-  // 跳过预检直接渲染播放器（Safari 原生 HLS 有时能播）
   checkStatus.value = 'ok';
 }
 
@@ -194,17 +203,14 @@ onMounted(() => {
   const urlParam = route.query.url as string;
   const titleParam = route.query.title as string;
   if (urlParam) {
-    // 带 URL 参数 → 直接预检并播放
     url.value = urlParam;
     title.value = titleParam || '';
     doCheck(url.value);
   } else {
-    // 无参数 → 输入框预填示例 URL，标题留空，等用户手动点播放
     manualUrl.value = DEMO_URL;
   }
 });
 
-// URL 变化时重新预检
 watch(
   () => route.query.url as string,
   (newUrl) => {

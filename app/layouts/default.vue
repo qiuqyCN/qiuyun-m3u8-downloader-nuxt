@@ -5,39 +5,55 @@
       <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
         <!-- 左：Logo + Tab 导航（紧凑一组） -->
         <div class="flex items-center gap-6 min-w-0">
-          <NuxtLink to="/" class="flex items-center gap-3">
-            <img src="/favicon.png" alt="秋云 M3U8 下载器" class="w-10 h-10 rounded-xl" />
+          <NuxtLinkLocale to="/" class="flex items-center gap-3">
+            <img src="/favicon.png" :alt="$t('brand.name')" class="w-10 h-10 rounded-xl" />
             <div>
-              <h1 class="text-lg font-bold text-foreground leading-tight">秋云 M3U8 下载器</h1>
-              <p class="text-xs text-muted-foreground leading-tight">简洁 · 高效 · 免费</p>
+              <h1 class="text-lg font-bold text-foreground leading-tight">{{ $t('brand.name') }}</h1>
+              <p class="text-xs text-muted-foreground leading-tight">{{ $t('brand.tagline') }}</p>
             </div>
-          </NuxtLink>
+          </NuxtLinkLocale>
 
           <nav class="hidden md:flex items-center gap-1">
-            <NuxtLink
+            <NuxtLinkLocale
               to="/"
               class="px-3 py-2 text-sm font-medium rounded-lg transition-colors"
-              :class="$route.path === '/' ? 'text-violet-500 bg-violet-500/10' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
+              :class="isActive('/') ? 'text-violet-500 bg-violet-500/10' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
             >
-              下载
-            </NuxtLink>
-            <NuxtLink
+              {{ $t('nav.download') }}
+            </NuxtLinkLocale>
+            <NuxtLinkLocale
               to="/play"
               class="px-3 py-2 text-sm font-medium rounded-lg transition-colors"
-              :class="$route.path === '/play' ? 'text-violet-500 bg-violet-500/10' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
+              :class="isActive('/play') ? 'text-violet-500 bg-violet-500/10' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
             >
-              在线播放
-            </NuxtLink>
+              {{ $t('nav.play') }}
+            </NuxtLinkLocale>
           </nav>
         </div>
 
-        <!-- 右：图标按钮组 -->
+        <!-- 右：图标按钮组 + 语言切换 -->
         <div class="flex items-center gap-2">
+          <!-- Language Switcher -->
+          <select
+            :value="locale"
+            @change="onLocaleChange"
+            class="px-2 py-1 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors bg-transparent cursor-pointer focus:outline-none"
+            aria-label="Language"
+          >
+            <option
+              v-for="l in localeOptions"
+              :key="l.code"
+              :value="l.code"
+              class="bg-card text-foreground"
+            >
+              {{ l.name }}
+            </option>
+          </select>
           <!-- Theme Toggle -->
           <button
             @click="toggleTheme"
             class="p-2 text-muted-foreground hover:text-foreground transition-colors"
-            :title="isDark ? '切换到亮色模式' : '切换到暗色模式'"
+            :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
           >
             <Sun v-if="isDark" class="w-5 h-5" />
             <Moon v-else class="w-5 h-5" />
@@ -47,15 +63,15 @@
             target="_blank"
             class="p-2 text-muted-foreground hover:text-foreground transition-colors"
           >
-            <GithubIcon class="w-5 h-5" />
+            <LucideGithub class="w-5 h-5" />
           </a>
-          <NuxtLink 
-            to="/settings" 
+          <NuxtLinkLocale
+            to="/settings"
             class="p-2 text-muted-foreground hover:text-foreground transition-colors"
-            :class="{ 'text-violet-500': $route.path === '/settings' }"
+            :class="{ 'text-violet-500': isActive('/settings') }"
           >
             <Settings class="w-5 h-5" />
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
       </div>
     </header>
@@ -69,20 +85,51 @@
     <footer class="border-t border-border">
       <div class="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
         <p class="text-muted-foreground text-sm">
-          © 2026 秋云 M3U8 下载器 · 免费开源
+          {{ $t('footer.copyright', { year: currentYear }) }}
         </p>
         <div class="flex items-center gap-4">
-          <NuxtLink to="/docs" class="text-muted-foreground hover:text-foreground text-sm transition-colors">文档</NuxtLink>
-          <a href="https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues" target="_blank" rel="noopener" class="text-muted-foreground hover:text-foreground text-sm transition-colors">反馈</a>
-          <NuxtLink to="/settings?section=about" class="text-muted-foreground hover:text-foreground text-sm transition-colors">关于</NuxtLink>
+          <NuxtLinkLocale to="/docs" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.docs') }}</NuxtLinkLocale>
+          <a href="https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues" target="_blank" rel="noopener" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.feedback') }}</a>
+          <NuxtLink :to="{ path: localePath('/settings'), query: { section: 'about' } }" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.about') }}</NuxtLink>
         </div>
       </div>
     </footer>
   </div>
 </template>
 
-<script setup>
-import { GithubIcon, Settings, Sun, Moon } from 'lucide-vue-next';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { LucideGithub, Settings, Sun, Moon } from 'lucide-vue-next';
 
 const { isDark, toggleTheme } = useTheme();
+const { locale, locales } = useI18n({ useScope: 'global' });
+const route = useRoute();
+const router = useRouter();
+const localePath = useLocalePath();
+const switchLocalePath = useSwitchLocalePath();
+
+const isActive = (path: string) => route.path === localePath(path);
+
+// 版权年份随构建时间更新，避免写死
+const currentYear = new Date().getFullYear();
+
+const localeOptions = computed(() =>
+  (locales.value as Array<{ code: string; name?: string }>).map((l) => ({
+    code: l.code,
+    name: l.name || l.code,
+  }))
+);
+
+function onLocaleChange(e: Event) {
+  const code = (e.target as HTMLSelectElement).value as typeof locale.value;
+  router.push(switchLocalePath(code));
+}
+
+// 按当前语言输出 <html lang>、canonical 与 hreflang alternate
+const localeHead = useLocaleHead({ dir: false, lang: true, seo: true });
+useHead(() => ({
+  htmlAttrs: localeHead.value.htmlAttrs,
+  link: localeHead.value.link,
+  meta: localeHead.value.meta,
+}));
 </script>

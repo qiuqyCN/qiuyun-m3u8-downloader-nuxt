@@ -4,44 +4,44 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
       <div class="bg-card border border-border rounded-2xl p-5">
         <div class="flex items-center justify-between mb-3">
-          <span class="text-muted-foreground text-sm">下载任务</span>
+          <span class="text-muted-foreground text-sm">{{ $t('home.stats.tasks') }}</span>
           <div class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
             <Download class="w-4 h-4 text-violet-500" />
           </div>
         </div>
         <div class="text-2xl font-bold text-foreground">{{ tasks.length }}</div>
         <div class="text-xs text-muted-foreground mt-1">
-          {{ tasks.filter(t => t.status === 'completed').length }} 已完成
+          {{ tasks.filter(t => t.status === 'completed').length }} {{ $t('home.stats.completed') }}
         </div>
       </div>
 
       <div class="bg-card border border-border rounded-2xl p-5">
         <div class="flex items-center justify-between mb-3">
-          <span class="text-muted-foreground text-sm">油猴脚本</span>
+          <span class="text-muted-foreground text-sm">{{ $t('home.stats.tm') }}</span>
           <div class="w-8 h-8 rounded-lg flex items-center justify-center" :class="isTampermonkeyAvailable ? 'bg-emerald-500/10' : 'bg-amber-500/10'">
             <Shield class="w-4 h-4" :class="isTampermonkeyAvailable ? 'text-emerald-500' : 'text-amber-500'" />
           </div>
         </div>
         <div class="text-2xl font-bold" :class="isTampermonkeyAvailable ? 'text-emerald-500' : 'text-amber-500'">
-          {{ isTampermonkeyAvailable ? '已安装' : '未安装' }}
+          {{ isTampermonkeyAvailable ? $t('home.stats.installed') : $t('home.stats.notInstalled') }}
         </div>
         <div class="text-xs text-muted-foreground mt-1">
-          {{ isTampermonkeyAvailable ? '可自动检测 M3U8' : '建议安装以获得最佳体验' }}
+          {{ isTampermonkeyAvailable ? $t('home.stats.tmInstalledTip') : $t('home.stats.tmNotInstalledTip') }}
         </div>
       </div>
 
       <div class="bg-card border border-border rounded-2xl p-5">
         <div class="flex items-center justify-between mb-3">
-          <span class="text-muted-foreground text-sm">当前状态</span>
+          <span class="text-muted-foreground text-sm">{{ $t('home.stats.currentStatus') }}</span>
           <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
             <Activity class="w-4 h-4 text-blue-500" />
           </div>
         </div>
         <div class="text-2xl font-bold text-foreground">
-          {{ isDownloading ? '下载中' : '就绪' }}
+          {{ isDownloading ? $t('home.stats.downloading') : $t('home.stats.ready') }}
         </div>
         <div class="text-xs text-muted-foreground mt-1">
-          {{ currentTask ? currentTask.progress + '%' : '等待开始' }}
+          {{ currentTask ? currentTask.progress + '%' : $t('home.stats.waiting') }}
         </div>
       </div>
     </div>
@@ -53,9 +53,9 @@
           <Zap class="w-6 h-6 text-amber-500" />
         </div>
         <div class="flex-1">
-          <h3 class="text-foreground font-semibold mb-1">安装油猴脚本，体验自动检测</h3>
+          <h3 class="text-foreground font-semibold mb-1">{{ $t('home.tmBanner.title') }}</h3>
           <p class="text-muted-foreground text-sm mb-4">
-            油猴脚本可以自动检测网页中的 M3U8 视频链接，并绕过跨域限制，让下载更加便捷。
+            {{ $t('home.tmBanner.desc') }}
           </p>
           <div class="flex gap-3">
             <a 
@@ -64,7 +64,7 @@
               class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-amber-950 text-sm font-medium rounded-lg transition-colors"
             >
               <Download class="w-4 h-4" />
-              安装油猴
+              {{ $t('home.tmBanner.installBtn') }}
             </a>
           </div>
         </div>
@@ -77,7 +77,7 @@
         <div class="p-6 border-b border-border">
           <h2 class="text-lg font-semibold text-foreground flex items-center gap-2">
             <Link class="w-5 h-5 text-violet-500" />
-            新建下载
+            {{ $t('home.form.title') }}
           </h2>
         </div>
         
@@ -90,7 +90,7 @@
               :class="inputType === 'url' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'"
             >
               <Link class="w-4 h-4 inline-block mr-1" />
-              链接
+              {{ $t('home.form.linkTab') }}
             </button>
             <button
               @click="inputType = 'file'"
@@ -98,18 +98,18 @@
               :class="inputType === 'file' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'"
             >
               <FileText class="w-4 h-4 inline-block mr-1" />
-              文件
+              {{ $t('home.form.fileTab') }}
             </button>
           </div>
 
           <!-- URL Input -->
           <div v-if="inputType === 'url'">
-            <label class="block text-sm font-medium text-muted-foreground mb-2">M3U8 链接</label>
+            <label class="block text-sm font-medium text-muted-foreground mb-2">{{ $t('home.form.urlLabel') }}</label>
             <div class="relative">
               <textarea
                 v-model="m3u8Url"
                 rows="4"
-                placeholder="粘贴 M3U8 链接到此处...&#10;支持 http:// 或 https:// 开头的链接"
+                :placeholder="$t('home.form.urlPlaceholder')"
                 class="w-full px-4 py-3 bg-background border border-input rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all resize-none font-mono text-sm"
               />
               <button
@@ -124,7 +124,7 @@
 
           <!-- File Input -->
           <div v-else>
-            <label class="block text-sm font-medium text-muted-foreground mb-2">M3U8 文件</label>
+            <label class="block text-sm font-medium text-muted-foreground mb-2">{{ $t('home.form.fileLabel') }}</label>
             <div 
               class="border-2 border-dashed border-input rounded-xl p-8 text-center hover:border-violet-500 transition-colors cursor-pointer bg-background"
               @click="fileInput?.click()"
@@ -141,23 +141,23 @@
               <div class="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
                 <Upload class="w-8 h-8 text-muted-foreground" />
               </div>
-              <p class="text-foreground font-medium mb-1">点击选择或拖拽文件到此处</p>
-              <p class="text-muted-foreground text-sm">支持 .m3u8 格式文件</p>
+              <p class="text-foreground font-medium mb-1">{{ $t('home.form.fileDropHint') }}</p>
+              <p class="text-muted-foreground text-sm">{{ $t('home.form.fileDropSub') }}</p>
             </div>
           </div>
 
           <!-- File Name Input -->
           <div>
-            <label class="block text-sm font-medium text-muted-foreground mb-2">文件名称 <span class="text-red-500">*</span></label>
+            <label class="block text-sm font-medium text-muted-foreground mb-2">{{ $t('home.form.nameLabel') }} <span class="text-red-500">{{ $t('home.form.nameRequired') }}</span></label>
             <input
               v-model="customFilename"
               type="text"
-              placeholder="必填，例如：视频标题_20261030"
+              :placeholder="$t('home.form.namePlaceholder')"
               class="w-full px-4 py-3 bg-background border rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all text-sm"
               :class="nameError ? 'border-red-500/60' : 'border-input'"
               @input="nameError = false"
             />
-            <p v-if="nameError" class="mt-2 text-xs text-red-500">请填写文件名称后再开始下载</p>
+            <p v-if="nameError" class="mt-2 text-xs text-red-500">{{ $t('home.form.nameError') }}</p>
           </div>
 
           <!-- Options Toggle -->
@@ -167,7 +167,7 @@
               class="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <SlidersHorizontal class="w-4 h-4" />
-              高级选项
+              {{ $t('home.form.advanced') }}
               <ChevronDown class="w-4 h-4 transition-transform" :class="showOptions ? 'rotate-180' : ''" />
             </button>
           </div>
@@ -176,7 +176,7 @@
           <div v-show="showOptions" class="space-y-4 pt-4 border-t border-border">
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-medium text-muted-foreground mb-2">同时请求片段数</label>
+                <label class="block text-xs font-medium text-muted-foreground mb-2">{{ $t('home.form.concurrent') }}</label>
                 <div class="flex items-center gap-2">
                   <button 
                     @click="maxConcurrentSegments = Math.max(1, maxConcurrentSegments - 1)"
@@ -201,7 +201,7 @@
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-muted-foreground mb-2">最大重试次数</label>
+                <label class="block text-xs font-medium text-muted-foreground mb-2">{{ $t('home.form.retries') }}</label>
                 <div class="flex items-center gap-2">
                   <button 
                     @click="maxRetries = Math.max(0, maxRetries - 1)"
@@ -228,7 +228,7 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-medium text-muted-foreground mb-2">开始片段序号</label>
+                <label class="block text-xs font-medium text-muted-foreground mb-2">{{ $t('home.form.startSegment') }}</label>
                 <div class="flex items-center gap-2">
                   <button 
                     @click="startSegmentIndex = Math.max(0, startSegmentIndex - 1)"
@@ -249,14 +249,14 @@
                     <Plus class="w-4 h-4" />
                   </button>
                 </div>
-                <p class="mt-1.5 text-xs text-muted-foreground">第一个片段序号为 0</p>
+                <p class="mt-1.5 text-xs text-muted-foreground">{{ $t('home.form.startSegmentHint') }}</p>
               </div>
             </div>
 
             <div class="flex items-center justify-between py-3 border-t border-border">
               <div>
-                <span class="text-sm text-foreground">转为 MP4 格式</span>
-                <p class="text-xs text-muted-foreground">TS 无损转封装为 MP4，不重新编码（要求源为 H.264/AAC 等 MP4 兼容编码）</p>
+                <span class="text-sm text-foreground">{{ $t('home.form.toMp4') }}</span>
+                <p class="text-xs text-muted-foreground">{{ $t('home.form.toMp4Desc') }}</p>
               </div>
               <button
                 @click="convertToMp4 = !convertToMp4"
@@ -272,9 +272,9 @@
 
             <div class="flex items-center justify-between py-3 border-t border-border">
               <div>
-                <span class="text-sm text-foreground">同时下载封面</span>
+                <span class="text-sm text-foreground">{{ $t('home.form.downloadCover') }}</span>
                 <p class="text-xs text-muted-foreground">
-                  {{ coverUrl ? '已从视频页面获取封面' : '未获取到封面，将跳过' }}
+                  {{ coverUrl ? $t('home.form.coverGot') : $t('home.form.coverNotGot') }}
                 </p>
               </div>
               <button
@@ -291,8 +291,8 @@
 
             <div v-if="supportsDirectoryPicker" class="flex items-center justify-between py-3 border-t border-border">
               <div>
-                <span class="text-sm text-foreground">流式下载（选择保存目录）</span>
-                <p class="text-xs text-muted-foreground">边下边写，大文件不占内存；视频与封面同目录</p>
+                <span class="text-sm text-foreground">{{ $t('home.form.streamDownload') }}</span>
+                <p class="text-xs text-muted-foreground">{{ $t('home.form.streamDownloadDesc') }}</p>
               </div>
               <button
                 @click="streamDownload = !streamDownload"
@@ -316,17 +316,17 @@
             >
               <Loader2 v-if="isDownloading" class="w-5 h-5 animate-spin" />
               <Download v-else class="w-5 h-5" />
-              {{ isDownloading ? '下载中...' : '开始下载' }}
+              {{ isDownloading ? $t('home.form.startDownloading') : $t('home.form.startDownload') }}
             </button>
             <button
               @click="() => openPreview()"
               :disabled="!canPreview || previewCheckStatus === 'checking'"
               class="py-3.5 px-4 bg-background border border-input text-foreground rounded-xl font-medium hover:bg-muted transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              title="在线预览 M3U8 视频"
+              :title="$t('home.form.previewTitle')"
             >
               <Loader2 v-if="previewCheckStatus === 'checking'" class="w-5 h-5 animate-spin" />
               <Play v-else class="w-5 h-5" />
-              {{ previewCheckStatus === 'checking' ? '检测中...' : '预览' }}
+              {{ previewCheckStatus === 'checking' ? $t('home.form.previewChecking') : $t('home.form.preview') }}
             </button>
           </div>
 
@@ -338,7 +338,7 @@
             <div class="flex items-start gap-2.5">
               <ShieldAlert class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
               <div class="text-sm leading-relaxed">
-                <p class="font-medium text-amber-500 mb-1">此 M3U8 源无法在线预览</p>
+                <p class="font-medium text-amber-500 mb-1">{{ $t('home.previewBlocked.title') }}</p>
                 <p class="text-muted-foreground">
                   {{ previewCheckError }}
                 </p>
@@ -350,20 +350,20 @@
                 class="px-3 py-1.5 bg-muted hover:bg-border text-foreground rounded-lg transition-colors inline-flex items-center gap-1.5"
               >
                 <Play class="w-3.5 h-3.5" />
-                仍然尝试预览
+                {{ $t('home.previewBlocked.tryAnyway') }}
               </button>
               <button
                 @click="previewCheckStatus = 'idle'"
                 class="px-3 py-1.5 text-muted-foreground hover:text-foreground transition-colors"
               >
-                忽略
+                {{ $t('home.previewBlocked.dismiss') }}
               </button>
               <a
                 href="https://www.tampermonkey.net/"
                 target="_blank"
                 class="ml-auto text-amber-500 hover:text-amber-600 transition-colors inline-flex items-center gap-1"
               >
-                安装油猴脚本自动绕过跨域
+                {{ $t('home.previewBlocked.installTm') }}
                 <ArrowUpRight class="w-3 h-3" />
               </a>
             </div>
@@ -376,14 +376,14 @@
         <div class="p-6 border-b border-border flex items-center justify-between">
           <h2 class="text-lg font-semibold text-foreground flex items-center gap-2">
             <List class="w-5 h-5 text-violet-500" />
-            下载任务
+            {{ $t('home.tasks.title') }}
           </h2>
           <button
             v-if="tasks.length > 0"
             @click="clearCompleted"
             class="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            清除已完成
+            {{ $t('home.tasks.clearCompleted') }}
           </button>
         </div>
 
@@ -392,8 +392,8 @@
             <div class="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
               <Inbox class="w-8 h-8 text-muted-foreground" />
             </div>
-            <p class="text-muted-foreground font-medium mb-1">暂无下载任务</p>
-            <p class="text-muted-foreground/70 text-sm">粘贴 M3U8 链接开始下载</p>
+            <p class="text-muted-foreground font-medium mb-1">{{ $t('home.tasks.empty') }}</p>
+            <p class="text-muted-foreground/70 text-sm">{{ $t('home.tasks.emptySub') }}</p>
           </div>
 
           <div v-else class="space-y-3 max-h-[500px] overflow-y-auto pr-2">
@@ -408,7 +408,7 @@
                     <img
                       v-if="task.coverUrl && !task.coverPreviewFailed"
                       :src="task.coverUrl"
-                      alt="封面"
+                      :alt="$t('home.tasks.coverAlt')"
                       class="w-10 h-10 object-cover cursor-zoom-in"
                       referrerpolicy="no-referrer"
                       @click="previewImage = task.coverUrl || null"
@@ -441,15 +441,15 @@
               <!-- Progress -->
               <div v-if="task.status === 'downloading' || task.status === 'merging' || task.status === 'parsing'" class="space-y-2">
                 <div v-if="task.status === 'parsing'" class="text-xs text-muted-foreground animate-pulse">
-                  正在解析 M3U8 播放列表...
+                  {{ $t('home.tasks.parsing') }}
                 </div>
                 <div v-else-if="task.status === 'merging'" class="text-xs text-muted-foreground animate-pulse">
-                  正在合并 {{ task.segments.downloaded }} 个分片...
+                  {{ $t('home.tasks.merging', { count: task.segments.downloaded }) }}
                 </div>
                 <template v-else>
                   <div class="flex items-center justify-between text-xs">
                     <span class="text-muted-foreground font-medium">{{ task.progress }}%</span>
-                    <span class="text-muted-foreground/70">{{ task.segments.downloaded }}/{{ task.segments.total }} 分片</span>
+                    <span class="text-muted-foreground/70">{{ $t('home.tasks.segments', { downloaded: task.segments.downloaded, total: task.segments.total }) }}</span>
                   </div>
                   <div class="h-2 bg-muted rounded-full overflow-hidden">
                     <div 
@@ -469,11 +469,11 @@
               <div v-if="task.status === 'completed' && task.filename" class="mt-2 text-sm text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-3 py-2">
                 <div class="flex items-center gap-2">
                   <CheckCircle class="w-4 h-4" />
-                  <span>已下载: {{ task.filename }}</span>
+                  <span>{{ $t('home.tasks.completed', { filename: task.filename }) }}</span>
                 </div>
                 <div class="flex items-center justify-between gap-2 mt-1">
                   <p class="text-xs text-emerald-500/70 break-all" :title="task.dirName">
-                    {{ task.savedToDirectory ? `已保存到所选目录「${task.dirName || '默认'}」（浏览器安全限制，仅显示目录名）` : '文件保存在浏览器默认下载目录' }}
+                    {{ task.savedToDirectory ? $t('home.tasks.savedChosen', { dir: task.dirName || $t('home.tasks.defaultDir') }) : $t('home.tasks.savedDefault') }}
                   </p>
                 </div>
               </div>
@@ -484,7 +484,7 @@
                   @click="resumeTask(task)"
                   class="px-3 py-1.5 bg-violet-500 hover:bg-violet-600 text-white text-xs font-medium rounded-lg transition-colors"
                 >
-                  继续下载
+                  {{ $t('home.tasks.resume') }}
                 </button>
               </div>
             </div>
@@ -498,9 +498,9 @@
       <div class="p-6 border-b border-border">
         <h2 class="text-lg font-semibold text-foreground flex items-center gap-2">
           <Rocket class="w-5 h-5 text-violet-500" />
-          快速开始
+          {{ $t('home.quickStart.title') }}
         </h2>
-        <p class="text-sm text-muted-foreground mt-1">第一次使用？按下面 4 步操作即可。</p>
+        <p class="text-sm text-muted-foreground mt-1">{{ $t('home.quickStart.subtitle') }}</p>
       </div>
       <div class="p-6">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -509,11 +509,11 @@
             <div class="w-8 h-8 rounded-full bg-violet-500 text-white text-sm font-bold flex items-center justify-center mb-3">1</div>
             <h3 class="text-sm font-semibold text-foreground mb-1.5 flex items-center gap-1.5">
               <Puzzle class="w-4 h-4 text-violet-500" />
-              安装 Tampermonkey
+              {{ $t('home.quickStart.step1Title') }}
             </h3>
-            <p class="text-xs text-muted-foreground leading-relaxed mb-2.5">浏览器扩展，用于运行检测脚本。Chrome / Edge / Firefox 商店均可安装。</p>
+            <p class="text-xs text-muted-foreground leading-relaxed mb-2.5">{{ $t('home.quickStart.step1Desc') }}</p>
             <a href="https://www.tampermonkey.net/" target="_blank" class="inline-flex items-center gap-1 text-xs text-violet-500 hover:text-violet-600 font-medium">
-              前往官网 <ArrowUpRight class="w-3 h-3" />
+              {{ $t('home.quickStart.step1Link') }} <ArrowUpRight class="w-3 h-3" />
             </a>
           </div>
           <!-- Step 2 -->
@@ -521,11 +521,11 @@
             <div class="w-8 h-8 rounded-full bg-violet-500 text-white text-sm font-bold flex items-center justify-center mb-3">2</div>
             <h3 class="text-sm font-semibold text-foreground mb-1.5 flex items-center gap-1.5">
               <FileCode class="w-4 h-4 text-violet-500" />
-              安装油猴脚本
+              {{ $t('home.quickStart.step2Title') }}
             </h3>
-            <p class="text-xs text-muted-foreground leading-relaxed mb-2.5">「秋云 M3U8 下载助手」，负责在视频页自动检测并跳转到这里。</p>
+            <p class="text-xs text-muted-foreground leading-relaxed mb-2.5">{{ $t('home.quickStart.step2Desc') }}</p>
             <a href="https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js" target="_blank" class="inline-flex items-center gap-1 text-xs text-violet-500 hover:text-violet-600 font-medium">
-              GreasyFork 一键安装 <ArrowUpRight class="w-3 h-3" />
+              {{ $t('home.quickStart.step2Link') }} <ArrowUpRight class="w-3 h-3" />
             </a>
           </div>
           <!-- Step 3 -->
@@ -533,25 +533,25 @@
             <div class="w-8 h-8 rounded-full bg-violet-500 text-white text-sm font-bold flex items-center justify-center mb-3">3</div>
             <h3 class="text-sm font-semibold text-foreground mb-1.5 flex items-center gap-1.5">
               <MonitorPlay class="w-4 h-4 text-violet-500" />
-              打开视频页面
+              {{ $t('home.quickStart.step3Title') }}
             </h3>
-            <p class="text-xs text-muted-foreground leading-relaxed">页面右侧会出现悬浮按钮，数字角标表示检测到的视频数。点击按钮，选择清晰度后点「下载」。</p>
+            <p class="text-xs text-muted-foreground leading-relaxed">{{ $t('home.quickStart.step3Desc') }}</p>
           </div>
           <!-- Step 4 -->
           <div class="relative bg-muted/40 border border-border rounded-xl p-4">
             <div class="w-8 h-8 rounded-full bg-violet-500 text-white text-sm font-bold flex items-center justify-center mb-3">4</div>
             <h3 class="text-sm font-semibold text-foreground mb-1.5 flex items-center gap-1.5">
               <Download class="w-4 h-4 text-violet-500" />
-              回到本页下载
+              {{ $t('home.quickStart.step4Title') }}
             </h3>
-            <p class="text-xs text-muted-foreground leading-relaxed">链接、标题、封面已自动填好，确认文件名称后点击上方「开始下载」即可。</p>
+            <p class="text-xs text-muted-foreground leading-relaxed">{{ $t('home.quickStart.step4Desc') }}</p>
           </div>
         </div>
         <!-- 手动模式提示 -->
         <div class="mt-4 flex items-start gap-2.5 bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
           <ClipboardPaste class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
           <p class="text-xs text-muted-foreground leading-relaxed">
-            <span class="text-foreground font-medium">没装脚本也能用：</span>直接把 M3U8 链接粘贴到上方「M3U8 链接」输入框，填写文件名称后开始下载。脚本的作用是自动检测和绕过部分网站的跨域限制。
+            <span class="text-foreground font-medium">{{ $t('home.quickStart.manualTitle') }}</span>{{ $t('home.quickStart.manualDesc') }}
           </p>
         </div>
       </div>
@@ -566,7 +566,7 @@
       >
         <img
           :src="previewImage"
-          alt="封面预览"
+          :alt="$t('home.tasks.coverPreviewAlt')"
           class="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl"
           referrerpolicy="no-referrer"
         />
@@ -589,7 +589,7 @@
         <div class="w-full max-w-5xl bg-card border border-border rounded-2xl overflow-hidden shadow-2xl">
           <div class="flex items-center justify-between px-5 py-3 border-b border-border bg-background/50">
             <div class="flex-1 min-w-0 mr-4">
-              <p class="font-medium text-foreground truncate">{{ playerPreviewTitle || '视频预览' }}</p>
+              <p class="font-medium text-foreground truncate">{{ playerPreviewTitle || $t('home.previewModal.defaultTitle') }}</p>
               <p class="text-xs text-muted-foreground truncate" :title="playerPreviewUrl">{{ playerPreviewUrl }}</p>
             </div>
             <button
@@ -649,6 +649,19 @@ definePageMeta({
 
 const { isTampermonkeyAvailable, createTask, startDownload: startDownloadTask, tasks, cancelTask, resumeTask, currentTask, isDownloading } = useDownloader();
 const { fetchM3U8 } = useTampermonkey();
+const { t } = useI18n();
+const localePath = useLocalePath();
+
+const SITE_URL = 'https://m3u8.qiuyun.dev';
+
+// 页面级 SEO 元数据（跟随当前语言）
+useSeoMeta({
+  title: () => t('home.seoTitle'),
+  description: () => t('home.seoDescription'),
+  ogTitle: () => t('home.seoTitle'),
+  ogDescription: () => t('home.seoDescription'),
+  ogUrl: () => `${SITE_URL}${localePath('/')}`.replace(/\/$/, ''),
+});
 
 const inputType = ref<'url' | 'file'>('url');
 const m3u8Url = ref('');
@@ -689,7 +702,7 @@ const canPreview = computed(() => {
 async function openPreview(force = false) {
   if (!canPreview.value) return;
   const url = m3u8Url.value.trim();
-  const title = customFilename.value.trim() || '视频预览';
+  const title = customFilename.value.trim() || t('home.previewModal.defaultTitle');
 
   if (force) {
     playerPreviewUrl.value = url;
@@ -704,17 +717,13 @@ async function openPreview(force = false) {
 
   try {
     await fetchM3U8(url);
-    // fetch 成功 = CORS OK 或同源，可以弹
     playerPreviewUrl.value = url;
     playerPreviewTitle.value = title;
     document.body.style.overflow = 'hidden';
     previewCheckStatus.value = 'idle';
   } catch (err) {
-    // fetch 失败通常是 CORS，但也可能是链接过期/服务器拒绝
-    const msg = err instanceof Error ? err.message : '未知错误';
-    previewCheckError.value =
-      `浏览器无法访问此 M3U8 源（${msg}）。` +
-      `在线播放需要服务器允许跨域 (CORS)，或安装油猴脚本自动绕过。`;
+    const msg = err instanceof Error ? err.message : t('common.unknownError');
+    previewCheckError.value = t('home.previewBlocked.corsError', { msg });
     previewCheckStatus.value = 'failed';
   }
 }
@@ -734,10 +743,11 @@ async function notifyTask(task: DownloadTask) {
   }
   if (Notification.permission !== 'granted') return;
   const ok = task.status === 'completed';
-  new Notification(ok ? '下载完成' : '下载失败', {
+  const dir = task.dirName ? ` ${t('home.notification.savedTo', { dir: task.dirName })}` : '';
+  new Notification(ok ? t('home.notification.done') : t('home.notification.failed'), {
     body: ok
-      ? `${task.filename || task.title}${task.dirName ? ` 已保存到「${task.dirName}」` : ''}`
-      : `${task.title}：${task.error || '未知错误'}`,
+      ? `${task.filename || task.title}${dir}`
+      : t('home.notification.failedBody', { title: task.title, error: task.error || t('common.unknownError') }),
     tag: task.id,
   });
 }
@@ -843,13 +853,13 @@ function getStatusClass(status: DownloadTask['status']) {
 
 function getStatusText(status: DownloadTask['status']) {
   const texts: Record<string, string> = {
-    pending: '等待中',
-    parsing: '解析中',
-    downloading: '下载中',
-    paused: '已暂停',
-    merging: '合并中',
-    completed: '已完成',
-    error: '失败',
+    pending: t('home.tasks.status.pending'),
+    parsing: t('home.tasks.status.parsing'),
+    downloading: t('home.tasks.status.downloading'),
+    paused: t('home.tasks.status.paused'),
+    merging: t('home.tasks.status.merging'),
+    completed: t('home.tasks.status.completed'),
+    error: t('home.tasks.status.error'),
   };
   return texts[status] || status;
 }
