@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         秋云 M3U8 下载助手
 // @namespace    https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt
-// @version      1.0.5
+// @version      1.0.6
 // @description  自动检测网页 M3U8 视频并提供下载功能，配合秋云 M3U8 下载器使用
 // @author       Qiuyun
 // @match        *://*/*
@@ -128,11 +128,12 @@
                         headers["Referer"] = referer.href;
                     }
                     
-                    mgmapi.xmlHttpRequest({
+                    const control = mgmapi.xmlHttpRequest({
                         method: "GET",
                         url: url,
                         responseType: 'arraybuffer',
                         headers: headers,
+                        timeout: 60000,
                         onload(r) {
                             console.log(`[秋云 M3U8] 代理响应：${r.status}`);
                             // 解析 content-type，供 blob() 使用
@@ -171,6 +172,17 @@
                             reject(new Error('Timeout'));
                         }
                     });
+
+                    // 支持调用方传入 AbortSignal（下载器页面的 60s 超时控制会经此生效）
+                    const signal = args[1]?.signal;
+                    if (signal) {
+                        const abort = () => {
+                            try { control?.abort?.(); } catch { /* 忽略 */ }
+                            reject(new Error('Aborted'));
+                        };
+                        if (signal.aborted) abort();
+                        else signal.addEventListener('abort', abort, { once: true });
+                    }
                 });
             }
             

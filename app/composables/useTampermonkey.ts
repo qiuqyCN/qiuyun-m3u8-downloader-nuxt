@@ -61,13 +61,25 @@ export function useTampermonkey() {
    * 统一请求入口：直接调用原生 fetch
    * 在 localhost:3000 上，油猴脚本已 polyfill fetch → GM_xmlhttpRequest
    * 这是透明的，我们不需要关心
+   * 带 60s 超时：防止连接挂起（服务器接收后不再发数据）导致下载进度永久冻结
    */
-  async function doFetch(url: string): Promise<Response> {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status} ${response.statusText}`);
+  async function doFetch(url: string, timeoutMs = 60000): Promise<Response> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status} ${response.statusText}`);
+      }
+      return response;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        throw new Error(`请求超时 (${timeoutMs / 1000}s): ${url.slice(-80)}`);
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
     }
-    return response;
   }
 
   async function fetchM3U8(url: string): Promise<string> {
