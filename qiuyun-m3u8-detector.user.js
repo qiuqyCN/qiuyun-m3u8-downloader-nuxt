@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         秋云 M3U8 下载助手
 // @namespace    https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt
-// @version      1.0.4
+// @version      1.0.5
 // @description  自动检测网页 M3U8 视频并提供下载功能，配合秋云 M3U8 下载器使用
 // @author       Qiuyun
 // @match        *://*/*
@@ -93,6 +93,15 @@
     // 识别是否为下载器页面（线上 + 本地开发）
     const DOWNLOADER_HOSTS = ["m3u8.qiuyun.dev", "localhost:3000", "127.0.0.1:3000"];
     const isDownloaderPage = DOWNLOADER_HOSTS.includes(location.host);
+
+    // 根据浏览器语言返回下载器页面的 i18n 路径前缀（与站点 prefix_except_default 策略一致，未匹配语言回退英文）
+    function getLocalePrefix() {
+        const lang = (navigator.language || "").toLowerCase();
+        if (lang.startsWith("zh-tw") || lang.startsWith("zh-hk") || lang.startsWith("zh-mo") || lang.includes("hant")) return "/zh-TW";
+        if (lang.startsWith("zh")) return "";
+        const map = { en: "/en", es: "/es", pt: "/pt", ru: "/ru", id: "/id", vi: "/vi", ja: "/ja", ko: "/ko", de: "/de", fr: "/fr" };
+        return map[lang.split("-")[0]] ?? "/en";
+    }
 
     // 下载器页面：请求代理
     if (isDownloaderPage) {
@@ -587,7 +596,7 @@
                 async download() {
                     const title = await getTopTitle();
                     mgmapi.openInTab(
-                        `${DOWNLOADER_ORIGIN}?${new URLSearchParams({
+                        `${DOWNLOADER_ORIGIN}${getLocalePrefix()}?${new URLSearchParams({
                             url: url.href,
                             referer: location.href,
                             title: title || "",
@@ -707,7 +716,7 @@
             const selectedUrl = select.value;
             const title = await getTopTitle();
             mgmapi.openInTab(
-                `${DOWNLOADER_ORIGIN}?${new URLSearchParams({
+                `${DOWNLOADER_ORIGIN}${getLocalePrefix()}?${new URLSearchParams({
                     url: selectedUrl,
                     referer: location.href,
                     title: title || "",
