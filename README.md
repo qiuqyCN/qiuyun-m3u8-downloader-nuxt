@@ -1,49 +1,52 @@
-# 秋云 M3U8 下载器
+# Qiuyun M3U8 Downloader
 
-> **GitHub**：[qiuqyCN/qiuyun-m3u8-downloader-nuxt](https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt)
+[**English**](README.md) · [**简体中文**](README.zh-CN.md)
 
-一个 M3U8（HLS）视频下载工具，由两部分组成：
+> **GitHub**: [qiuqyCN/qiuyun-m3u8-downloader-nuxt](https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt)
 
-- **Web 下载器**（本仓库）：Nuxt 4 单页应用，负责解析播放列表、并发下载分片、AES-128 解密、fMP4 初始化段处理、合并输出，支持流式写盘与封面下载。
-- **油猴脚本**（`qiuyun-m3u8-detector.user.js`）：在视频页自动检测 M3U8，悬浮按钮展示码率列表，一键跳转下载器；同时为下载器页面提供跨域请求代理（`GM_xmlhttpRequest`），绕过防盗链与 CORS。
+An M3U8 (HLS) video downloader made of two parts:
 
-## 功能特性
+- **Web downloader** (this repository): a Nuxt 4 single-page app that parses playlists, downloads segments concurrently, decrypts AES-128, handles fMP4 initialization segments, and merges the output. Supports streaming writes to disk and cover image downloads.
+- **Tampermonkey userscript** (`qiuyun-m3u8-detector.user.js`): auto-detects M3U8 streams on video pages, shows a floating button with a bitrate list, and jumps to the downloader in one click. It also proxies cross-origin requests for the downloader page (`GM_xmlhttpRequest`) to bypass hotlink protection and CORS.
 
-- 自动检测网页中的 M3U8（含 Master Playlist 多码率选择）
-- 分片并发下载，进度实时刷新，支持自定义并发数 / 重试次数 / 起始分片
-- AES-128-CBC 解密（无显式 IV 时按规范使用媒体序列号）
-- 自动识别 TS / fMP4 输出格式（`.ts` / `.mp4`）
-- 两种保存模式：
-  - **流式下载**：File System Access API 边下边写盘，内存占用恒定，支持选择保存目录（Chrome/Edge）
-  - **内存合并**：浏览器直接下载，兼容所有现代浏览器
-- 同时下载视频封面（绝对地址转换、格式嗅探、压缩保存）
-- 亮色 / 暗色 / 跟随系统主题
+## Features
 
-## 目录结构
+- Auto-detects M3U8 streams in web pages (including bitrate selection for Master Playlists)
+- Concurrent segment downloads with live progress; configurable concurrency, retry count, and start segment
+- AES-128-CBC decryption (falls back to the media sequence number per spec when no IV is declared)
+- Automatically detects TS / fMP4 output (`.ts` / `.mp4`)
+- Two saving modes:
+  - **Streaming download**: the File System Access API writes to disk while downloading, keeping memory usage constant and letting you pick the save directory (Chrome/Edge)
+  - **In-memory merge**: downloads directly in the browser and works in all modern browsers
+- Downloads the video cover image as well (absolute URL resolution, format sniffing, compressed save)
+- Light / dark / follow-system theme
+
+## Project structure
 
 ```
 qiuyun-m3u8-downloader-nuxt/
-├── app/                           # 页面、composables、工具函数
-├── docker/                        # Docker 部署配置（见下文 Docker 部署）
-├── qiuyun-m3u8-detector.user.js   # 油猴脚本（GreasyFork 已发布）
+├── app/                           # Pages, composables, utilities
+├── docker/                        # Docker deployment config (see "Docker deployment" below)
+├── qiuyun-m3u8-detector.user.js   # Tampermonkey userscript (published on GreasyFork)
 ├── package.json
-└── README.md
+├── README.md
+└── README.zh-CN.md
 ```
 
-## 油猴脚本安装
+## Userscript installation
 
-1. 浏览器安装 [Tampermonkey](https://www.tampermonkey.net/) 扩展。
-2. 从 [GreasyFork](https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js) 一键安装（推荐，可自动更新），或新建脚本将 `qiuyun-m3u8-detector.user.js` 全文粘贴保存。
-3. 脚本中下载器地址由常量控制，按需修改：
+1. Install the [Tampermonkey](https://www.tampermonkey.net/) extension in your browser.
+2. Install it in one click from [GreasyFork](https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js) (recommended, supports auto-update), or create a new script and paste the whole `qiuyun-m3u8-detector.user.js` content.
+3. The downloader address is controlled by constants in the script; change them as needed:
 
 ```js
 const DOWNLOADER_ORIGIN = "https://m3u8.qiuyun.dev";
 const DOWNLOADER_HOSTS = ["m3u8.qiuyun.dev", "localhost:3000", "127.0.0.1:3000"];
 ```
 
-只有在 `DOWNLOADER_HOSTS` 列出的域名/端口下，脚本才会注入跨域代理；本地开发请固定使用 3000 端口。
+The script only injects the cross-origin proxy for the domains/ports listed in `DOWNLOADER_HOSTS`. For local development, always use port 3000.
 
-## 本地开发
+## Local development
 
 ```bash
 cd qiuyun-m3u8-downloader-nuxt
@@ -51,33 +54,33 @@ npm ci
 npm run dev
 ```
 
-访问 http://localhost:3000 。
+Then open http://localhost:3000 .
 
 ---
 
-## 部署方式一：非 Docker（静态托管）
+## Deployment option 1: non-Docker (static hosting)
 
-构建产物是纯静态站点，任意静态服务器（nginx、Caddy、OSS、宝塔）均可托管。
+The build output is a pure static site and can be hosted by any static server (nginx, Caddy, OSS, BaoTa, etc.).
 
-### 1. 构建
+### 1. Build
 
 ```bash
 cd qiuyun-m3u8-downloader-nuxt
 npm ci
-npm run generate        # 产物输出到 .output/public
+npm run generate        # output goes to .output/public
 ```
 
-### 2. 上传
+### 2. Upload
 
-将 `.output/public` 目录内**全部文件**上传到服务器，例如 `/var/www/m3u8.qiuyun.dev`：
+Upload **all files** inside `.output/public` to your server, for example `/var/www/m3u8.qiuyun.dev`:
 
 ```bash
 scp -r .output/public/* user@server:/var/www/m3u8.qiuyun.dev/
 ```
 
-Windows 下也可以用仓库根目录 `dist/` 里打好的 zip 包，但该包为历史归档，部署前请以最新 `npm run generate` 产物为准。
+On Windows you can also use the zip package in the repository's `dist/` directory, but that package is a historical archive; always deploy the latest `npm run generate` output.
 
-### 3. Nginx 配置
+### 3. Nginx configuration
 
 ```nginx
 server {
@@ -87,21 +90,22 @@ server {
     root /var/www/m3u8.qiuyun.dev;
     index index.html;
 
-    # 目录补斜杠时用相对跳转，避免把内部端口/协议写进 Location
-    # （否则经端口映射或 CDN 终止 SSL 时会跳到错误地址）
+    # Use relative redirects when appending the trailing slash so internal
+    # ports/protocols never leak into the Location header (otherwise CDN
+    # TLS termination or port mapping would redirect to a wrong address)
     absolute_redirect off;
 
     gzip on;
     gzip_types text/css application/javascript application/json image/svg+xml;
     gzip_min_length 1k;
 
-    # 带内容哈希的构建产物，可永久缓存
+    # Content-hashed build assets can be cached forever
     location /_nuxt/ {
         expires 1y;
         add_header Cache-Control "public, immutable";
     }
 
-    # SPA 兜底
+    # SPA fallback
     location / {
         try_files $uri $uri.html $uri/ /200.html;
     }
@@ -112,26 +116,25 @@ server {
 
 ---
 
+## Usage
 
-## 使用说明
+1. Open a video page that contains M3U8; the script's floating button (on the right) shows how many videos were detected.
+2. Click the button to expand the list; when multiple bitrates exist, use "Select source" to switch quality.
+3. Click **Download** to jump to the downloader, which automatically carries the `url`, `referer`, `title`, and `cover` parameters.
+4. Enter a file name (required) in the downloader, adjust concurrency, start segment, cover, and streaming options as needed, then click start download.
+5. Streaming mode opens a directory picker first; segments are then written to the chosen directory while downloading, and the cover is saved as an image file with the same name.
 
-1. 打开含 M3U8 的视频页，脚本悬浮按钮（右侧）显示检测到的视频数量。
-2. 点击按钮展开列表，多码率时可「选择源」切换清晰度。
-3. 点击 **下载(Download)** 跳转下载器，自动带入 `url`、`referer`、`title`、`cover` 参数。
-4. 在下载器中填写文件名称（必填），按需调整并发数、起始分片、封面与流式开关，点击开始下载。
-5. 流式模式会先弹出目录选择框，之后分片边下边写入所选目录；封面保存为同名图片文件。
+You can also paste an M3U8 link manually in the downloader. Cross-origin sites still need the script proxy, so enter via the video page.
 
-也可以直接在下载器手动粘贴 M3U8 链接使用（跨域站点需脚本代理，请从视频页跳转进入）。
+## FAQ
 
-## 常见问题
-
-| 问题 | 原因与解决 |
+| Issue | Cause and solution |
 |---|---|
-| 点下载跳转后提示脚本未安装 | 脚本未启用或域名不在 `DOWNLOADER_HOSTS`，检查 Tampermonkey 与脚本常量 |
-| 分片 403 / 封面下载失败 | 跨域或防盗链。确认是从视频页跳转进入（地址栏带 `referer` 参数），代理才会携带正确请求头 |
-| 下载按钮一直不可用 | 上一个任务未结束。删除下载中的任务会自动中断并复位 |
-| Firefox/Safari 无目录选择 | 浏览器不支持 File System Access API，自动回退为内存合并下载 |
+| "Script not installed" after jumping from a download click | The script is disabled or the domain is not in `DOWNLOADER_HOSTS`; check Tampermonkey and the script constants |
+| Segment 403 / cover download fails | Cross-origin or hotlink protection. Make sure you entered from the video page (the address bar carries a `referer` parameter); only then does the proxy send the correct headers |
+| The download button stays disabled | A previous task has not finished. Deleting a running task aborts it and resets the state |
+| No directory picker in Firefox/Safari | The browser does not support the File System Access API, so it automatically falls back to in-memory merge download |
 
-## 技术栈
+## Tech stack
 
-Nuxt 4 · Vue 3 · TailwindCSS v4 · TypeScript · Web Crypto API · File System Access API · Tampermonkey（GM_xmlhttpRequest / Shadow DOM）
+Nuxt 4 · Vue 3 · TailwindCSS v4 · TypeScript · Web Crypto API · File System Access API · Tampermonkey (GM_xmlhttpRequest / Shadow DOM)
