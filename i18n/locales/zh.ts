@@ -1,4 +1,4 @@
-﻿﻿export default {
+﻿export default {
   nav: {
     download: 'M3U8下载',
     play: '在线播放',
@@ -41,13 +41,8 @@
     },
     form: {
       title: '新建下载',
-      linkTab: '链接',
-      fileTab: '文件',
       urlLabel: 'M3U8 链接',
       urlPlaceholder: '粘贴 M3U8 链接到此处...\n支持 http:// 或 https:// 开头的链接',
-      fileLabel: 'M3U8 文件',
-      fileDropHint: '点击选择或拖拽文件到此处',
-      fileDropSub: '支持 .m3u8 格式文件',
       nameLabel: '文件名称',
       nameRequired: '*',
       namePlaceholder: '必填，例如：视频标题_20261030',

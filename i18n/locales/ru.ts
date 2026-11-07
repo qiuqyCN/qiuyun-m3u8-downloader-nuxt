@@ -41,13 +41,8 @@ export default {
     },
     form: {
       title: 'Новая загрузка',
-      linkTab: 'Ссылка',
-      fileTab: 'Файл',
       urlLabel: 'M3U8-ссылка',
       urlPlaceholder: 'Вставьте M3U8-ссылку сюда...\nПоддерживаются ссылки, начинающиеся с http:// или https://',
-      fileLabel: 'Файл M3U8',
-      fileDropHint: 'Нажмите для выбора или перетащите файл сюда',
-      fileDropSub: 'Поддерживаются файлы .m3u8',
       nameLabel: 'Имя файла',
       nameRequired: '*',
       namePlaceholder: 'Обязательно, напр.: video_title_20261030',

@@ -1,4 +1,4 @@
-﻿﻿export default {
+﻿export default {
   nav: {
     download: 'M3U8 Download',
     play: 'Online Play',
@@ -41,13 +41,8 @@
     },
     form: {
       title: 'New Download',
-      linkTab: 'URL',
-      fileTab: 'File',
       urlLabel: 'M3U8 URL',
       urlPlaceholder: 'Paste your M3U8 link here...\nSupports http:// or https:// links',
-      fileLabel: 'M3U8 File',
-      fileDropHint: 'Click to select or drag file here',
-      fileDropSub: 'Supports .m3u8 format files',
       nameLabel: 'File Name',
       nameRequired: '*',
       namePlaceholder: 'Required, e.g.: video_title_20261030',

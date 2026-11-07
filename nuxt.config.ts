@@ -10,7 +10,55 @@ const siteDescription = '免费开源的 M3U8 视频在线下载工具。配合�
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['shadcn-nuxt', '@nuxtjs/i18n'],
+  modules: ['shadcn-nuxt', '@nuxtjs/i18n', '@nuxtjs/sitemap', '@nuxtjs/robots'],
+  // Sitemap：v9 自动与 @nuxtjs/i18n 集成，为每个 locale 生成带 hreflang 的 sitemap
+  // 输出结构：/sitemap_index.xml + /__sitemap__/{zh,en,es,pt,...}.xml
+  sitemap: {
+    // 排除 settings 页（12 语言变体：/settings /en/settings /ja/settings 等）
+    exclude: [
+      '/settings',
+      '/settings/**',
+      '/en/settings', '/en/settings/**',
+      '/zh-TW/settings', '/zh-TW/settings/**',
+      '/es/settings', '/es/settings/**',
+      '/pt/settings', '/pt/settings/**',
+      '/ru/settings', '/ru/settings/**',
+      '/id/settings', '/id/settings/**',
+      '/vi/settings', '/vi/settings/**',
+      '/ja/settings', '/ja/settings/**',
+      '/ko/settings', '/ko/settings/**',
+      '/de/settings', '/de/settings/**',
+      '/fr/settings', '/fr/settings/**',
+    ],
+    xslColumns: [
+      { label: 'URL', width: '60%' },
+      { label: 'Hreflangs', select: 'count(xhtml:link)', width: '40%' },
+    ],
+  },
+  // robots.txt：自动生成并排除所有语言的 settings 路径
+  // v7 格式：groups 数组 + camelCase 键；Sitemap 指令由 sitemap 模块自动注入
+  robots: {
+    groups: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: [
+          '/settings',
+          '/en/settings',
+          '/zh-TW/settings',
+          '/es/settings',
+          '/pt/settings',
+          '/ru/settings',
+          '/id/settings',
+          '/vi/settings',
+          '/ja/settings',
+          '/ko/settings',
+          '/de/settings',
+          '/fr/settings',
+        ],
+      },
+    ],
+  },
   i18n: {
     locales: [
       // language 用纯语言码，避免同时输出 zh 与 zh-CN 两条重复的 hreflang

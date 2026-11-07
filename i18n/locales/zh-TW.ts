@@ -41,13 +41,8 @@ export default {
     },
     form: {
       title: '新增下載',
-      linkTab: '連結',
-      fileTab: '檔案',
       urlLabel: 'M3U8 連結',
       urlPlaceholder: '貼上 M3U8 連結到此處...\n支援 http:// 或 https:// 開頭的連結',
-      fileLabel: 'M3U8 檔案',
-      fileDropHint: '點擊選擇或拖曳檔案到此處',
-      fileDropSub: '支援 .m3u8 格式檔案',
       nameLabel: '檔案名稱',
       nameRequired: '*',
       namePlaceholder: '必填，例如：影片標題_20261030',

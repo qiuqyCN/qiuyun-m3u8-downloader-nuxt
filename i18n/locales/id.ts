@@ -41,13 +41,8 @@ export default {
     },
     form: {
       title: 'Unduhan Baru',
-      linkTab: 'URL',
-      fileTab: 'Berkas',
       urlLabel: 'URL M3U8',
       urlPlaceholder: 'Tempel tautan M3U8 Anda di sini...\nMendukung tautan yang dimulai dengan http:// atau https://',
-      fileLabel: 'Berkas M3U8',
-      fileDropHint: 'Klik untuk memilih atau seret berkas ke sini',
-      fileDropSub: 'Mendukung berkas .m3u8',
       nameLabel: 'Nama Berkas',
       nameRequired: '*',
       namePlaceholder: 'Wajib, mis.: judul_video_20261030',

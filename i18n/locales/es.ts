@@ -41,13 +41,8 @@ export default {
     },
     form: {
       title: 'Nueva descarga',
-      linkTab: 'URL',
-      fileTab: 'Archivo',
       urlLabel: 'URL de M3U8',
       urlPlaceholder: 'Pega tu enlace M3U8 aquí...\nAdmite enlaces que empiecen por http:// o https://',
-      fileLabel: 'Archivo M3U8',
-      fileDropHint: 'Haz clic para seleccionar o arrastra el archivo aquí',
-      fileDropSub: 'Admite archivos .m3u8',
       nameLabel: 'Nombre del archivo',
       nameRequired: '*',
       namePlaceholder: 'Obligatorio, p. ej.: titulo_video_20261030',

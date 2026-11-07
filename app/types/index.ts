@@ -27,9 +27,7 @@ export interface DownloadTask {
 }
 
 export interface DownloadOptions {
-  inputType: 'url' | 'file';
   url: string;
-  file?: File;
   maxConcurrentSegments: number;
   maxRetries: number;
   startSegmentIndex: number;

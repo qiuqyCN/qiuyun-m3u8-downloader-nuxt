@@ -41,13 +41,8 @@ export default {
     },
     form: {
       title: 'Tải xuống mới',
-      linkTab: 'Liên kết',
-      fileTab: 'Tệp',
       urlLabel: 'Liên kết M3U8',
       urlPlaceholder: 'Dán liên kết M3U8 vào đây...\nHỗ trợ liên kết bắt đầu bằng http:// hoặc https://',
-      fileLabel: 'Tệp M3U8',
-      fileDropHint: 'Nhấp để chọn hoặc kéo tệp vào đây',
-      fileDropSub: 'Hỗ trợ tệp .m3u8',
       nameLabel: 'Tên tệp',
       nameRequired: '*',
       namePlaceholder: 'Bắt buộc, vd: ten_video_20261030',

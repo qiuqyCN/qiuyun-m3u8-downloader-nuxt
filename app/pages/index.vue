@@ -82,28 +82,8 @@
         </div>
         
         <div class="p-6 space-y-6">
-          <!-- Input Type -->
-          <div class="flex p-1 bg-muted rounded-lg">
-            <button
-              @click="inputType = 'url'"
-              class="flex-1 py-2 text-sm font-medium rounded-md transition-all"
-              :class="inputType === 'url' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'"
-            >
-              <Link class="w-4 h-4 inline-block mr-1" />
-              {{ $t('home.form.linkTab') }}
-            </button>
-            <button
-              @click="inputType = 'file'"
-              class="flex-1 py-2 text-sm font-medium rounded-md transition-all"
-              :class="inputType === 'file' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'"
-            >
-              <FileText class="w-4 h-4 inline-block mr-1" />
-              {{ $t('home.form.fileTab') }}
-            </button>
-          </div>
-
           <!-- URL Input -->
-          <div v-if="inputType === 'url'">
+          <div>
             <label class="block text-sm font-medium text-muted-foreground mb-2">{{ $t('home.form.urlLabel') }}</label>
             <div class="relative">
               <textarea
@@ -119,30 +99,6 @@
               >
                 <X class="w-4 h-4" />
               </button>
-            </div>
-          </div>
-
-          <!-- File Input -->
-          <div v-else>
-            <label class="block text-sm font-medium text-muted-foreground mb-2">{{ $t('home.form.fileLabel') }}</label>
-            <div 
-              class="border-2 border-dashed border-input rounded-xl p-8 text-center hover:border-violet-500 transition-colors cursor-pointer bg-background"
-              @click="fileInput?.click()"
-              @drop.prevent="handleFileDrop"
-              @dragover.prevent
-            >
-              <input
-                ref="fileInput"
-                type="file"
-                accept=".m3u8"
-                class="hidden"
-                @change="handleFileSelect"
-              />
-              <div class="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
-                <Upload class="w-8 h-8 text-muted-foreground" />
-              </div>
-              <p class="text-foreground font-medium mb-1">{{ $t('home.form.fileDropHint') }}</p>
-              <p class="text-muted-foreground text-sm">{{ $t('home.form.fileDropSub') }}</p>
             </div>
           </div>
 
@@ -616,8 +572,6 @@ import {
   Activity,
   Zap,
   Link,
-  FileText,
-  Upload,
   X,
   Minus,
   Plus,
@@ -663,13 +617,10 @@ useSeoMeta({
   ogUrl: () => `${SITE_URL}${localePath('/')}`.replace(/\/$/, ''),
 });
 
-const inputType = ref<'url' | 'file'>('url');
 const m3u8Url = ref('');
 const customFilename = ref('');
 const nameError = ref(false);
 const previewImage = ref<string | null>(null);
-const selectedFile = ref<File | null | undefined>(null);
-const fileInput = ref<HTMLInputElement | null>(null);
 const maxConcurrentSegments = ref(15);
 const maxRetries = ref(3);
 const startSegmentIndex = ref(0);
@@ -687,11 +638,7 @@ const playerPreviewTitle = ref('');
 const previewCheckStatus = ref<'idle' | 'checking' | 'failed'>('idle');
 const previewCheckError = ref('');
 
-const canPreview = computed(() => {
-  if (inputType.value === 'url') return m3u8Url.value.trim().length > 0;
-  // 文件输入：本地 m3u8 没上传到服务器，浏览器无法作为流媒体播放源，不支持预览
-  return false;
-});
+const canPreview = computed(() => m3u8Url.value.trim().length > 0);
 
 /**
  * 预检 m3u8 是否可从浏览器 fetch 到（跨域探测）
@@ -752,25 +699,7 @@ async function notifyTask(task: DownloadTask) {
   });
 }
 
-const canDownload = computed(() => {
-  if (inputType.value === 'url') {
-    return m3u8Url.value.trim().length > 0;
-  }
-  return selectedFile.value !== null;
-});
-
-function handleFileSelect(event: Event) {
-  const target = event.target as HTMLInputElement;
-  if (target.files && target.files.length > 0) {
-    selectedFile.value = target.files[0];
-  }
-}
-
-function handleFileDrop(event: DragEvent) {
-  if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-    selectedFile.value = event.dataTransfer.files[0];
-  }
-}
+const canDownload = computed(() => m3u8Url.value.trim().length > 0);
 
 async function startDownload() {
   if (!canDownload.value) return;
@@ -792,9 +721,7 @@ async function startDownload() {
   }
 
   const options: DownloadOptions = {
-    inputType: inputType.value,
-    url: inputType.value === 'url' ? m3u8Url.value : '',
-    file: inputType.value === 'file' ? selectedFile.value! : undefined,
+    url: m3u8Url.value.trim(),
     filename,
     maxConcurrentSegments: maxConcurrentSegments.value,
     maxRetries: maxRetries.value,
@@ -815,9 +742,7 @@ async function startDownload() {
     m3u8Url.value = '';
     customFilename.value = '';
     coverUrl.value = '';
-    selectedFile.value = null;
     startSegmentIndex.value = 0;
-    if (fileInput.value) fileInput.value.value = '';
   }
 }
 

@@ -41,13 +41,8 @@ export default {
     },
     form: {
       title: '新規ダウンロード',
-      linkTab: 'リンク',
-      fileTab: 'ファイル',
       urlLabel: 'M3U8 リンク',
       urlPlaceholder: 'ここに M3U8 リンクを貼り付け...\nhttp:// または https:// で始まるリンクに対応',
-      fileLabel: 'M3U8 ファイル',
-      fileDropHint: 'クリックして選択、またはここにファイルをドラッグ',
-      fileDropSub: '.m3u8 形式のファイルに対応',
       nameLabel: 'ファイル名',
       nameRequired: '*',
       namePlaceholder: '必須。例：video_title_20261030',
