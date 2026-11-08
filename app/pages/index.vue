@@ -602,7 +602,7 @@ definePageMeta({
 });
 
 const { isTampermonkeyAvailable, createTask, startDownload: startDownloadTask, tasks, cancelTask, resumeTask, currentTask, isDownloading } = useDownloader();
-const { fetchM3U8 } = useTampermonkey();
+const { fetchM3U8, PREVIEW_PROBE_TIMEOUT } = useTampermonkey();
 const { t } = useI18n();
 const localePath = useLocalePath();
 
@@ -663,7 +663,8 @@ async function openPreview(force = false) {
   previewCheckError.value = '';
 
   try {
-    await fetchM3U8(url);
+    // 预检用短超时：跨域/挂起场景快速失败，避免用户干等
+    await fetchM3U8(url, PREVIEW_PROBE_TIMEOUT);
     playerPreviewUrl.value = url;
     playerPreviewTitle.value = title;
     document.body.style.overflow = 'hidden';

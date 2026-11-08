@@ -262,7 +262,10 @@ export function useDownloader() {
       while (
         inProgress.size < concurrency &&
         queue.length > 0 &&
-        queue[0]!.idx - nextWrite < maxBuffered
+        // 背压闸门（领先写盘位置不超过 maxBuffered）仅流式模式需要；
+        // 内存模式 nextWrite 恒为 0，套用此闸门会在派发 maxBuffered 片后永久关闭，
+        // 外层循环退化为纯微任务死循环，整页卡死
+        (!streamMode || queue[0]!.idx - nextWrite < maxBuffered)
       ) {
         const { seg, idx } = queue.shift()!;
 

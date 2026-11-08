@@ -82,9 +82,12 @@ export function useTampermonkey() {
     }
   }
 
-  async function fetchM3U8(url: string): Promise<string> {
+  /** 预检超时：预览/在线播放的跨域探测要快速失败，不沿用下载的 60s */
+  const PREVIEW_PROBE_TIMEOUT = 8000;
+
+  async function fetchM3U8(url: string, timeoutMs = 60000): Promise<string> {
     console.log(`[M3U8] fetchM3U8: ${url}`);
-    const response = await doFetch(url);
+    const response = await doFetch(url, timeoutMs);
     const text = await response.text();
     console.log(`[M3U8] fetchM3U8 完成, 长度: ${text.length} 字符`);
     return text;
@@ -107,6 +110,7 @@ export function useTampermonkey() {
   return {
     detectedM3U8List,
     isTampermonkeyAvailable,
+    PREVIEW_PROBE_TIMEOUT,
     fetchM3U8,
     fetchSegment,
     fetchKey,

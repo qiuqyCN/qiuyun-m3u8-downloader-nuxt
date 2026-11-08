@@ -134,7 +134,7 @@ definePageMeta({ layout: 'default' });
 const route = useRoute();
 const router = useRouter();
 const localePath = useLocalePath();
-const { fetchM3U8 } = useTampermonkey();
+const { fetchM3U8, PREVIEW_PROBE_TIMEOUT } = useTampermonkey();
 const { t } = useI18n();
 
 const SITE_URL = 'https://m3u8.qiuyun.dev';
@@ -182,7 +182,8 @@ async function doCheck(targetUrl: string) {
   checkStatus.value = 'checking';
   checkError.value = '';
   try {
-    await fetchM3U8(targetUrl);
+    // 预检用短超时：跨域/挂起场景快速失败，避免用户干等
+    await fetchM3U8(targetUrl, PREVIEW_PROBE_TIMEOUT);
     checkStatus.value = 'ok';
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown error';
