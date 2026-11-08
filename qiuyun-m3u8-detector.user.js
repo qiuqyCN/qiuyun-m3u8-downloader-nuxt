@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         秋云 M3U8 下载助手
 // @namespace    https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt
-// @version      1.0.6
+// @version      1.0.7
 // @description  自动检测网页 M3U8 视频并提供下载功能，配合秋云 M3U8 下载器使用
 // @author       Qiuyun
 // @match        *://*/*
