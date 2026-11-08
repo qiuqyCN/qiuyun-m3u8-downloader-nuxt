@@ -29,11 +29,14 @@ export default defineNuxtConfig({
       '/ko/settings', '/ko/settings/**',
       '/de/settings', '/de/settings/**',
       '/fr/settings', '/fr/settings/**',
+      '/tr/settings', '/tr/settings/**',
+      '/it/settings', '/it/settings/**',
+      '/pl/settings', '/pl/settings/**',
+      '/th/settings', '/th/settings/**',
     ],
-    xslColumns: [
-      { label: 'URL', width: '60%' },
-      { label: 'Hreflangs', select: 'count(xhtml:link)', width: '40%' },
-    ],
+    // 关闭默认的 XSL 样式表：Chrome 正在移除 XSLT 支持，浏览器会弹出弃用警告；
+    // sitemap 本身仍是标准 XML，不影响搜索引擎抓取
+    xsl: false,
   },
   // robots.txt：自动生成并排除所有语言的 settings 路径
   // v7 格式：groups 数组 + camelCase 键；Sitemap 指令由 sitemap 模块自动注入
@@ -55,6 +58,10 @@ export default defineNuxtConfig({
           '/ko/settings',
           '/de/settings',
           '/fr/settings',
+          '/tr/settings',
+          '/it/settings',
+          '/pl/settings',
+          '/th/settings',
         ],
       },
     ],
@@ -74,6 +81,10 @@ export default defineNuxtConfig({
       { code: 'ko', language: 'ko', name: '한국어', file: 'ko.ts' },
       { code: 'de', language: 'de', name: 'Deutsch', file: 'de.ts' },
       { code: 'fr', language: 'fr', name: 'Français', file: 'fr.ts' },
+      { code: 'tr', language: 'tr', name: 'Türkçe', file: 'tr.ts' },
+      { code: 'it', language: 'it', name: 'Italiano', file: 'it.ts' },
+      { code: 'pl', language: 'pl', name: 'Polski', file: 'pl.ts' },
+      { code: 'th', language: 'th', name: 'ไทย', file: 'th.ts' },
     ],
     defaultLocale: 'zh',
     // 中文无前缀（/、/play），英文带 /en 前缀（/en、/en/play），URL 全部为 ASCII

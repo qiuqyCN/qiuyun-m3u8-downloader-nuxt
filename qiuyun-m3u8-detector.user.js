@@ -99,7 +99,7 @@
         const lang = (navigator.language || "").toLowerCase();
         if (lang.startsWith("zh-tw") || lang.startsWith("zh-hk") || lang.startsWith("zh-mo") || lang.includes("hant")) return "/zh-TW";
         if (lang.startsWith("zh")) return "";
-        const map = { en: "/en", es: "/es", pt: "/pt", ru: "/ru", id: "/id", vi: "/vi", ja: "/ja", ko: "/ko", de: "/de", fr: "/fr" };
+        const map = { en: "/en", es: "/es", pt: "/pt", ru: "/ru", id: "/id", vi: "/vi", ja: "/ja", ko: "/ko", de: "/de", fr: "/fr", tr: "/tr", it: "/it", pl: "/pl", th: "/th" };
         return map[lang.split("-")[0]] ?? "/en";
     }
 

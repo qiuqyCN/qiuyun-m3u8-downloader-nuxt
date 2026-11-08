@@ -113,12 +113,19 @@ const isActive = (path: string) => route.path === localePath(path);
 // 版权年份随构建时间更新，避免写死
 const currentYear = new Date().getFullYear();
 
-const localeOptions = computed(() =>
-  (locales.value as Array<{ code: string; name?: string }>).map((l) => ({
+const localeOptions = computed(() => {
+  const list = (locales.value as Array<{ code: string; name?: string }>).map((l) => ({
     code: l.code,
     name: l.name || l.code,
-  }))
-);
+  }));
+  // 默认语言（简体中文/繁體中文）置顶，其余语言按当前界面语言的排序规则按本地名排序
+  const pinned = list.filter((l) => l.code === 'zh' || l.code === 'zh-TW');
+  const collator = new Intl.Collator(locale.value);
+  const rest = list
+    .filter((l) => l.code !== 'zh' && l.code !== 'zh-TW')
+    .sort((a, b) => collator.compare(a.name, b.name));
+  return [...pinned, ...rest];
+});
 
 function onLocaleChange(e: Event) {
   const code = (e.target as HTMLSelectElement).value as typeof locale.value;
