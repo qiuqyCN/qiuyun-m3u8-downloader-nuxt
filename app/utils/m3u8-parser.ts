@@ -69,7 +69,7 @@ export function parseM3U8(content: string, baseUrl: string): M3U8Playlist {
         ...encryption,
         // 如果没有显式 IV，使用 mediaSequence 作为大端序 16 字节 IV
         ivBuffer: encryption.iv 
-          ? hexToBufferLE(encryption.iv.replace('0x', ''))
+          ? hexToBufferBE(encryption.iv.replace('0x', ''))
           : intToBigEndianBuffer(mediaSequence),
       } : undefined;
       
@@ -97,8 +97,8 @@ function intToBigEndianBuffer(num: number): ArrayBuffer {
   return buf;
 }
 
-// 十六进制字符串转 ArrayBuffer (小端序兼容)
-function hexToBufferLE(hex: string): ArrayBuffer {
+// 十六进制字符串转 16 字节大端序 ArrayBuffer（HLS IV 按字节顺序书写）
+function hexToBufferBE(hex: string): ArrayBuffer {
   const cleanHex = hex.replace(/^0x/, '').padStart(32, '0');
   const bytes = new Uint8Array(16);
   for (let i = 0; i < 16; i++) {

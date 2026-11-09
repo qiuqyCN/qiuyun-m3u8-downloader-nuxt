@@ -84,6 +84,7 @@ export default {
       savedChosen: 'Tersimpan ke folder terpilih "{dir}" (batas keamanan peramban, hanya nama folder yang ditampilkan)',
       savedDefault: 'Berkas tersimpan di folder unduhan bawaan peramban',
       defaultDir: 'Bawaan',
+      pause: 'Jeda',
       resume: 'Lanjutkan',
       coverAlt: 'Sampul',
       coverPreviewAlt: 'Pratinjau sampul',

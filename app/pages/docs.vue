@@ -48,6 +48,7 @@ useSeoMeta({
   description: () => t('docs.description'),
   ogTitle: () => t('docs.pageTitle'),
   ogDescription: () => t('docs.description'),
+  ogSiteName: () => t('brand.name'),
   ogUrl: 'https://m3u8.qiuyun.dev/docs',
 });
 

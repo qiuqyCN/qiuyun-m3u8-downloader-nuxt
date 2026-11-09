@@ -435,8 +435,16 @@
               </div>
 
               <!-- Actions -->
-              <div v-if="task.status === 'paused'" class="mt-3 flex gap-2">
+              <div v-if="task.status === 'paused' || task.status === 'downloading'" class="mt-3 flex gap-2">
                 <button
+                  v-if="task.status === 'downloading'"
+                  @click="pauseTask(task)"
+                  class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium rounded-lg transition-colors"
+                >
+                  {{ $t('home.tasks.pause') }}
+                </button>
+                <button
+                  v-if="task.status === 'paused'"
                   @click="resumeTask(task)"
                   class="px-3 py-1.5 bg-violet-500 hover:bg-violet-600 text-white text-xs font-medium rounded-lg transition-colors"
                 >
@@ -601,10 +609,11 @@ definePageMeta({
   layout: 'default'
 });
 
-const { isTampermonkeyAvailable, createTask, startDownload: startDownloadTask, tasks, cancelTask, resumeTask, currentTask, isDownloading } = useDownloader();
+const { isTampermonkeyAvailable, createTask, startDownload: startDownloadTask, tasks, cancelTask, pauseTask, resumeTask, currentTask, isDownloading } = useDownloader();
 const { fetchM3U8, PREVIEW_PROBE_TIMEOUT } = useTampermonkey();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
+const route = useRoute();
 
 const SITE_URL = 'https://m3u8.qiuyun.dev';
 
@@ -614,6 +623,7 @@ useSeoMeta({
   description: () => t('home.seoDescription'),
   ogTitle: () => t('home.seoTitle'),
   ogDescription: () => t('home.seoDescription'),
+  ogSiteName: () => t('brand.name'),
   ogUrl: () => `${SITE_URL}${localePath('/')}`.replace(/\/$/, ''),
 });
 
@@ -756,7 +766,7 @@ function clearCompleted() {
 
 function formatTime(timestamp: number): string {
   const date = new Date(timestamp);
-  return date.toLocaleString('zh-CN', {
+  return date.toLocaleString(locale.value, {
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
@@ -790,6 +800,14 @@ function getStatusText(status: DownloadTask['status']) {
   return texts[status] || status;
 }
 
+// 链接变化后重置上一轮的预检失败提示，避免旧提示一直挂着
+watch(m3u8Url, () => {
+  if (previewCheckStatus.value === 'failed') {
+    previewCheckStatus.value = 'idle';
+    previewCheckError.value = '';
+  }
+});
+
 onMounted(() => {
   supportsDirectoryPicker.value = isDirectoryPickerSupported();
 
@@ -798,7 +816,6 @@ onMounted(() => {
   maxConcurrentSegments.value = appSettings.value.defaultMaxConcurrentSegments;
   maxRetries.value = appSettings.value.defaultMaxRetries;
 
-  const route = useRoute();
   // 注意：Vue Router 已经对 query 解码过一次，这里不能再 decodeURIComponent，
   // 否则签名参数里的 %2F 等会被二次解码破坏，导致封面/M3U8 地址失效。
   const urlParam = route.query.url as string;

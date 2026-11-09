@@ -1,4 +1,4 @@
-﻿export default {
+﻿﻿﻿﻿export default {
   nav: {
     download: 'M3U8 Download',
     play: 'Online Play',
@@ -84,6 +84,7 @@
       savedChosen: 'Saved to selected directory "{dir}" (browser security limit, directory name only shown)',
       savedDefault: 'File saved to browser default download directory',
       defaultDir: 'Default',
+      pause: 'Pause',
       resume: 'Resume',
       coverAlt: 'Cover',
       coverPreviewAlt: 'Cover preview',

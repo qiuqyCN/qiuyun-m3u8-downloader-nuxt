@@ -53,7 +53,7 @@
           <button
             @click="toggleTheme"
             class="p-2 text-muted-foreground hover:text-foreground transition-colors"
-            :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+            :title="isDark ? $t('settings.appearance.themes.light') : $t('settings.appearance.themes.dark')"
           >
             <Sun v-if="isDark" class="w-5 h-5" />
             <Moon v-else class="w-5 h-5" />

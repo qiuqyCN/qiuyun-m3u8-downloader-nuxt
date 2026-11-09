@@ -84,6 +84,7 @@ export default {
       savedChosen: '선택한 폴더 "{dir}"에 저장되었습니다(브라우저 보안 제한으로 폴더 이름만 표시)',
       savedDefault: '파일이 브라우저 기본 다운로드 폴더에 저장되었습니다',
       defaultDir: '기본',
+      pause: '일시 정지',
       resume: '계속',
       coverAlt: '썸네일',
       coverPreviewAlt: '썸네일 미리보기',

@@ -84,6 +84,7 @@ export default {
       savedChosen: 'Guardado en la carpeta seleccionada "{dir}" (límite de seguridad del navegador, solo se muestra el nombre de la carpeta)',
       savedDefault: 'Archivo guardado en la carpeta de descargas predeterminada del navegador',
       defaultDir: 'Predeterminado',
+      pause: 'Pausar',
       resume: 'Reanudar',
       coverAlt: 'Miniatura',
       coverPreviewAlt: 'Vista previa de la miniatura',

@@ -1,4 +1,4 @@
-﻿export default {
+﻿﻿﻿﻿export default {
   nav: {
     download: 'M3U8下载',
     play: '在线播放',
@@ -84,6 +84,7 @@
       savedChosen: '已保存到所选目录「{dir}」（浏览器安全限制，仅显示目录名）',
       savedDefault: '文件保存在浏览器默认下载目录',
       defaultDir: '默认',
+      pause: '暂停下载',
       resume: '继续下载',
       coverAlt: '封面',
       coverPreviewAlt: '封面预览',

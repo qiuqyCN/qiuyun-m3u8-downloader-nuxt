@@ -84,6 +84,7 @@ export default {
       savedChosen: '選択したフォルダ「{dir}」に保存しました（ブラウザのセキュリティ制限によりフォルダ名のみ表示）',
       savedDefault: 'ファイルはブラウザの既定のダウンロードフォルダに保存されました',
       defaultDir: '既定',
+      pause: '一時停止',
       resume: '続行',
       coverAlt: 'サムネイル',
       coverPreviewAlt: 'サムネイルプレビュー',

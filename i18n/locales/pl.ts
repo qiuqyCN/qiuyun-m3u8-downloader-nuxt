@@ -84,6 +84,7 @@ export default {
       savedChosen: 'Zapisano w wybranym katalogu "{dir}" (limit bezpieczeństwa przeglądarki, wyświetlana jest tylko nazwa katalogu)',
       savedDefault: 'Plik zapisano w domyślnym katalogu pobierania przeglądarki',
       defaultDir: 'Domyślny',
+      pause: 'Wstrzymaj',
       resume: 'Wznów',
       coverAlt: 'Okładka',
       coverPreviewAlt: 'Podgląd okładki',

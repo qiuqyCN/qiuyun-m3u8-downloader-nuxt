@@ -84,6 +84,7 @@ export default {
       savedChosen: 'Đã lưu vào thư mục đã chọn "{dir}" (giới hạn bảo mật trình duyệt, chỉ hiển thị tên thư mục)',
       savedDefault: 'Tệp được lưu vào thư mục tải xuống mặc định của trình duyệt',
       defaultDir: 'Mặc định',
+      pause: 'Tạm dừng',
       resume: 'Tiếp tục',
       coverAlt: 'Ảnh bìa',
       coverPreviewAlt: 'Xem trước ảnh bìa',

@@ -84,6 +84,7 @@ export default {
       savedChosen: 'Enregistré dans le dossier choisi « {dir} » (limite de sécurité du navigateur, seul le nom du dossier est affiché)',
       savedDefault: 'Fichier enregistré dans le dossier de téléchargement par défaut du navigateur',
       defaultDir: 'Par défaut',
+      pause: 'Pause',
       resume: 'Reprendre',
       coverAlt: 'Miniature',
       coverPreviewAlt: 'Aperçu de la miniature',

@@ -84,6 +84,7 @@ export default {
       savedChosen: 'Salvato nella cartella selezionata "{dir}" (limite di sicurezza del browser, è mostrato solo il nome della cartella)',
       savedDefault: 'File salvato nella cartella di download predefinita del browser',
       defaultDir: 'Predefinita',
+      pause: 'Pausa',
       resume: 'Riprendi',
       coverAlt: 'Copertina',
       coverPreviewAlt: 'Anteprima copertina',

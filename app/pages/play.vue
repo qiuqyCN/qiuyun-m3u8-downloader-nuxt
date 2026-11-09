@@ -31,7 +31,7 @@
 
     <!-- 播放器：仅在预检成功后才渲染 -->
     <div v-if="url && checkStatus === 'ok'" class="bg-card border border-border rounded-2xl overflow-hidden">
-      <M3U8Player :src="url" @download="gotoDownload" />
+      <M3U8Player :src="url" />
 
       <div class="px-5 py-4 border-t border-border space-y-2">
         <div class="flex items-center gap-2">
@@ -145,6 +145,7 @@ useSeoMeta({
   description: () => t('play.seoDescription'),
   ogTitle: () => t('play.seoTitle'),
   ogDescription: () => t('play.seoDescription'),
+  ogSiteName: () => t('brand.name'),
   ogUrl: () => `${SITE_URL}${localePath('/play')}`,
 });
 
@@ -164,13 +165,6 @@ const downloadUrl = computed(() => {
   if (title.value) params.set('title', title.value);
   return `${localePath('/')}?${params.toString()}`;
 });
-
-function gotoDownload(src: string) {
-  const params = new URLSearchParams();
-  params.set('url', src);
-  if (title.value) params.set('title', title.value);
-  router.push({ path: localePath('/'), query: Object.fromEntries(params.entries()) });
-}
 
 function playManual() {
   const u = manualUrl.value.trim();

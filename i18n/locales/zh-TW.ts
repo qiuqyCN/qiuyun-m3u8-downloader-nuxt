@@ -84,6 +84,7 @@ export default {
       savedChosen: '已儲存到所選資料夾「{dir}」（瀏覽器安全限制，僅顯示資料夾名稱）',
       savedDefault: '檔案儲存在瀏覽器預設下載資料夾',
       defaultDir: '預設',
+      pause: '暫停下載',
       resume: '繼續下載',
       coverAlt: '封面',
       coverPreviewAlt: '封面預覽',

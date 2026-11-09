@@ -84,6 +84,7 @@ export default {
       savedChosen: 'Seçilen dizine kaydedildi "{dir}" (tarayıcı güvenlik sınırı, yalnızca dizin adı gösterilir)',
       savedDefault: 'Dosya tarayıcının varsayılan indirme dizinine kaydedildi',
       defaultDir: 'Varsayılan',
+      pause: 'Duraklat',
       resume: 'Devam Et',
       coverAlt: 'Kapak',
       coverPreviewAlt: 'Kapak önizlemesi',

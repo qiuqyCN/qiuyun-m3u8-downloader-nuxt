@@ -84,6 +84,7 @@ export default {
       savedChosen: 'Salvo na pasta selecionada "{dir}" (limite de segurança do navegador, apenas o nome da pasta é exibido)',
       savedDefault: 'Arquivo salvo na pasta de downloads padrão do navegador',
       defaultDir: 'Padrão',
+      pause: 'Pausar',
       resume: 'Retomar',
       coverAlt: 'Capa',
       coverPreviewAlt: 'Prévia da capa',

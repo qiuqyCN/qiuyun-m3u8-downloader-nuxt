@@ -13,13 +13,19 @@ export interface CoverResult {
   ext: string;
 }
 
+/** 封面抓取超时（跨域抓图挂起时不能无限等待） */
+const COVER_TIMEOUT = 15000;
+
 /** 抓取封面并压缩为 jpeg；失败返回 null */
 export async function fetchCoverBlob(url: string): Promise<CoverResult | null> {
   if (!url) return null;
 
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), COVER_TIMEOUT);
+
   try {
     console.log('[M3U8] 开始获取封面:', url);
-    const response = await fetch(url);
+    const response = await fetch(url, { signal: controller.signal });
     if (!response.ok) {
       console.warn(`[M3U8] 封面请求失败: HTTP ${response.status}`, url);
       return null;
@@ -54,6 +60,8 @@ export async function fetchCoverBlob(url: string): Promise<CoverResult | null> {
   } catch (error) {
     console.warn('[M3U8] 封面下载失败:', url, error);
     return null;
+  } finally {
+    clearTimeout(timer);
   }
 }
 

@@ -84,6 +84,7 @@ export default {
       savedChosen: 'Im ausgewählten Ordner „{dir}" gespeichert (Browser-Sicherheitslimit, nur Ordnername sichtbar)',
       savedDefault: 'Datei im Standard-Downloadordner des Browsers gespeichert',
       defaultDir: 'Standard',
+      pause: 'Pausieren',
       resume: 'Fortsetzen',
       coverAlt: 'Cover',
       coverPreviewAlt: 'Cover-Vorschau',

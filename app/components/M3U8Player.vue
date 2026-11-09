@@ -74,12 +74,6 @@ import { Loader2, AlertTriangle } from 'lucide-vue-next';
 
 const props = defineProps<{
   src: string;
-  /** base URL，用于把 m3u8 里的相对引用转绝对路径（可选） */
-  baseUrl?: string;
-}>();
-
-defineEmits<{
-  (e: 'download', src: string): void;
 }>();
 
 const { t } = useI18n();
@@ -98,6 +92,27 @@ let hls: any | null = null;
 let destroyed = false;
 let networkErrorRetryCount = 0;
 const MAX_NETWORK_RETRY = 1;
+
+/** 看门狗：预检通过但分片请求一直挂起时，不能无限转圈 */
+const WATCHDOG_MS = 15000;
+let watchdog: ReturnType<typeof setTimeout> | null = null;
+
+function startWatchdog() {
+  clearWatchdog();
+  watchdog = setTimeout(() => {
+    watchdog = null;
+    if (destroyed || status.value !== 'loading') return;
+    status.value = 'error';
+    errorMessage.value = t('player.networkError');
+  }, WATCHDOG_MS);
+}
+
+function clearWatchdog() {
+  if (watchdog) {
+    clearTimeout(watchdog);
+    watchdog = null;
+  }
+}
 
 const isSafari = computed(() => {
   if (typeof navigator === 'undefined') return false;
@@ -128,6 +143,7 @@ function selectLevel(idx: number) {
 }
 
 function onVideoError() {
+  clearWatchdog();
   const v = videoRef.value;
   if (!v) return;
   const err = v.error;
@@ -148,6 +164,7 @@ function onVideoError() {
 }
 
 function onLoadedMetadata() {
+  clearWatchdog();
   status.value = 'ready';
 }
 
@@ -160,6 +177,7 @@ async function initPlayer() {
   currentLevel.value = -1;
   errorMessage.value = '';
   networkErrorRetryCount = 0;
+  startWatchdog();
 
   if (isSafari.value) {
     v.src = props.src;
@@ -181,9 +199,9 @@ async function initPlayer() {
     hls = new Hls({
       enableWorker: true,
       lowLatencyMode: false,
-      xhrSetup: (xhr: XMLHttpRequest) => {
-        xhr.withCredentials = false;
-      },
+      // 限制缓冲，避免长时间播放时内存持续增长（backBufferLength 默认 Infinity）
+      backBufferLength: 30,
+      maxBufferLength: 30,
     });
 
     hls.loadSource(props.src);
@@ -264,6 +282,7 @@ async function initPlayer() {
 }
 
 function destroyHls() {
+  clearWatchdog();
   if (hls) {
     try { hls.destroy(); } catch { /* ignore */ }
     hls = null;

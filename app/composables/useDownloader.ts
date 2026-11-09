@@ -9,6 +9,10 @@ import { triggerRef } from 'vue';
 
 /** 已被用户取消的任务 id（下载循环据此立即退出） */
 const cancelledTaskIds = new Set<string>();
+/** 已暂停的任务 id（派发循环据此停止派发新分片） */
+const pausedTaskIds = new Set<string>();
+/** 每个任务的取消控制器：取消时用于立即中止在途请求 */
+const taskAbortControllers = new Map<string, AbortController>();
 /** 正在写入的文件句柄，取消时用于中止并删除半成品 */
 const activeWriters = new Map<string, StreamWriter>();
 
@@ -51,6 +55,10 @@ export function useDownloader() {
   }
 
   async function startDownload(task: DownloadTask, options: DownloadOptions) {
+    // 取消控制器贯穿整个任务（解析阶段也能被取消中止）
+    const controller = new AbortController();
+    taskAbortControllers.set(task.id, controller);
+
     try {
       task.status = 'parsing';
       currentTask.value = task;
@@ -58,7 +66,7 @@ export function useDownloader() {
       refresh();
 
       // 获取 M3U8 内容
-      const m3u8Content = await fetchM3U8(task.url);
+      const m3u8Content = await fetchM3U8(task.url, undefined, controller.signal);
       
       // 检查是否是主播放列表
       if (isMasterPlaylist(m3u8Content)) {
@@ -77,22 +85,34 @@ export function useDownloader() {
         }
         
         // 重新获取媒体播放列表
-        const mediaContent = await fetchM3U8(task.url);
-        await downloadPlaylist(task, mediaContent, options);
+        const mediaContent = await fetchM3U8(task.url, undefined, controller.signal);
+        await downloadPlaylist(task, mediaContent, options, controller.signal);
       } else {
-        await downloadPlaylist(task, m3u8Content, options);
+        await downloadPlaylist(task, m3u8Content, options, controller.signal);
       }
     } catch (error) {
-      task.status = 'error';
-      task.error = error instanceof Error ? error.message : 'Unknown error';
-      console.error('Download error:', error);
+      // 用户主动取消不算错误，避免把已移除的任务又标成 error
+      if (controller.signal.aborted) {
+        console.log(`[M3U8] 任务已取消: ${task.id}`);
+      } else {
+        task.status = 'error';
+        task.error = error instanceof Error ? error.message : 'Unknown error';
+        console.error('Download error:', error);
+      }
     } finally {
+      taskAbortControllers.delete(task.id);
+      pausedTaskIds.delete(task.id);
       isDownloading.value = false;
       currentTask.value = null;
     }
   }
 
-  async function downloadPlaylist(task: DownloadTask, content: string, options: DownloadOptions) {
+  async function downloadPlaylist(
+    task: DownloadTask,
+    content: string,
+    options: DownloadOptions,
+    signal: AbortSignal,
+  ) {
     // 解析阶段就被删除的任务，直接退出，不创建任何文件
     if (cancelledTaskIds.has(task.id)) {
       cancelledTaskIds.delete(task.id);
@@ -115,7 +135,7 @@ export function useDownloader() {
     let initSegmentData: ArrayBuffer | null = null;
     if (playlist.initSegment) {
       console.log(`[M3U8] 下载 fMP4 init segment: ${playlist.initSegment}`);
-      initSegmentData = await fetchSegment(playlist.initSegment);
+      initSegmentData = await fetchSegment(playlist.initSegment, signal);
       const bytes = new Uint8Array(initSegmentData);
       const ftyp = String.fromCharCode(bytes[4]!, bytes[5]!, bytes[6]!, bytes[7]!);
       console.log(`[M3U8] init segment: ${initSegmentData.byteLength} bytes, type=${ftyp} (应为 ftyp)`);
@@ -126,7 +146,7 @@ export function useDownloader() {
     for (const seg of segments) {
       if (seg.encryption?.uri && !keyCache.has(seg.encryption.uri)) {
         try {
-          keyCache.set(seg.encryption.uri, await fetchKey(seg.encryption.uri));
+          keyCache.set(seg.encryption.uri, await fetchKey(seg.encryption.uri, signal));
         } catch (e) {
           console.error(`[M3U8] 加载密钥失败 ${seg.encryption.uri}:`, e);
         }
@@ -182,6 +202,31 @@ export function useDownloader() {
       if (streamMode) pending.set(idx, data);
       else collected[idx] = data;
     };
+
+    // 进度按「已处理分片数」计算：失败分片也算处理完，否则进度永远到不了 100%
+    const updateProgress = () => {
+      const processed = task.segments.downloaded + task.segments.failed.length;
+      task.progress = Math.round((processed / Math.max(1, task.segments.total)) * 100);
+      task.updatedAt = Date.now();
+    };
+
+    // 进度刷新节流：高并发 × 数百分片时，逐片 triggerRef 会造成频繁整块重渲染
+    let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+    let lastRefreshAt = 0;
+    const REFRESH_INTERVAL = 200;
+    function throttledRefresh() {
+      const wait = REFRESH_INTERVAL - (Date.now() - lastRefreshAt);
+      if (wait <= 0) {
+        lastRefreshAt = Date.now();
+        refresh();
+      } else if (!refreshTimer) {
+        refreshTimer = setTimeout(() => {
+          refreshTimer = null;
+          lastRefreshAt = Date.now();
+          refresh();
+        }, wait);
+      }
+    }
 
     // 按序写盘
     const flush = async () => {
@@ -244,21 +289,46 @@ export function useDownloader() {
           }
 
           if (writer && data.byteLength > 0) {
-            try {
-              await writer.write(data);
-            } catch (error) {
-              await writer.abort().catch(() => {});
-              throw error;
-            }
+            await writer.write(data);
           }
         }
         nextWrite++;
       }
     };
 
+    /** 写盘失败时清理句柄并删除残缺文件，避免残留半成品 */
+    const abortWriter = async () => {
+      const w = writer;
+      writer = null;
+      if (w) {
+        await w.abort().catch(() => {});
+        if (dir) await dir.removeEntry(w.filename).catch(() => {});
+      }
+      activeWriters.delete(task.id);
+    };
+
+    const safeFlush = async () => {
+      try {
+        await flush();
+      } catch (error) {
+        await abortWriter();
+        throw error;
+      }
+    };
+
     console.log(`[M3U8] 共 ${segments.length} 个媒体分片开始下载...`);
 
-    while ((queue.length > 0 || inProgress.size > 0) && !cancelledTaskIds.has(task.id)) {
+    while (
+      (queue.length > 0 || inProgress.size > 0) &&
+      !cancelledTaskIds.has(task.id) &&
+      !signal.aborted
+    ) {
+      // 暂停：停止派发新分片，已派发的请求自然完成即可
+      if (pausedTaskIds.has(task.id)) {
+        await delay(200);
+        continue;
+      }
+
       while (
         inProgress.size < concurrency &&
         queue.length > 0 &&
@@ -269,7 +339,7 @@ export function useDownloader() {
       ) {
         const { seg, idx } = queue.shift()!;
 
-        const promise = downloadSegment(seg.url, options.maxRetries)
+        const promise = downloadSegment(seg.url, options.maxRetries, signal)
           .then(async (rawData) => {
             let data = rawData;
             if (seg.encryption) {
@@ -281,14 +351,17 @@ export function useDownloader() {
             }
             commit(idx, data);
             task.segments.downloaded++;
-            task.progress = Math.round((task.segments.downloaded / task.segments.total) * 100);
-            task.updatedAt = Date.now();
-            refresh(); // 每次分片完成立即刷新
+            updateProgress();
+            throttledRefresh();
           })
           .catch((error) => {
+            // 取消导致的中止不计入失败
+            if (cancelledTaskIds.has(task.id) || signal.aborted) return;
             console.error(`[M3U8] 分片#${idx} 下载失败:`, seg.url, error);
             task.segments.failed.push(idx);
             commit(idx, new ArrayBuffer(0));
+            updateProgress();
+            throttledRefresh();
           })
           .finally(() => { inProgress.delete(promise); });
 
@@ -296,37 +369,38 @@ export function useDownloader() {
       }
 
       if (inProgress.size > 0) await Promise.race(inProgress);
-      await flush();
+      await safeFlush();
     }
 
     // ========== 用户取消：中止写入并删除半成品 ==========
-    if (cancelledTaskIds.has(task.id)) {
+    if (cancelledTaskIds.has(task.id) || signal.aborted) {
       cancelledTaskIds.delete(task.id);
-      const activeWriter = activeWriters.get(task.id);
-      activeWriters.delete(task.id);
-      if (activeWriter) {
-        await activeWriter.abort().catch(() => {});
-        if (dir) await dir.removeEntry(activeWriter.filename).catch(() => {});
-      }
+      pausedTaskIds.delete(task.id);
+      await abortWriter();
       console.log(`[M3U8] 任务已取消: ${task.id}`);
       return;
     }
 
-    await flush();
+    await safeFlush();
 
     // flush 最后残留的转封装数据（比如只积了 1 片没到 flush 阈值）
     if (streamMode && transmuxer && consecutiveTsPushes > 0) {
-      const chunks = (transmuxer as TsToMp4Transmuxer).flush();
-      if (chunks.length > 0) {
-        if (!writer && dir) {
-          writer = await createDirectoryWriter(dir, fileBase, 'mp4');
-          activeWriters.set(task.id, writer);
-        }
-        if (writer) {
-          for (const c of chunks) {
-            if (c.byteLength > 0) await writer.write(c);
+      try {
+        const chunks = (transmuxer as TsToMp4Transmuxer).flush();
+        if (chunks.length > 0) {
+          if (!writer && dir) {
+            writer = await createDirectoryWriter(dir, fileBase, 'mp4');
+            activeWriters.set(task.id, writer);
+          }
+          if (writer) {
+            for (const c of chunks) {
+              if (c.byteLength > 0) await writer.write(c);
+            }
           }
         }
+      } catch (error) {
+        await abortWriter();
+        throw error;
       }
       consecutiveTsPushes = 0;
     }
@@ -336,7 +410,12 @@ export function useDownloader() {
       task.status = 'merging';
       refresh();
 
-      await writer.close();
+      try {
+        await writer.close();
+      } catch (error) {
+        await abortWriter();
+        throw error;
+      }
       activeWriters.delete(task.id);
       task.savedToDirectory = true;
 
@@ -446,7 +525,8 @@ export function useDownloader() {
   /** 根据分片 URL 和首字节判断是 TS 还是 fMP4 */
   function detectFormat(firstUrl: string, firstSegment: ArrayBuffer): { ext: string; mime: string } {
     const url = firstUrl.toLowerCase();
-    const firstByte = new Uint8Array(firstSegment)[0]!;
+    // 空分片（e.g. 失败占位）不应访问首字节
+    const firstByte = firstSegment.byteLength > 0 ? new Uint8Array(firstSegment)[0]! : -1;
     
     // 1. 先看 URL 后缀
     if (url.endsWith('.m4s')) return { ext: 'mp4', mime: 'video/mp4' };
@@ -473,16 +553,19 @@ export function useDownloader() {
 
   async function downloadSegment(
     url: string,
-    maxRetries: number = 3
+    maxRetries: number = 3,
+    signal?: AbortSignal,
   ): Promise<ArrayBuffer> {
     let lastError: Error | undefined;
     
     for (let attempt = 0; attempt < maxRetries; attempt++) {
+      if (signal?.aborted) throw new Error('请求已取消');
       try {
-        const data = await fetchSegment(url);
+        const data = await fetchSegment(url, signal);
         return data;
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
+        if (signal?.aborted) throw lastError;
         if (attempt < maxRetries - 1) {
           await delay(300 * (attempt + 1)); // 指数退避
         }
@@ -501,18 +584,15 @@ export function useDownloader() {
     const mime = options.mime || 'video/mp2t';
     
     const totalSize = segments.reduce((sum, seg) => sum + seg.byteLength, 0);
-    const merged = new Uint8Array(totalSize);
-    
-    let offset = 0;
-    for (const segment of segments) {
-      merged.set(new Uint8Array(segment), offset);
-      offset += segment.byteLength;
-    }
+    const firstByte = segments[0] && segments[0].byteLength > 0
+      ? new Uint8Array(segments[0])[0]!.toString(16)
+      : 'N/A';
 
     console.log(`[M3U8] 合并完成: ${segments.length} 分片, 总大小 ${(totalSize / 1024 / 1024).toFixed(2)} MB`);
-    console.log(`[M3U8] 输出格式: .${ext} (${mime}), 首字节: 0x${merged[0]?.toString(16) ?? 'N/A'}`);
+    console.log(`[M3U8] 输出格式: .${ext} (${mime}), 首字节: 0x${firstByte}`);
 
-    const blob = new Blob([merged], { type: mime });
+    // 直接把分片数组交给 Blob，避免再复制一份整文件大小的缓冲（原实现峰值内存 ≈ 2×文件）
+    const blob = new Blob(segments, { type: mime });
     const timestamp = localTimestamp();
     const base = options.fileBase || `${task.title || 'video'}_${timestamp}`;
     const filename = `${base}.${ext}`;
@@ -534,20 +614,26 @@ export function useDownloader() {
 
   function pauseTask(task: DownloadTask) {
     if (task.status === 'downloading') {
+      pausedTaskIds.add(task.id);
       task.status = 'paused';
+      task.updatedAt = Date.now();
     }
   }
 
   function resumeTask(task: DownloadTask) {
     if (task.status === 'paused') {
+      pausedTaskIds.delete(task.id);
       task.status = 'downloading';
+      task.updatedAt = Date.now();
     }
   }
 
   function cancelTask(task: DownloadTask) {
-    // 进行中的任务先打取消标记，下载循环会在当前批次结束后立即退出
     if (task.status === 'parsing' || task.status === 'downloading' || task.status === 'merging' || task.status === 'paused') {
       cancelledTaskIds.add(task.id);
+      pausedTaskIds.delete(task.id);
+      // 立即中止在途请求，避免取消后还要等请求自然结束（最长 60s）
+      taskAbortControllers.get(task.id)?.abort();
       task.status = 'cancelled';
     }
 
@@ -558,7 +644,9 @@ export function useDownloader() {
   }
 
   function generateId(): string {
-    return Math.random().toString(36).substring(2, 15);
+    return typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+      ? crypto.randomUUID()
+      : Math.random().toString(36).substring(2, 15);
   }
 
   function delay(ms: number): Promise<void> {
