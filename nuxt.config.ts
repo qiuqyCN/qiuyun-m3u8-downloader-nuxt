@@ -119,6 +119,18 @@ export default defineNuxtConfig({
             })(window, document, "clarity", "script", "z89s5pnlbk");
           `,
         },
+        // 百度统计
+        {
+          innerHTML: `
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?22e0597b5b3b4d2838a5243dd283b123";
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(hm, s);
+            })();
+          `,
+        },
         {
           type: 'application/ld+json',
           innerHTML: JSON.stringify({
