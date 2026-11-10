@@ -86,6 +86,7 @@ export default {
       defaultDir: 'По умолчанию',
       pause: 'Пауза',
       resume: 'Продолжить',
+      segmentsFailed: '{count} сегментов не удалось загрузить после повторных попыток ({indexes}); объединение отменено, проверьте сеть и попробуйте снова',
       coverAlt: 'Обложка',
       coverPreviewAlt: 'Предпросмотр обложки',
       status: {

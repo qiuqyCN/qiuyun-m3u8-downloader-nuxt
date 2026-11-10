@@ -86,6 +86,7 @@ export default {
       defaultDir: '預設',
       pause: '暫停下載',
       resume: '繼續下載',
+      segmentsFailed: '{count} 個分片重試後仍下載失敗（{indexes}），已放棄合併，請檢查網路後重試',
       coverAlt: '封面',
       coverPreviewAlt: '封面預覽',
       status: {

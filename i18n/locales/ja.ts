@@ -86,6 +86,7 @@ export default {
       defaultDir: '既定',
       pause: '一時停止',
       resume: '続行',
+      segmentsFailed: '{count} 個のセグメントが再試行後もダウンロード失敗しました（{indexes}）。結合を中止しました。ネットワークを確認して再試行してください',
       coverAlt: 'サムネイル',
       coverPreviewAlt: 'サムネイルプレビュー',
       status: {

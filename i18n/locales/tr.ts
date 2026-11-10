@@ -86,6 +86,7 @@ export default {
       defaultDir: 'Varsayılan',
       pause: 'Duraklat',
       resume: 'Devam Et',
+      segmentsFailed: '{count} bölüm yeniden denemelerden sonra da başarısız oldu ({indexes}); birleştirme iptal edildi, ağınızı kontrol edip tekrar deneyin',
       coverAlt: 'Kapak',
       coverPreviewAlt: 'Kapak önizlemesi',
       status: {

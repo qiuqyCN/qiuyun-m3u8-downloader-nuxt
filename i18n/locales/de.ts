@@ -86,6 +86,7 @@ export default {
       defaultDir: 'Standard',
       pause: 'Pausieren',
       resume: 'Fortsetzen',
+      segmentsFailed: '{count} Segment(e) schlugen nach erneuten Versuchen weiterhin fehl ({indexes}); Zusammenführung abgebrochen, bitte Netzwerk prüfen und erneut versuchen',
       coverAlt: 'Cover',
       coverPreviewAlt: 'Cover-Vorschau',
       status: {

@@ -86,6 +86,7 @@ export default {
       defaultDir: 'Mặc định',
       pause: 'Tạm dừng',
       resume: 'Tiếp tục',
+      segmentsFailed: '{count} phân đoạn vẫn tải thất bại sau khi thử lại ({indexes}); đã hủy ghép, hãy kiểm tra mạng và thử lại',
       coverAlt: 'Ảnh bìa',
       coverPreviewAlt: 'Xem trước ảnh bìa',
       status: {

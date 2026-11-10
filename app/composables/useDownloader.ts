@@ -17,6 +17,7 @@ const taskAbortControllers = new Map<string, AbortController>();
 const activeWriters = new Map<string, StreamWriter>();
 
 export function useDownloader() {
+  const { t } = useI18n();
   const tasks = ref<DownloadTask[]>([]);
   const currentTask = ref<DownloadTask | null>(null);
   const isDownloading = ref(false);
@@ -198,6 +199,12 @@ export function useDownloader() {
     const queue = segments.map((seg, idx) => ({ seg, idx }));
     const inProgress = new Set<Promise<void>>();
 
+    // 失败分片重试波：每轮将失败分片按序重新入队（流式模式下 flush 在缺口处等待，
+    // 不会错位写入），全部波次耗尽后仍有失败 → 整任务判失败，不产出残缺文件
+    const MAX_RETRY_WAVES = 2;
+    let pendingWaveRetries: number[] = [];
+    let wavesUsed = 0;
+
     const commit = (idx: number, data: ArrayBuffer) => {
       if (streamMode) pending.set(idx, data);
       else collected[idx] = data;
@@ -351,6 +358,9 @@ export function useDownloader() {
             }
             commit(idx, data);
             task.segments.downloaded++;
+            // 重试成功的分片移出失败名单，保证进度与终判准确
+            const fi = task.segments.failed.indexOf(idx);
+            if (fi !== -1) task.segments.failed.splice(fi, 1);
             updateProgress();
             throttledRefresh();
           })
@@ -358,8 +368,10 @@ export function useDownloader() {
             // 取消导致的中止不计入失败
             if (cancelledTaskIds.has(task.id) || signal.aborted) return;
             console.error(`[M3U8] 分片#${idx} 下载失败:`, seg.url, error);
-            task.segments.failed.push(idx);
-            commit(idx, new ArrayBuffer(0));
+            // 不再提交空占位符（会让流式 flush 跳过缺口、留下永久坏段），
+            // 而是记录失败等待重试波重新入队
+            if (!task.segments.failed.includes(idx)) task.segments.failed.push(idx);
+            pendingWaveRetries.push(idx);
             updateProgress();
             throttledRefresh();
           })
@@ -370,6 +382,20 @@ export function useDownloader() {
 
       if (inProgress.size > 0) await Promise.race(inProgress);
       await safeFlush();
+
+      // 主队列派发完毕且无在途请求：若存在失败分片且重试波未耗尽，发起下一轮重试
+      if (
+        queue.length === 0 &&
+        inProgress.size === 0 &&
+        pendingWaveRetries.length > 0 &&
+        wavesUsed < MAX_RETRY_WAVES
+      ) {
+        wavesUsed++;
+        pendingWaveRetries.sort((a, b) => a - b);
+        for (const i of pendingWaveRetries) queue.push({ seg: segments[i]!, idx: i });
+        console.log(`[M3U8] 第 ${wavesUsed}/${MAX_RETRY_WAVES} 轮重试 ${pendingWaveRetries.length} 个失败分片...`);
+        pendingWaveRetries = [];
+      }
     }
 
     // ========== 用户取消：中止写入并删除半成品 ==========
@@ -378,6 +404,19 @@ export function useDownloader() {
       pausedTaskIds.delete(task.id);
       await abortWriter();
       console.log(`[M3U8] 任务已取消: ${task.id}`);
+      return;
+    }
+
+    // ========== 失败终判：重试波耗尽后仍有失败分片 → 不合并，绝不产出残缺文件 ==========
+    if (task.segments.failed.length > 0) {
+      const list = [...task.segments.failed].sort((a, b) => a - b);
+      const shown = list.slice(0, 10).join(', ') + (list.length > 10 ? ` +${list.length - 10}` : '');
+      await abortWriter();
+      task.status = 'error';
+      task.error = t('home.tasks.segmentsFailed', { count: list.length, indexes: shown });
+      task.updatedAt = Date.now();
+      refresh();
+      console.error(`[M3U8] 任务失败：${list.length} 个分片重试后仍失败 [${shown}]`);
       return;
     }
 

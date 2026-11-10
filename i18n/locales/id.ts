@@ -86,6 +86,7 @@ export default {
       defaultDir: 'Bawaan',
       pause: 'Jeda',
       resume: 'Lanjutkan',
+      segmentsFailed: '{count} segmen tetap gagal diundang setelah percobaan ulang ({indexes}); penggabungan dibatalkan, periksa jaringan Anda dan coba lagi',
       coverAlt: 'Sampul',
       coverPreviewAlt: 'Pratinjau sampul',
       status: {

@@ -86,6 +86,7 @@ export default {
       defaultDir: '기본',
       pause: '일시 정지',
       resume: '계속',
+      segmentsFailed: '{count}개 세그먼트가 재시도 후에도 다운로드에 실패했습니다({indexes}). 병합을 중단했습니다. 네트워크를 확인 후 다시 시도하세요',
       coverAlt: '썸네일',
       coverPreviewAlt: '썸네일 미리보기',
       status: {

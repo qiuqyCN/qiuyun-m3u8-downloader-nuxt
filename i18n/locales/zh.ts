@@ -1,4 +1,4 @@
-﻿﻿﻿﻿export default {
+﻿﻿export default {
   nav: {
     download: 'M3U8下载',
     play: '在线播放',
@@ -86,6 +86,7 @@
       defaultDir: '默认',
       pause: '暂停下载',
       resume: '继续下载',
+      segmentsFailed: '{count} 个分片重试后仍下载失败（{indexes}），已放弃合并，请检查网络后重试',
       coverAlt: '封面',
       coverPreviewAlt: '封面预览',
       status: {

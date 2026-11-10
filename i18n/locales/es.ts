@@ -86,6 +86,7 @@ export default {
       defaultDir: 'Predeterminado',
       pause: 'Pausar',
       resume: 'Reanudar',
+      segmentsFailed: '{count} fragmentos siguen fallando tras los reintentos ({indexes}); fusión cancelada, comprueba tu red e inténtalo de nuevo',
       coverAlt: 'Miniatura',
       coverPreviewAlt: 'Vista previa de la miniatura',
       status: {

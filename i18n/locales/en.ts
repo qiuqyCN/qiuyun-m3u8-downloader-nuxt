@@ -86,6 +86,7 @@
       defaultDir: 'Default',
       pause: 'Pause',
       resume: 'Resume',
+      segmentsFailed: '{count} segment(s) still failed after retries ({indexes}); merge aborted, please check your network and try again',
       coverAlt: 'Cover',
       coverPreviewAlt: 'Cover preview',
       status: {

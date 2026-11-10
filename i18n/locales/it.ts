@@ -86,6 +86,7 @@ export default {
       defaultDir: 'Predefinita',
       pause: 'Pausa',
       resume: 'Riprendi',
+      segmentsFailed: '{count} segmenti non sono stati scaricati nonostante i tentativi ({indexes}); unione annullata, controlla la rete e riprova',
       coverAlt: 'Copertina',
       coverPreviewAlt: 'Anteprima copertina',
       status: {

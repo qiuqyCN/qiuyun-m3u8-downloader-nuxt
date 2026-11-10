@@ -86,6 +86,7 @@ export default {
       defaultDir: 'Domyślny',
       pause: 'Wstrzymaj',
       resume: 'Wznów',
+      segmentsFailed: '{count} segmentów nadal nie udało się pobrać po ponownych próbach ({indexes}); scalanie anulowane, sprawdź sieć i spróbuj ponownie',
       coverAlt: 'Okładka',
       coverPreviewAlt: 'Podgląd okładki',
       status: {

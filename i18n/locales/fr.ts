@@ -86,6 +86,7 @@ export default {
       defaultDir: 'Par défaut',
       pause: 'Pause',
       resume: 'Reprendre',
+      segmentsFailed: '{count} segment(s) ont de nouveau échoué après nouvelle tentative ({indexes}) ; fusion annulée, vérifiez votre réseau et réessayez',
       coverAlt: 'Miniature',
       coverPreviewAlt: 'Aperçu de la miniature',
       status: {

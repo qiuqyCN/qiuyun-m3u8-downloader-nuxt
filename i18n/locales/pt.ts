@@ -86,6 +86,7 @@ export default {
       defaultDir: 'Padrão',
       pause: 'Pausar',
       resume: 'Retomar',
+      segmentsFailed: '{count} segmentos ainda falharam após novas tentativas ({indexes}); mesclagem cancelada, verifique sua rede e tente novamente',
       coverAlt: 'Capa',
       coverPreviewAlt: 'Prévia da capa',
       status: {

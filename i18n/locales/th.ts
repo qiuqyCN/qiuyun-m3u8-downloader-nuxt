@@ -86,6 +86,7 @@ export default {
       defaultDir: 'ค่าเริ่มต้น',
       pause: 'หยุดชั่วคราว',
       resume: 'ทำต่อ',
+      segmentsFailed: '{count} ส่วนยังดาวน์โหลดไม่สำเร็จหลังลองใหม่แล้ว ({indexes}); ยกเลิกการรวมไฟล์ โปรดตรวจสอบเครือข่ายแล้วลองอีกครั้ง',
       coverAlt: 'ภาพปก',
       coverPreviewAlt: 'ตัวอย่างภาพปก',
       status: {
