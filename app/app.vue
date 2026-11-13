@@ -2,6 +2,10 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <!-- Cookie 同意横幅：仅在客户端渲染，SSR 不输出，避免水合不匹配 -->
+  <ClientOnly>
+    <CookieConsent />
+  </ClientOnly>
 </template>
 
 <script setup>

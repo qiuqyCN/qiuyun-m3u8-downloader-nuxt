@@ -33,15 +33,19 @@
 
 <script setup lang="ts">
 import { marked } from 'marked';
-// 打包时内联 README.md，与 GitHub 仓库内容保持一致，无运行时网络依赖
-import readme from '../../README.md?raw';
+// 构建时内联指南文档，无运行时网络依赖；docs 页与 GitHub README 解耦，可独立扩充
+import guideEn from '~/assets/docs/guide.en.md?raw';
+import guideZh from '~/assets/docs/guide.zh.md?raw';
 import { ArrowLeft, BookOpen, LucideGithub } from 'lucide-vue-next';
 
 definePageMeta({
   layout: 'default'
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const localePath = useLocalePath();
+
+const SITE_URL = 'https://m3u8.qiuyun.dev';
 
 useSeoMeta({
   title: () => t('docs.pageTitle'),
@@ -49,107 +53,13 @@ useSeoMeta({
   ogTitle: () => t('docs.pageTitle'),
   ogDescription: () => t('docs.description'),
   ogSiteName: () => t('brand.name'),
-  ogUrl: 'https://m3u8.qiuyun.dev/docs',
+  ogUrl: () => SITE_URL + localePath('/docs'),
 });
 
 marked.setOptions({ breaks: true, gfm: true });
 
-// README 中的相对链接补充为 GitHub 绝对地址
-const GITHUB_BASE = 'https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/blob/main/';
-const html = marked.parse(
-  readme.replace(/\]\((?!https?:|#|mailto:)([^)]+)\)/g, `](${GITHUB_BASE}$1`)
-);
+// zh / zh-TW 命中中文指南，其余语言回退英文
+const guides: Record<string, string> = { en: guideEn, zh: guideZh, 'zh-TW': guideZh };
+const html = marked.parse(guides[locale.value] ?? guideEn);
 </script>
 
-<style>
-.docs-content {
-  color: var(--foreground, inherit);
-  line-height: 1.75;
-  font-size: 0.9375rem;
-  word-break: break-word;
-}
-.docs-content h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin: 0 0 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid hsl(var(--border));
-}
-.docs-content h2 {
-  font-size: 1.375rem;
-  font-weight: 600;
-  margin: 2rem 0 0.75rem;
-  padding-bottom: 0.375rem;
-  border-bottom: 1px solid hsl(var(--border));
-}
-.docs-content h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin: 1.5rem 0 0.5rem;
-}
-.docs-content p { margin: 0.75rem 0; }
-.docs-content a {
-  color: #8b5cf6;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.docs-content a:hover { color: #7c3aed; }
-.docs-content ul, .docs-content ol {
-  margin: 0.75rem 0;
-  padding-left: 1.5rem;
-}
-.docs-content ul { list-style: disc; }
-.docs-content ol { list-style: decimal; }
-.docs-content li { margin: 0.25rem 0; }
-.docs-content blockquote {
-  margin: 1rem 0;
-  padding: 0.25rem 1rem;
-  border-left: 3px solid #8b5cf6;
-  background: hsl(var(--muted) / 0.5);
-  border-radius: 0 0.5rem 0.5rem 0;
-}
-.docs-content code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.8125em;
-  padding: 0.15em 0.4em;
-  border-radius: 0.375rem;
-  background: hsl(var(--muted));
-}
-.docs-content pre {
-  margin: 1rem 0;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  background: hsl(var(--muted));
-  border: 1px solid hsl(var(--border));
-  overflow-x: auto;
-}
-.docs-content pre code {
-  padding: 0;
-  background: transparent;
-  font-size: 0.8125rem;
-  line-height: 1.6;
-}
-.docs-content table {
-  width: 100%;
-  margin: 1rem 0;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-  display: block;
-  overflow-x: auto;
-}
-.docs-content th, .docs-content td {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid hsl(var(--border));
-  text-align: left;
-}
-.docs-content th {
-  background: hsl(var(--muted) / 0.6);
-  font-weight: 600;
-}
-.docs-content hr {
-  margin: 1.5rem 0;
-  border: none;
-  border-top: 1px solid hsl(var(--border));
-}
-.docs-content img { max-width: 100%; border-radius: 0.5rem; }
-</style>

@@ -220,7 +220,7 @@ export function useDownloader() {
     // 进度刷新节流：高并发 × 数百分片时，逐片 triggerRef 会造成频繁整块重渲染
     let refreshTimer: ReturnType<typeof setTimeout> | null = null;
     let lastRefreshAt = 0;
-    const REFRESH_INTERVAL = 200;
+    const REFRESH_INTERVAL = 500;
     function throttledRefresh() {
       const wait = REFRESH_INTERVAL - (Date.now() - lastRefreshAt);
       if (wait <= 0) {

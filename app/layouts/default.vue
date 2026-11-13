@@ -88,6 +88,7 @@
           {{ $t('footer.copyright', { year: currentYear }) }}
         </p>
         <div class="flex items-center gap-4">
+          <NuxtLinkLocale to="/privacy" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.privacy') }}</NuxtLinkLocale>
           <NuxtLinkLocale to="/docs" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.docs') }}</NuxtLinkLocale>
           <a href="https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues" target="_blank" rel="noopener" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.feedback') }}</a>
           <NuxtLink :to="{ path: localePath('/settings'), query: { section: 'about' } }" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.about') }}</NuxtLink>

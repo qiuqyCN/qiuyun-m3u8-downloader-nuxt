@@ -3,7 +3,7 @@ import type { AppSettings } from '~/types';
 const STORAGE_KEY = 'qiuyun-settings';
 
 export const defaultSettings: AppSettings = {
-  defaultMaxConcurrentSegments: 15,
+  defaultMaxConcurrentSegments: 6,
   defaultMaxRetries: 3,
   enableNotification: true,
 };

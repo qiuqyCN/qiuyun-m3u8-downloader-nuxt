@@ -1,5 +1,7 @@
 # 秋云 M3U8 下载器
 
+网页版 M3U8（HLS）视频下载器 + 油猴脚本：分片并发下载、AES-128 解密、fMP4 支持、流式写盘保存、跨域代理绕过防盗链。
+
 [**English**](README.md) · [**简体中文**](README.zh-CN.md)
 
 > **GitHub**：[qiuqyCN/qiuyun-m3u8-downloader-nuxt](https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt)

@@ -96,41 +96,8 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },
       ],
       script: [
-        // Google Analytics (GA4)
-        {
-          async: true,
-          src: 'https://www.googletagmanager.com/gtag/js?id=G-LSQXK5HXX2',
-        },
-        {
-          innerHTML: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-LSQXK5HXX2');
-          `,
-        },
-        // Microsoft Clarity
-        {
-          innerHTML: `
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "z89s5pnlbk");
-          `,
-        },
-        // 百度统计
-        {
-          innerHTML: `
-            var _hmt = _hmt || [];
-            (function() {
-              var hm = document.createElement("script");
-              hm.src = "https://hm.baidu.com/hm.js?22e0597b5b3b4d2838a5243dd283b123";
-              var s = document.getElementsByTagName("script")[0];
-              s.parentNode.insertBefore(hm, s);
-            })();
-          `,
-        },
+        // GA4 / 百度统计脚本移至 app/plugins/analytics.client.ts：
+        // 两者都会写 Cookie，必须在用户同意（GDPR/ePrivacy）后才动态注入
         {
           type: 'application/ld+json',
           innerHTML: JSON.stringify({

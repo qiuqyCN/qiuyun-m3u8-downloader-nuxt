@@ -1,5 +1,7 @@
 # Qiuyun M3U8 Downloader
 
+Web-based M3U8 (HLS) video downloader + Tampermonkey userscript: concurrent segment downloads, AES-128 decryption, fMP4 support, streaming save via File System Access API, and cross-origin proxy to bypass hotlink protection.
+
 [**English**](README.md) · [**简体中文**](README.zh-CN.md)
 
 > **GitHub**: [qiuqyCN/qiuyun-m3u8-downloader-nuxt](https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt)

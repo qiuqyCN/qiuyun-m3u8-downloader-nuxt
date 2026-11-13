@@ -521,6 +521,25 @@
       </div>
     </div>
 
+    <!-- FAQ 常见问题 -->
+    <div class="mt-10">
+      <h2 class="text-lg font-bold text-foreground">{{ $t('faq.title') }}</h2>
+      <p class="text-sm text-muted-foreground mt-1 mb-5">{{ $t('faq.subtitle') }}</p>
+      <div class="space-y-2.5">
+        <details
+          v-for="item in faqItems"
+          :key="item.q"
+          class="group bg-card border border-border rounded-xl overflow-hidden"
+        >
+          <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none text-sm font-medium text-foreground hover:bg-muted/40 transition-colors [&::-webkit-details-marker]:hidden">
+            {{ item.q }}
+            <ChevronDown class="w-4 h-4 text-muted-foreground transition-transform group-open:rotate-180 flex-shrink-0" />
+          </summary>
+          <p class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{{ item.a }}</p>
+        </details>
+      </div>
+    </div>
+
     <!-- 封面放大预览 -->
     <Teleport to="body">
       <div
@@ -612,6 +631,14 @@ definePageMeta({
 const { isTampermonkeyAvailable, createTask, startDownload: startDownloadTask, tasks, cancelTask, pauseTask, resumeTask, currentTask, isDownloading } = useDownloader();
 const { fetchM3U8, PREVIEW_PROBE_TIMEOUT } = useTampermonkey();
 const { t, locale } = useI18n();
+
+// FAQ 列表来自语言包 faq.q1~q8 / faq.a1~a8
+const faqItems = computed(() =>
+  [1, 2, 3, 4, 5, 6, 7, 8].map((i) => ({
+    q: t(`faq.q${i}`),
+    a: t(`faq.a${i}`),
+  }))
+);
 const localePath = useLocalePath();
 const route = useRoute();
 
@@ -631,7 +658,7 @@ const m3u8Url = ref('');
 const customFilename = ref('');
 const nameError = ref(false);
 const previewImage = ref<string | null>(null);
-const maxConcurrentSegments = ref(15);
+const maxConcurrentSegments = ref(6);
 const maxRetries = ref(3);
 const startSegmentIndex = ref(0);
 const convertToMp4 = ref(false);
