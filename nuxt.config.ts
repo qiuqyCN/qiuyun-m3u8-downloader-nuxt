@@ -129,6 +129,13 @@ export default defineNuxtConfig({
      */
     componentDir: '@/components/ui'
   },
+  // 静态产物直接输出 docs.html 而非 docs/index.html：
+  // 托管平台对无尾斜杠 URL 会 301 补斜杠，与 sitemap、canonical 中的无斜杠地址不一致
+  nitro: {
+    prerender: {
+      autoSubfolderIndex: false,
+    },
+  },
   css: ['~/assets/css/tailwind.css'],
   vite: {
     plugins: [
