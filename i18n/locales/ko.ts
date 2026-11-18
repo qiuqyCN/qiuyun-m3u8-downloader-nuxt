@@ -59,9 +59,9 @@ export default {
       completed: '완료',
       tm: 'Tampermonkey',
       installed: '설치됨',
-      notInstalled: '미설치',
+      notInstalled: '감지되지 않음',
       tmInstalledTip: 'M3U8 자동 감지',
-      tmNotInstalledTip: '설치하면 더 좋아요',
+      tmNotInstalledTip: '확장 프로그램 설치 후 스크립트도 필요합니다',
       currentStatus: '현재 상태',
       downloading: '다운로드 중',
       ready: '준비됨',
@@ -70,7 +70,9 @@ export default {
     tmBanner: {
       title: 'Tampermonkey을 설치하고 자동 감지',
       desc: 'Tampermonkey 스크립트는 웹페이지의 M3U8 링크를 자동으로 감지하고 CORS 제한을 우회해 더 쉽게 다운로드할 수 있게 해줍니다.',
-      installBtn: 'Tampermonkey 설치',
+      installBtn: '스크립트 설치',
+      retryBtn: '설치했나요? 페이지 새로고침',
+      extLink: 'Tampermonkey가 없으신가요?',
     },
     form: {
       title: '새 다운로드',

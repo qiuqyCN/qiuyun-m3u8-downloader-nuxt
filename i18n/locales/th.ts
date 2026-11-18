@@ -59,9 +59,9 @@ export default {
       completed: 'เสร็จสิ้น',
       tm: 'Tampermonkey',
       installed: 'ติดตั้งแล้ว',
-      notInstalled: 'ยังไม่ได้ติดตั้ง',
+      notInstalled: 'ไม่พบสคริปต์',
       tmInstalledTip: 'ตรวจจับแหล่ง M3U8 อัตโนมัติ',
-      tmNotInstalledTip: 'ติดตั้งเพื่อประสบการณ์ที่ดีที่สุด',
+      tmNotInstalledTip: 'หลังติดตั้งส่วนขยาย ต้องติดตั้งสคริปต์ด้วย',
       currentStatus: 'สถานะ',
       downloading: 'กำลังดาวน์โหลด',
       ready: 'พร้อม',
@@ -70,7 +70,9 @@ export default {
     tmBanner: {
       title: 'ติดตั้ง Tampermonkey เพื่อตรวจจับอัตโนมัติ',
       desc: 'สคริปต์ Tampermonkey ตรวจจับลิงก์ M3U8 บนหน้าเว็บโดยอัตโนมัติ และข้ามข้อจำกัด CORS เพื่อให้ดาวน์โหลดง่ายขึ้น',
-      installBtn: 'ติดตั้ง Tampermonkey',
+      installBtn: 'ติดตั้งสคริปต์',
+      retryBtn: 'ติดตั้งแล้ว? รีโหลดหน้า',
+      extLink: 'ยังไม่มี Tampermonkey?',
     },
     form: {
       title: 'ดาวน์โหลดใหม่',

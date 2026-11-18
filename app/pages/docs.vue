@@ -45,7 +45,7 @@ definePageMeta({
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 
-const SITE_URL = 'https://m3u8.qiuyun.dev';
+const { public: { siteUrl } } = useRuntimeConfig();
 
 useSeoMeta({
   title: () => t('docs.pageTitle'),
@@ -53,7 +53,7 @@ useSeoMeta({
   ogTitle: () => t('docs.pageTitle'),
   ogDescription: () => t('docs.description'),
   ogSiteName: () => t('brand.name'),
-  ogUrl: () => SITE_URL + localePath('/docs'),
+  ogUrl: () => siteUrl + localePath('/docs'),
 });
 
 marked.setOptions({ breaks: true, gfm: true });

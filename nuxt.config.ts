@@ -67,6 +67,11 @@ export default defineNuxtConfig({
     // 关闭自动语言检测与跳转，避免爬虫被重定向到另一语言版本
     detectBrowserLanguage: false,
   },
+  runtimeConfig: {
+    public: {
+      siteUrl,
+    },
+  },
   app: {
     head: {
       htmlAttrs: { lang: 'zh-CN' },

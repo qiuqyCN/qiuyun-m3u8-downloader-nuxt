@@ -59,9 +59,9 @@ export default {
       completed: '完了',
       tm: 'Tampermonkey',
       installed: 'インストール済み',
-      notInstalled: '未インストール',
+      notInstalled: '未検出',
       tmInstalledTip: 'M3U8 を自動検出',
-      tmNotInstalledTip: 'インストール推奨',
+      tmNotInstalledTip: '拡張機能の後にスクリプトも必要です',
       currentStatus: '現在の状態',
       downloading: 'ダウンロード中',
       ready: '準備完了',
@@ -70,7 +70,9 @@ export default {
     tmBanner: {
       title: 'Tampermonkey を入れて自動検出',
       desc: 'Tampermonkey スクリプトは Web ページ上の M3U8 リンクを自動検出し、CORS 制限を回避してダウンロードをより簡単にします。',
-      installBtn: 'Tampermonkey をインストール',
+      installBtn: 'スクリプトをインストール',
+      retryBtn: 'インストール済み？ページを再読み込み',
+      extLink: 'Tampermonkey 未導入の方はこちら',
     },
     form: {
       title: '新規ダウンロード',

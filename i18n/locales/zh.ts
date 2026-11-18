@@ -59,9 +59,9 @@
       completed: '已完成',
       tm: '油猴脚本',
       installed: '已安装',
-      notInstalled: '未安装',
+      notInstalled: '未检测到',
       tmInstalledTip: '可自动检测 M3U8',
-      tmNotInstalledTip: '建议安装以获得最佳体验',
+      tmNotInstalledTip: '装好扩展后还需安装脚本',
       currentStatus: '当前状态',
       downloading: '下载中',
       ready: '就绪',
@@ -70,7 +70,9 @@
     tmBanner: {
       title: '安装油猴脚本，体验自动检测',
       desc: '油猴脚本可以自动检测网页中的 M3U8 视频链接，并绕过跨域限制，让下载更加便捷。',
-      installBtn: '安装油猴',
+      installBtn: '安装脚本',
+      retryBtn: '已安装？刷新页面',
+      extLink: '还没装 Tampermonkey？',
     },
     form: {
       title: '新建下载',

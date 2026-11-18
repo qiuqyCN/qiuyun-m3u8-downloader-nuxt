@@ -59,9 +59,9 @@ export default {
       completed: 'завершено',
       tm: 'Tampermonkey',
       installed: 'Установлен',
-      notInstalled: 'Не установлен',
+      notInstalled: 'Не обнаружен',
       tmInstalledTip: 'Автоопределение источников M3U8',
-      tmNotInstalledTip: 'Установите для лучшего опыта',
+      tmNotInstalledTip: 'После расширения установите и скрипт',
       currentStatus: 'Статус',
       downloading: 'Загрузка',
       ready: 'Готово',
@@ -70,7 +70,9 @@ export default {
     tmBanner: {
       title: 'Установите Tampermonkey для автоопределения',
       desc: 'Скрипт Tampermonkey автоматически находит ссылки M3U8 на веб-страницах и обходит ограничения CORS для более удобной загрузки.',
-      installBtn: 'Установить Tampermonkey',
+      installBtn: 'Установить скрипт',
+      retryBtn: 'Установили? Обновите страницу',
+      extLink: 'Нет Tampermonkey?',
     },
     form: {
       title: 'Новая загрузка',

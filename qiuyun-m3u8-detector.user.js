@@ -222,6 +222,11 @@
     
     console.log('[秋云 M3U8] QiuyunM3U8Helper 已暴露');
 
+    // 通知已打开的下载器页面：脚本已就绪，无需等待轮询
+    try {
+        unsafeWindow.dispatchEvent(new CustomEvent('m3u8-helper-ready'));
+    } catch (e) {}
+
     // iframe 信息交流 - 获取顶部标题
     window.addEventListener("message", async (e) => {
         if (e.data === "qiuyun-get-title") {

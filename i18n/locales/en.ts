@@ -59,9 +59,9 @@
       completed: 'completed',
       tm: 'Tampermonkey',
       installed: 'Installed',
-      notInstalled: 'Not Installed',
+      notInstalled: 'Not detected',
       tmInstalledTip: 'Auto-detect M3U8 sources',
-      tmNotInstalledTip: 'Install for best experience',
+      tmNotInstalledTip: 'Install the script after the extension',
       currentStatus: 'Status',
       downloading: 'Downloading',
       ready: 'Ready',
@@ -70,7 +70,9 @@
     tmBanner: {
       title: 'Install Tampermonkey for auto-detection',
       desc: 'The Tampermonkey script auto-detects M3U8 links on web pages and bypasses CORS restrictions for easier downloads.',
-      installBtn: 'Install Tampermonkey',
+      installBtn: 'Install script',
+      retryBtn: 'Installed? Reload page',
+      extLink: 'Need Tampermonkey?',
     },
     form: {
       title: 'New Download',
