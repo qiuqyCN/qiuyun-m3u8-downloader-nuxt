@@ -59,9 +59,9 @@ export default {
       completed: 'hoàn thành',
       tm: 'Tampermonkey',
       installed: 'Đã cài',
-      notInstalled: 'Chưa cài',
+      notInstalled: 'Không phát hiện',
       tmInstalledTip: 'Tự động phát hiện nguồn M3U8',
-      tmNotInstalledTip: 'Hãy cài để có trải nghiệm tốt nhất',
+      tmNotInstalledTip: 'Sau tiện ích, hãy cài cả tập lệnh',
       currentStatus: 'Trạng thái',
       downloading: 'Đang tải',
       ready: 'Sẵn sàng',
@@ -70,7 +70,9 @@ export default {
     tmBanner: {
       title: 'Cài Tampermonkey để tự động phát hiện',
       desc: 'Script Tampermonkey tự động phát hiện liên kết M3U8 trên trang web và vượt qua giới hạn CORS để tải dễ dàng hơn.',
-      installBtn: 'Cài Tampermonkey',
+      installBtn: 'Cài tập lệnh',
+      retryBtn: 'Đã cài? Tải lại trang',
+      extLink: 'Chưa có Tampermonkey?',
     },
     form: {
       title: 'Tải xuống mới',

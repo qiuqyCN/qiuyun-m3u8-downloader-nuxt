@@ -39,7 +39,7 @@ m3u8-downloader-nuxt/
 3. 脚本中下载器地址由常量控制，按需修改：
 
 ```js
-const DOWNLOADER_ORIGIN = "https://your-domain.com";
+const DOWNLOADER_ORIGIN = "https://m3u8-demo.qiuyun.dev";
 const DOWNLOADER_HOSTS = ["your-domain.com", "localhost:3000", "127.0.0.1:3000"];
 ```
 

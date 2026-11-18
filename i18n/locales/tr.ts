@@ -59,9 +59,9 @@ export default {
       completed: 'tamamlandı',
       tm: 'Tampermonkey',
       installed: 'Kurulu',
-      notInstalled: 'Kurulu Değil',
+      notInstalled: 'Algılanmadı',
       tmInstalledTip: 'M3U8 kaynaklarını otomatik algılar',
-      tmNotInstalledTip: 'En iyi deneyim için kurun',
+      tmNotInstalledTip: 'Uzantıdan sonra betiği de kurun',
       currentStatus: 'Durum',
       downloading: 'İndiriliyor',
       ready: 'Hazır',
@@ -70,7 +70,9 @@ export default {
     tmBanner: {
       title: 'Otomatik algılama için Tampermonkey kurun',
       desc: 'Tampermonkey betiği web sayfalarındaki M3U8 bağlantılarını otomatik algılar ve CORS kısıtlamalarını aşarak indirmeyi kolaylaştırır.',
-      installBtn: 'Tampermonkey Kur',
+      installBtn: 'Betiği kur',
+      retryBtn: 'Kurdunuz mu? Sayfayı yenile',
+      extLink: 'Tampermonkey yok mu?',
     },
     form: {
       title: 'Yeni İndirme',

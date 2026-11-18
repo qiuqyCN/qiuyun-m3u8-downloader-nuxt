@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         M3U8 下载助手
-// @namespace    https://your-domain.com
+// @namespace    https://m3u8-demo.qiuyun.dev
 // @version      1.0.7
 // @description  自动检测网页 M3U8 视频并提供下载功能，配合 M3U8 下载器使用
 // @author       Your Name
@@ -17,8 +17,8 @@
 // @grant        GM_xmlhttpRequest
 // @connect      *
 // @run-at       document-start
-// @supportURL   https://your-domain.com
-// @homepageURL  https://your-domain.com
+// @supportURL   https://m3u8-demo.qiuyun.dev
+// @homepageURL  https://m3u8-demo.qiuyun.dev
 // @license MIT
 // ==/UserScript==
 
@@ -87,7 +87,7 @@
     };
 
     // 下载器地址（线上部署域名）
-    const DOWNLOADER_ORIGIN = "https://your-domain.com";
+    const DOWNLOADER_ORIGIN = "https://m3u8-demo.qiuyun.dev";
     // 识别是否为下载器页面（线上 + 本地开发）
     const DOWNLOADER_HOSTS = ["your-domain.com", "localhost:3000", "127.0.0.1:3000"];
     const isDownloaderPage = DOWNLOADER_HOSTS.includes(location.host);
@@ -219,6 +219,11 @@
     };
     
     console.log('[M3U8] M3U8Helper 已暴露');
+
+    // 通知已打开的下载器页面：脚本已就绪，无需等待轮询
+    try {
+        unsafeWindow.dispatchEvent(new CustomEvent('m3u8-helper-ready'));
+    } catch (e) {}
 
     // iframe 信息交流 - 获取顶部标题
     window.addEventListener("message", async (e) => {

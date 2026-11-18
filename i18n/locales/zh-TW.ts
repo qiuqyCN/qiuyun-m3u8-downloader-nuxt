@@ -59,9 +59,9 @@ export default {
       completed: '已完成',
       tm: '油猴腳本',
       installed: '已安裝',
-      notInstalled: '未安裝',
+      notInstalled: '未偵測到',
       tmInstalledTip: '可自動偵測 M3U8',
-      tmNotInstalledTip: '建議安裝以獲得最佳體驗',
+      tmNotInstalledTip: '裝好擴充功能後還需安裝腳本',
       currentStatus: '目前狀態',
       downloading: '下載中',
       ready: '就緒',
@@ -70,7 +70,9 @@ export default {
     tmBanner: {
       title: '安裝油猴腳本，體驗自動偵測',
       desc: '油猴腳本可以自動偵測網頁中的 M3U8 影片連結，並繞過跨域限制，讓下載更加便利。',
-      installBtn: '安裝油猴',
+      installBtn: '安裝腳本',
+      retryBtn: '已安裝？重新整理頁面',
+      extLink: '還沒裝 Tampermonkey？',
     },
     form: {
       title: '新增下載',

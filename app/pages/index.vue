@@ -57,14 +57,29 @@
           <p class="text-muted-foreground text-sm mb-4">
             {{ $t('home.tmBanner.desc') }}
           </p>
-          <div class="flex gap-3">
+          <div class="flex flex-wrap items-center gap-3">
             <a 
-              href="https://www.tampermonkey.net/" 
+              href="/m3u8-detector.user.js" 
               target="_blank"
               class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-amber-950 text-sm font-medium rounded-lg transition-colors"
             >
               <Download class="w-4 h-4" />
               {{ $t('home.tmBanner.installBtn') }}
+            </a>
+            <button
+              type="button"
+              @click="reloadPage"
+              class="inline-flex items-center gap-2 px-4 py-2 border border-amber-500/40 text-amber-700 dark:text-amber-400 text-sm font-medium rounded-lg hover:bg-amber-500/10 transition-colors"
+            >
+              <RefreshCw class="w-4 h-4" />
+              {{ $t('home.tmBanner.retryBtn') }}
+            </button>
+            <a
+              href="https://www.tampermonkey.net/"
+              target="_blank"
+              class="text-xs text-muted-foreground hover:text-foreground underline underline-offset-2"
+            >
+              {{ $t('home.tmBanner.extLink') }}
             </a>
           </div>
         </div>
@@ -616,7 +631,8 @@ import {
   Loader2,
   CheckCircle,
   Play,
-  ShieldAlert
+  ShieldAlert,
+  RefreshCw
 } from 'lucide-vue-next';
 import type { DownloadTask, DownloadOptions, AppSettings } from '~/types';
 import { isDirectoryPickerSupported, pickSaveDirectory } from '~/utils/stream-save';
@@ -630,6 +646,11 @@ definePageMeta({
 
 const { isTampermonkeyAvailable, createTask, startDownload: startDownloadTask, tasks, cancelTask, pauseTask, resumeTask, currentTask, isDownloading } = useDownloader();
 const { fetchM3U8, PREVIEW_PROBE_TIMEOUT } = useTampermonkey();
+
+// 油猴脚本只在页面加载时注入，已打开的页面安装后必须刷新才会生效
+function reloadPage() {
+  window.location.reload();
+}
 const { t, locale } = useI18n();
 
 // FAQ 列表来自语言包 faq.q1~q8 / faq.a1~a8

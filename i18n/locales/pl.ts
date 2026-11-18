@@ -59,9 +59,9 @@ export default {
       completed: 'ukończone',
       tm: 'Tampermonkey',
       installed: 'Zainstalowany',
-      notInstalled: 'Niezainstalowany',
+      notInstalled: 'Nie wykryto',
       tmInstalledTip: 'Automatyczne wykrywanie źródeł M3U8',
-      tmNotInstalledTip: 'Zainstaluj, aby uzyskać najlepsze doświadczenie',
+      tmNotInstalledTip: 'Po instalacji rozszerzenia zainstaluj skrypt',
       currentStatus: 'Status',
       downloading: 'Pobieranie',
       ready: 'Gotowe',
@@ -70,7 +70,9 @@ export default {
     tmBanner: {
       title: 'Zainstaluj Tampermonkey, aby włączyć automatyczne wykrywanie',
       desc: 'Skrypt Tampermonkey automatycznie wykrywa linki M3U8 na stronach internetowych i omija ograniczenia CORS, ułatwiając pobieranie.',
-      installBtn: 'Zainstaluj Tampermonkey',
+      installBtn: 'Zainstaluj skrypt',
+      retryBtn: 'Zainstalowano? Odśwież stronę',
+      extLink: 'Nie masz jeszcze Tampermonkey?',
     },
     form: {
       title: 'Nowe pobieranie',

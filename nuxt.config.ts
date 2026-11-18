@@ -2,7 +2,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // SEO 常量
 // 部署前请把 siteUrl 换成你的正式域名，其余地址（canonical / hreflang / sitemap / og）都会自动跟随
-const siteUrl = 'https://your-domain.com'
+const siteUrl = 'https://m3u8-demo.qiuyun.dev'
 const siteName = 'M3U8 下载器'
 const siteTitle = 'M3U8 下载器 - 免费在线 M3U8 视频下载工具'
 const siteDescription = '免费开源的 M3U8 视频在线下载工具。配合油猴脚本自动检测网页中的 M3U8 视频，支持多线程分片下载、AES-128 解密、MP4 转换、封面下载。纯前端实现，视频不经过服务器，保护隐私。'

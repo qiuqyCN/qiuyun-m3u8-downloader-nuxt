@@ -40,7 +40,7 @@ m3u8-downloader-nuxt/
 3. The downloader address is controlled by constants in the script; change them as needed:
 
 ```js
-const DOWNLOADER_ORIGIN = "https://your-domain.com";
+const DOWNLOADER_ORIGIN = "https://m3u8-demo.qiuyun.dev";
 const DOWNLOADER_HOSTS = ["your-domain.com", "localhost:3000", "127.0.0.1:3000"];
 ```
 

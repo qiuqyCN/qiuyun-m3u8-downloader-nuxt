@@ -59,9 +59,9 @@ export default {
       completed: 'selesai',
       tm: 'Tampermonkey',
       installed: 'Terpasang',
-      notInstalled: 'Belum Terpasang',
+      notInstalled: 'Tidak terdeteksi',
       tmInstalledTip: 'Deteksi sumber M3U8 otomatis',
-      tmNotInstalledTip: 'Pasang untuk pengalaman terbaik',
+      tmNotInstalledTip: 'Setelah ekstensi, pasang juga skripnya',
       currentStatus: 'Status',
       downloading: 'Mengunduh',
       ready: 'Siap',
@@ -70,7 +70,9 @@ export default {
     tmBanner: {
       title: 'Pasang Tampermonkey untuk deteksi otomatis',
       desc: 'Skrip Tampermonkey mendeteksi tautan M3U8 di halaman web secara otomatis dan melewati pembatasan CORS agar unduhan lebih mudah.',
-      installBtn: 'Pasang Tampermonkey',
+      installBtn: 'Pasang skrip',
+      retryBtn: 'Sudah terpasang? Muat ulang',
+      extLink: 'Belum punya Tampermonkey?',
     },
     form: {
       title: 'Unduhan Baru',

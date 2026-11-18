@@ -21,11 +21,14 @@ export function useTampermonkey() {
   const isTampermonkeyAvailable = useState('m3u8-tm-available', () => false);
 
   function checkTampermonkey() {
-    isTampermonkeyAvailable.value = !!window.M3U8Helper;
+    // 兼容改名前的旧脚本：旧版暴露的是 QiuyunM3U8Helper
+    isTampermonkeyAvailable.value = !!(window.M3U8Helper || (window as any).QiuyunM3U8Helper);
   }
 
   function handleMessage(event: MessageEvent) {
-    if (event.data?.source !== 'm3u8-m3u8-detector') return;
+    const source = event.data?.source;
+    // 兼容历史命名：qiuyun-m3u8-detector / m3u8-m3u8-detector / m3u8-detector
+    if (typeof source !== 'string' || !source.endsWith('m3u8-detector')) return;
     const { type, data } = event.data;
     if (type === 'm3u8-detected') {
       if (!detectedM3U8List.value.some(item => item.url === data.url)) {
@@ -59,7 +62,7 @@ export function useTampermonkey() {
         if (!isTampermonkeyAvailable.value) {
           console.log('[M3U8] 油猴脚本未检测到，将使用普通 fetch（可能跨域失败）');
         }
-      }, 5000);
+      }, 20000);
     };
 
     if (document.readyState === 'loading') {
@@ -70,6 +73,8 @@ export function useTampermonkey() {
 
     // 监听器与页面同生命周期，不解绑（共享单例，避免某组件卸载后其它组件收不到事件）
     window.addEventListener('message', handleMessage);
+    // 脚本注入后会派发该事件，可立即更新状态，不必等下一个轮询周期
+    window.addEventListener('m3u8-helper-ready', checkTampermonkey);
   });
 
   /**
