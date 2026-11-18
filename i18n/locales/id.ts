@@ -5,8 +5,8 @@ export default {
     decline: 'Tolak',
   },
   privacy: {
-    pageTitle: 'Kebijakan Privasi - Qiuyun M3U8 Downloader',
-    description: 'Kebijakan privasi Qiuyun M3U8 Downloader: video diproses sepenuhnya di peramban Anda, analitik hanya dimuat setelah persetujuan, penggunaan cookie dan hak-hak Anda.',
+    pageTitle: 'Kebijakan Privasi - M3U8 Downloader',
+    description: 'Kebijakan privasi M3U8 Downloader: video diproses sepenuhnya di peramban Anda, analitik hanya dimuat setelah persetujuan, penggunaan cookie dan hak-hak Anda.',
     heading: 'Kebijakan Privasi',
     subheading: 'Terakhir diperbarui: 11 November 2026',
     notice: 'Kebijakan privasi saat ini hanya tersedia dalam bahasa Inggris.',
@@ -41,18 +41,18 @@ export default {
     switchLang: '中文',
   },
   footer: {
-    copyright: '© {year} Qiuyun M3U8 Downloader · Gratis & Sumber Terbuka',
+    copyright: '© {year} M3U8 Downloader · Gratis & Sumber Terbuka',
     privacy: 'Kebijakan Privasi',
     docs: 'Dokumentasi',
     feedback: 'Masukan',
     about: 'Tentang',
   },
   brand: {
-    name: 'Qiuyun M3U8 Downloader',
+    name: 'M3U8 Downloader',
     tagline: 'Sederhana · Efisien · Gratis',
   },
   home: {
-    seoTitle: 'Qiuyun M3U8 Downloader - Pengunduh Video M3U8 Online Gratis',
+    seoTitle: 'M3U8 Downloader - Pengunduh Video M3U8 Online Gratis',
     seoDescription: 'Pengunduh video M3U8 online gratis dan open-source. Bekerja dengan skrip Tampermonkey untuk mendeteksi video M3U8 di halaman web secara otomatis; mendukung unduhan multi-utas per segmen, dekripsi AES-128, konversi MP4, dan unduhan sampul. Sepenuhnya di peramban — video tidak pernah melewati server, melindungi privasi Anda.',
     stats: {
       tasks: 'Tugas Unduhan',
@@ -139,8 +139,8 @@ export default {
       step1Desc: 'Ekstensi peramban untuk menjalankan skrip deteksi. Tersedia di toko Chrome / Edge / Firefox.',
       step1Link: 'Situs resmi',
       step2Title: 'Pasang userscript',
-      step2Desc: '"Qiuyun M3U8 Helper" — mendeteksi otomatis di halaman video dan mengalihkan ke sini.',
-      step2Link: 'Pasang dari GreasyFork',
+      step2Desc: '"M3U8 Helper" — mendeteksi otomatis di halaman video dan mengalihkan ke sini.',
+      step2Link: 'Pasang skrip',
       step3Title: 'Buka Halaman Video',
       step3Desc: 'Tombol melayang muncul di kanan. Angka menunjukkan jumlah video terdeteksi. Klik tombol, pilih kualitas, klik Unduh.',
       step4Title: 'Kembali ke Sini untuk Unduh',
@@ -163,7 +163,7 @@ export default {
     unknownError: 'Kesalahan tidak diketahui',
   },
   play: {
-    seoTitle: 'Pemutaran M3U8 Online - Qiuyun M3U8 Downloader',
+    seoTitle: 'Pemutaran M3U8 Online - M3U8 Downloader',
     seoDescription: 'Putar video M3U8 online gratis — pratinjau video HLS dan siaran langsung tanpa mengunduh. Mendukung pergantian kualitas dan kontrol progres. Sepenuhnya di peramban, tanpa server, aman privasi.',
     title: 'Putar',
     back: 'Kembali',
@@ -198,7 +198,7 @@ export default {
     initFailedGeneric: 'Inisialisasi pemutar gagal, silakan unduh video langsung.',
   },
   settings: {
-    pageTitle: 'Pengaturan - Qiuyun M3U8 Downloader',
+    pageTitle: 'Pengaturan - M3U8 Downloader',
     heading: 'Pengaturan',
     subheading: 'Sesuaikan perilaku pengunduh',
     navTitle: 'Kategori',
@@ -223,12 +223,12 @@ export default {
     },
     about: {
       title: 'Tentang',
-      productName: 'Qiuyun M3U8 Downloader',
-      alt: 'Qiuyun M3U8 Downloader',
+      productName: 'M3U8 Downloader',
+      alt: 'M3U8 Downloader',
       versionLabel: 'Versi',
       intro: 'Alat pengunduh video M3U8 yang bersih dan elegan, dengan deteksi otomatis, unduhan massal, dan konversi format. Arsitektur sepenuhnya di peramban dengan skrip Tampermonkey untuk unduhan tanpa CORS — tanpa server, sepenuhnya gratis.',
       docsBtn: 'Dokumentasi',
-      copyright: '© {year} Qiuyun M3U8 Downloader · Berlisensi MIT',
+      copyright: '© {year} M3U8 Downloader · Berlisensi MIT',
     },
     sections: {
       appearance: 'Tampilan',
@@ -237,8 +237,8 @@ export default {
     },
   },
   docs: {
-    pageTitle: 'Dokumentasi - Qiuyun M3U8 Downloader',
-    description: 'Dokumentasi lengkap Qiuyun M3U8 Downloader: pemasangan skrip Tampermonkey, deteksi otomatis, tutorial penerapan Docker & statis, pertanyaan umum.',
+    pageTitle: 'Dokumentasi - M3U8 Downloader',
+    description: 'Dokumentasi lengkap M3U8 Downloader: pemasangan skrip Tampermonkey, deteksi otomatis, tutorial penerapan Docker & statis, pertanyaan umum.',
     heading: 'Dokumentasi',
     subheading: 'Tersinkron dengan README GitHub',
     githubLink: 'Lihat di GitHub',

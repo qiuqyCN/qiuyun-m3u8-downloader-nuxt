@@ -488,7 +488,7 @@
               {{ $t('home.quickStart.step2Title') }}
             </h3>
             <p class="text-xs text-muted-foreground leading-relaxed mb-2.5">{{ $t('home.quickStart.step2Desc') }}</p>
-            <a href="https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js" target="_blank" class="inline-flex items-center gap-1 text-xs text-violet-500 hover:text-violet-600 font-medium">
+            <a href="/m3u8-detector.user.js" target="_blank" class="inline-flex items-center gap-1 text-xs text-violet-500 hover:text-violet-600 font-medium">
               {{ $t('home.quickStart.step2Link') }} <ArrowUpRight class="w-3 h-3" />
             </a>
           </div>
@@ -642,7 +642,7 @@ const faqItems = computed(() =>
 const localePath = useLocalePath();
 const route = useRoute();
 
-const SITE_URL = 'https://m3u8.qiuyun.dev';
+const SITE_URL = 'https://your-domain.com';
 
 // 页面级 SEO 元数据（跟随当前语言）
 useSeoMeta({

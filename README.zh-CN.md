@@ -1,15 +1,13 @@
-# 秋云 M3U8 下载器
+# M3U8 下载器
 
 网页版 M3U8（HLS）视频下载器 + 油猴脚本：分片并发下载、AES-128 解密、fMP4 支持、流式写盘保存、跨域代理绕过防盗链。
 
 [**English**](README.md) · [**简体中文**](README.zh-CN.md)
 
-> **GitHub**：[qiuqyCN/qiuyun-m3u8-downloader-nuxt](https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt)
-
 一个 M3U8（HLS）视频下载工具，由两部分组成：
 
 - **Web 下载器**（本仓库）：Nuxt 4 单页应用，负责解析播放列表、并发下载分片、AES-128 解密、fMP4 初始化段处理、合并输出，支持流式写盘与封面下载。
-- **油猴脚本**（`qiuyun-m3u8-detector.user.js`）：在视频页自动检测 M3U8，悬浮按钮展示码率列表，一键跳转下载器；同时为下载器页面提供跨域请求代理（`GM_xmlhttpRequest`），绕过防盗链与 CORS。
+- **油猴脚本**（`m3u8-detector.user.js`）：在视频页自动检测 M3U8，悬浮按钮展示码率列表，一键跳转下载器；同时为下载器页面提供跨域请求代理（`GM_xmlhttpRequest`），绕过防盗链与 CORS。
 
 ## 功能特性
 
@@ -26,10 +24,10 @@
 ## 目录结构
 
 ```
-qiuyun-m3u8-downloader-nuxt/
+m3u8-downloader-nuxt/
 ├── app/                           # 页面、composables、工具函数
 ├── docker/                        # Docker 部署配置（见下文 Docker 部署）
-├── qiuyun-m3u8-detector.user.js   # 油猴脚本（GreasyFork 已发布）
+├── public/m3u8-detector.user.js   # 油猴脚本（站点可直接访问 /m3u8-detector.user.js 下载）
 ├── package.json
 └── README.md
 ```
@@ -37,12 +35,12 @@ qiuyun-m3u8-downloader-nuxt/
 ## 油猴脚本安装
 
 1. 浏览器安装 [Tampermonkey](https://www.tampermonkey.net/) 扩展。
-2. 从 [GreasyFork](https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js) 一键安装（推荐，可自动更新），或新建脚本将 `qiuyun-m3u8-detector.user.js` 全文粘贴保存。
+2. 打开站点提供的 `/m3u8-detector.user.js` 安装，或新建脚本将 `m3u8-detector.user.js` 全文粘贴保存。
 3. 脚本中下载器地址由常量控制，按需修改：
 
 ```js
-const DOWNLOADER_ORIGIN = "https://m3u8.qiuyun.dev";
-const DOWNLOADER_HOSTS = ["m3u8.qiuyun.dev", "localhost:3000", "127.0.0.1:3000"];
+const DOWNLOADER_ORIGIN = "https://your-domain.com";
+const DOWNLOADER_HOSTS = ["your-domain.com", "localhost:3000", "127.0.0.1:3000"];
 ```
 
 只有在 `DOWNLOADER_HOSTS` 列出的域名/端口下，脚本才会注入跨域代理；本地开发请固定使用 3000 端口。
@@ -50,7 +48,7 @@ const DOWNLOADER_HOSTS = ["m3u8.qiuyun.dev", "localhost:3000", "127.0.0.1:3000"]
 ## 本地开发
 
 ```bash
-cd qiuyun-m3u8-downloader-nuxt
+cd m3u8-downloader-nuxt
 npm ci
 npm run dev
 ```
@@ -66,17 +64,17 @@ npm run dev
 ### 1. 构建
 
 ```bash
-cd qiuyun-m3u8-downloader-nuxt
+cd m3u8-downloader-nuxt
 npm ci
 npm run generate        # 产物输出到 .output/public
 ```
 
 ### 2. 上传
 
-将 `.output/public` 目录内**全部文件**上传到服务器，例如 `/var/www/m3u8.qiuyun.dev`：
+将 `.output/public` 目录内**全部文件**上传到服务器，例如 `/var/www/your-domain.com`：
 
 ```bash
-scp -r .output/public/* user@server:/var/www/m3u8.qiuyun.dev/
+scp -r .output/public/* user@server:/var/www/your-domain.com/
 ```
 
 Windows 下也可以用仓库根目录 `dist/` 里打好的 zip 包，但该包为历史归档，部署前请以最新 `npm run generate` 产物为准。
@@ -86,9 +84,9 @@ Windows 下也可以用仓库根目录 `dist/` 里打好的 zip 包，但该包�
 ```nginx
 server {
     listen 80;
-    server_name m3u8.qiuyun.dev;
+    server_name your-domain.com;
 
-    root /var/www/m3u8.qiuyun.dev;
+    root /var/www/your-domain.com;
     index index.html;
 
     # 目录补斜杠时用相对跳转，避免把内部端口/协议写进 Location

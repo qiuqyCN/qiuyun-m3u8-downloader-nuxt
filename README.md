@@ -1,15 +1,13 @@
-# Qiuyun M3U8 Downloader
+# M3U8 Downloader
 
 Web-based M3U8 (HLS) video downloader + Tampermonkey userscript: concurrent segment downloads, AES-128 decryption, fMP4 support, streaming save via File System Access API, and cross-origin proxy to bypass hotlink protection.
 
 [**English**](README.md) · [**简体中文**](README.zh-CN.md)
 
-> **GitHub**: [qiuqyCN/qiuyun-m3u8-downloader-nuxt](https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt)
-
 An M3U8 (HLS) video downloader made of two parts:
 
 - **Web downloader** (this repository): a Nuxt 4 single-page app that parses playlists, downloads segments concurrently, decrypts AES-128, handles fMP4 initialization segments, and merges the output. Supports streaming writes to disk and cover image downloads.
-- **Tampermonkey userscript** (`qiuyun-m3u8-detector.user.js`): auto-detects M3U8 streams on video pages, shows a floating button with a bitrate list, and jumps to the downloader in one click. It also proxies cross-origin requests for the downloader page (`GM_xmlhttpRequest`) to bypass hotlink protection and CORS.
+- **Tampermonkey userscript** (`m3u8-detector.user.js`): auto-detects M3U8 streams on video pages, shows a floating button with a bitrate list, and jumps to the downloader in one click. It also proxies cross-origin requests for the downloader page (`GM_xmlhttpRequest`) to bypass hotlink protection and CORS.
 
 ## Features
 
@@ -26,10 +24,10 @@ An M3U8 (HLS) video downloader made of two parts:
 ## Project structure
 
 ```
-qiuyun-m3u8-downloader-nuxt/
+m3u8-downloader-nuxt/
 ├── app/                           # Pages, composables, utilities
 ├── docker/                        # Docker deployment config (see "Docker deployment" below)
-├── qiuyun-m3u8-detector.user.js   # Tampermonkey userscript (published on GreasyFork)
+├── public/m3u8-detector.user.js   # Tampermonkey userscript (also served at /m3u8-detector.user.js)
 ├── package.json
 ├── README.md
 └── README.zh-CN.md
@@ -38,12 +36,12 @@ qiuyun-m3u8-downloader-nuxt/
 ## Userscript installation
 
 1. Install the [Tampermonkey](https://www.tampermonkey.net/) extension in your browser.
-2. Install it in one click from [GreasyFork](https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js) (recommended, supports auto-update), or create a new script and paste the whole `qiuyun-m3u8-detector.user.js` content.
+2. Open `/m3u8-detector.user.js` served by your site, or create a new script and paste the whole `m3u8-detector.user.js` content.
 3. The downloader address is controlled by constants in the script; change them as needed:
 
 ```js
-const DOWNLOADER_ORIGIN = "https://m3u8.qiuyun.dev";
-const DOWNLOADER_HOSTS = ["m3u8.qiuyun.dev", "localhost:3000", "127.0.0.1:3000"];
+const DOWNLOADER_ORIGIN = "https://your-domain.com";
+const DOWNLOADER_HOSTS = ["your-domain.com", "localhost:3000", "127.0.0.1:3000"];
 ```
 
 The script only injects the cross-origin proxy for the domains/ports listed in `DOWNLOADER_HOSTS`. For local development, always use port 3000.
@@ -51,7 +49,7 @@ The script only injects the cross-origin proxy for the domains/ports listed in `
 ## Local development
 
 ```bash
-cd qiuyun-m3u8-downloader-nuxt
+cd m3u8-downloader-nuxt
 npm ci
 npm run dev
 ```
@@ -67,17 +65,17 @@ The build output is a pure static site and can be hosted by any static server (n
 ### 1. Build
 
 ```bash
-cd qiuyun-m3u8-downloader-nuxt
+cd m3u8-downloader-nuxt
 npm ci
 npm run generate        # output goes to .output/public
 ```
 
 ### 2. Upload
 
-Upload **all files** inside `.output/public` to your server, for example `/var/www/m3u8.qiuyun.dev`:
+Upload **all files** inside `.output/public` to your server, for example `/var/www/your-domain.com`:
 
 ```bash
-scp -r .output/public/* user@server:/var/www/m3u8.qiuyun.dev/
+scp -r .output/public/* user@server:/var/www/your-domain.com/
 ```
 
 On Windows you can also use the zip package in the repository's `dist/` directory, but that package is a historical archive; always deploy the latest `npm run generate` output.
@@ -87,9 +85,9 @@ On Windows you can also use the zip package in the repository's `dist/` director
 ```nginx
 server {
     listen 80;
-    server_name m3u8.qiuyun.dev;
+    server_name your-domain.com;
 
-    root /var/www/m3u8.qiuyun.dev;
+    root /var/www/your-domain.com;
     index index.html;
 
     # Use relative redirects when appending the trailing slash so internal

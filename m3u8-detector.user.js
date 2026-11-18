@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         秋云 M3U8 下载助手
-// @namespace    https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt
+// @name         M3U8 下载助手
+// @namespace    https://your-domain.com
 // @version      1.0.7
-// @description  自动检测网页 M3U8 视频并提供下载功能，配合秋云 M3U8 下载器使用
-// @author       Qiuyun
+// @description  自动检测网页 M3U8 视频并提供下载功能，配合 M3U8 下载器使用
+// @author       Your Name
 // @match        *://*/*
 // @grant        unsafeWindow
 // @grant        GM_openInTab
@@ -17,10 +17,8 @@
 // @grant        GM_xmlhttpRequest
 // @connect      *
 // @run-at       document-start
-// @supportURL   https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues
-// @homepageURL  https://m3u8.qiuyun.dev
-// @downloadURL https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js
-// @updateURL https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.meta.js
+// @supportURL   https://your-domain.com
+// @homepageURL  https://your-domain.com
 // @license MIT
 // ==/UserScript==
 
@@ -53,7 +51,7 @@
             document.body.removeChild(copyFrom);
         },
         message(text, disappearTime = 3000) {
-            const id = "qiuyun-gm-message-panel";
+            const id = "m3u8-gm-message-panel";
             let p = document.querySelector(`#${id}`);
             if (!p) {
                 p = document.createElement("div");
@@ -89,9 +87,9 @@
     };
 
     // 下载器地址（线上部署域名）
-    const DOWNLOADER_ORIGIN = "https://m3u8.qiuyun.dev";
+    const DOWNLOADER_ORIGIN = "https://your-domain.com";
     // 识别是否为下载器页面（线上 + 本地开发）
-    const DOWNLOADER_HOSTS = ["m3u8.qiuyun.dev", "localhost:3000", "127.0.0.1:3000"];
+    const DOWNLOADER_HOSTS = ["your-domain.com", "localhost:3000", "127.0.0.1:3000"];
     const isDownloaderPage = DOWNLOADER_HOSTS.includes(location.host);
 
     // 根据浏览器语言返回下载器页面的 i18n 路径前缀（与站点 prefix_except_default 策略一致，未匹配语言回退英文）
@@ -113,7 +111,7 @@
             
             // 如果是跨域请求，直接使用 GM_xmlhttpRequest
             if (typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'))) {
-                console.log(`[秋云 M3U8] 代理请求：${url}`);
+                console.log(`[M3U8] 代理请求：${url}`);
                 
                 return await new Promise((resolve, reject) => {
                     let headers = {
@@ -135,7 +133,7 @@
                         headers: headers,
                         timeout: 60000,
                         onload(r) {
-                            console.log(`[秋云 M3U8] 代理响应：${r.status}`);
+                            console.log(`[M3U8] 代理响应：${r.status}`);
                             // 解析 content-type，供 blob() 使用
                             const rawHeaders = r.responseHeaders || '';
                             const typeMatch = rawHeaders.match(/content-type:\s*([^\r\n]+)/i);
@@ -165,7 +163,7 @@
                             });
                         },
                         onerror(err) {
-                            console.error(`[秋云 M3U8] 代理失败：`, err);
+                            console.error(`[M3U8] 代理失败：`, err);
                             reject(new Error('Network error'));
                         },
                         ontimeout() {
@@ -190,11 +188,11 @@
             return _fetch.apply(this, args);
         };
         
-        console.log('[秋云 M3U8] 下载器页面 fetch 代理已启用');
+        console.log('[M3U8] 下载器页面 fetch 代理已启用');
     }
 
     // 暴露全局 API 供下载器页面检测
-    unsafeWindow.QiuyunM3U8Helper = {
+    unsafeWindow.M3U8Helper = {
         version: '2.0.6',
         available: true,
         isProxyEnabled: isDownloaderPage,
@@ -220,14 +218,14 @@
         }
     };
     
-    console.log('[秋云 M3U8] QiuyunM3U8Helper 已暴露');
+    console.log('[M3U8] M3U8Helper 已暴露');
 
     // iframe 信息交流 - 获取顶部标题
     window.addEventListener("message", async (e) => {
-        if (e.data === "qiuyun-get-title") {
-            let name = `qiuyun-title-${Date.now()}`;
+        if (e.data === "m3u8-get-title") {
+            let name = `m3u8-title-${Date.now()}`;
             await mgmapi.setValue(name, document.title);
-            e.source.postMessage(`qiuyun-title-name:${name}`, "*");
+            e.source.postMessage(`m3u8-title-name:${name}`, "*");
         }
     });
 
@@ -257,7 +255,7 @@
                 || imageSrc
                 || null;
         } catch (e) {
-            console.warn('[秋云 M3U8] 获取封面失败:', e);
+            console.warn('[M3U8] 获取封面失败:', e);
         }
 
         if (!cover) return null;
@@ -273,7 +271,7 @@
         // 只接受 http(s) / data:image
         if (!/^(https?:|data:image\/)/i.test(cover)) return null;
 
-        console.log('[秋云 M3U8] 获取到封面:', cover);
+        console.log('[M3U8] 获取到封面:', cover);
         return cover;
     }
 
@@ -281,8 +279,8 @@
         return new Promise(resolve => {
             window.addEventListener("message", async function l(e) {
                 if (typeof e.data === "string") {
-                    if (e.data.startsWith("qiuyun-title-name:")) {
-                        let name = e.data.slice("qiuyun-title-name:".length);
+                    if (e.data.startsWith("m3u8-title-name:")) {
+                        let name = e.data.slice("m3u8-title-name:".length);
                         await new Promise(r => setTimeout(r, 5));
                         resolve(await mgmapi.getValue(name));
                         mgmapi.deleteValue(name);
@@ -290,7 +288,7 @@
                     }
                 }
             });
-            window.top.postMessage("qiuyun-get-title", "*");
+            window.top.postMessage("m3u8-get-title", "*");
         });
     }
 
@@ -351,10 +349,10 @@
             class="number-indicator"
             type="button"
             data-number="0"
-            title="秋云 M3U8 下载助手"
+            title="M3U8 下载助手"
         >
-            <span class="qiuyun-wordmark">M<span class="qiuyun-accent">3U8</span></span>
-            <span class="qiuyun-rule"></span>
+            <span class="m3u8-wordmark">M<span class="m3u8-accent">3U8</span></span>
+            <span class="m3u8-rule"></span>
         </button>
     `;
 
@@ -407,7 +405,7 @@
             outline: 2px solid rgba(56, 189, 248, 0.75);
             outline-offset: 2px;
         }
-        .qiuyun-wordmark {
+        .m3u8-wordmark {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 12px;
             font-weight: 800;
@@ -416,10 +414,10 @@
             pointer-events: none;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
         }
-        .qiuyun-accent {
+        .m3u8-accent {
             color: #38bdf8;
         }
-        .qiuyun-rule {
+        .m3u8-rule {
             width: 20px;
             height: 2px;
             border-radius: 2px;
@@ -494,11 +492,11 @@
 
     // 关于显隐和移动
     (async function () {
-        let shown = await mgmapi.getValue("qiuyun_shown", true);
+        let shown = await mgmapi.getValue("m3u8_shown", true);
         wrapper.setAttribute("data-shown", shown);
 
-        let x = await mgmapi.getValue("qiuyun_x", 20);
-        let y = await mgmapi.getValue("qiuyun_y", 20);
+        let x = await mgmapi.getValue("m3u8_x", 20);
+        let y = await mgmapi.getValue("m3u8_y", 20);
 
         x = Math.min(innerWidth - 60, x);
         y = Math.min(innerHeight - 60, y);
@@ -531,11 +529,11 @@
                 if (moved) {
                     x -= offsetX;
                     y += offsetY;
-                    mgmapi.setValue("qiuyun_x", x);
-                    mgmapi.setValue("qiuyun_y", y);
+                    mgmapi.setValue("m3u8_x", x);
+                    mgmapi.setValue("m3u8_y", y);
                 } else {
                     shown = !shown;
-                    mgmapi.setValue("qiuyun_shown", shown);
+                    mgmapi.setValue("m3u8_shown", shown);
                     wrapper.setAttribute("data-shown", shown);
                 }
 
@@ -671,7 +669,7 @@
         div.style.flexDirection = "column";
         div.style.alignItems = "flex-start";
         
-        const selectId = `qiuyun-select-${Date.now()}`;
+        const selectId = `m3u8-select-${Date.now()}`;
         
         div.innerHTML = `
             <div style="display: flex; width: 100%; align-items: center; margin-bottom: 8px;">

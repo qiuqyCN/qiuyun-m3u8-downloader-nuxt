@@ -14,15 +14,6 @@
           <p class="text-xs text-muted-foreground">{{ $t('docs.subheading') }}</p>
         </div>
       </div>
-      <a
-        href="https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt"
-        target="_blank"
-        rel="noopener"
-        class="ml-auto inline-flex items-center gap-2 px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg transition-colors"
-      >
-        <LucideGithub class="w-3.5 h-3.5" />
-        {{ $t('docs.githubLink') }}
-      </a>
     </div>
 
     <div class="bg-card border border-border rounded-2xl p-6 md:p-8">
@@ -36,7 +27,7 @@ import { marked } from 'marked';
 // 构建时内联指南文档，无运行时网络依赖；docs 页与 GitHub README 解耦，可独立扩充
 import guideEn from '~/assets/docs/guide.en.md?raw';
 import guideZh from '~/assets/docs/guide.zh.md?raw';
-import { ArrowLeft, BookOpen, LucideGithub } from 'lucide-vue-next';
+import { ArrowLeft, BookOpen } from 'lucide-vue-next';
 
 definePageMeta({
   layout: 'default'

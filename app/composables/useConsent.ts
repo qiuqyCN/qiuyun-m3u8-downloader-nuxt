@@ -7,7 +7,7 @@
  *
  * 插件与组件共享同一个 useState 单例，localStorage 读取只做一次。
  */
-export const CONSENT_STORAGE_KEY = 'qiuyun-cookie-consent'
+export const CONSENT_STORAGE_KEY = 'm3u8-cookie-consent'
 
 export type ConsentState = 'granted' | 'denied' | null
 

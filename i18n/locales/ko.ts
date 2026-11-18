@@ -5,7 +5,7 @@ export default {
     decline: '거부',
   },
   privacy: {
-    pageTitle: '개인정보 처리방침 - Qiuyun M3U8 다운로더',
+    pageTitle: '개인정보 처리방침 - M3U8 다운로더',
     description: '개인정보 처리방침: 영상 데이터는 브라우저에서만 처리되며, 분석 도구는 동의 후에만 로드됩니다. 쿠키 사용과 사용자 권리를 안내합니다.',
     heading: '개인정보 처리방침',
     subheading: '마지막 업데이트: 2026년 11월 11일',
@@ -41,18 +41,18 @@ export default {
     switchLang: '中文',
   },
   footer: {
-    copyright: '© {year} Qiuyun M3U8 다운로더 · 무료 · 오픈소스',
+    copyright: '© {year} M3U8 다운로더 · 무료 · 오픈소스',
     privacy: '개인정보 처리방침',
     docs: '문서',
     feedback: '피드백',
     about: '소개',
   },
   brand: {
-    name: 'Qiuyun M3U8 다운로더',
+    name: 'M3U8 다운로더',
     tagline: '간편 · 고속 · 무료',
   },
   home: {
-    seoTitle: 'Qiuyun M3U8 다운로더 - 무료 온라인 M3U8 동영상 다운로더',
+    seoTitle: 'M3U8 다운로더 - 무료 온라인 M3U8 동영상 다운로더',
     seoDescription: '무료 오픈소스 온라인 M3U8 동영상 다운로더. Tampermonkey 스크립트와 연동해 웹페이지의 M3U8 동영상을 자동 감지합니다. 멀티스레드 분할 다운로드, AES-128 복호화, MP4 변환, 썸네일 다운로드를 지원합니다. 100% 프런트엔드 방식으로 동영상이 서버를 거치지 않아 개인정보를 보호합니다.',
     stats: {
       tasks: '다운로드 작업',
@@ -139,8 +139,8 @@ export default {
       step1Desc: '감지 스크립트를 실행하는 브라우저 확장입니다. Chrome / Edge / Firefox 스토어에서 설치할 수 있습니다.',
       step1Link: '공식 사이트',
       step2Title: '유저스크립트 설치',
-      step2Desc: '"Qiuyun M3U8 Helper"가 동영상 페이지에서 자동 감지 후 이곳으로 이동시킵니다.',
-      step2Link: 'GreasyFork에서 설치',
+      step2Desc: '"M3U8 Helper"가 동영상 페이지에서 자동 감지 후 이곳으로 이동시킵니다.',
+      step2Link: '스크립트 설치',
       step3Title: '동영상 페이지 열기',
       step3Desc: '페이지 오른쪽에 플로팅 버튼이 나타나고, 숫자는 감지된 동영상 수입니다. 버튼을 누르고 화질을 선택한 뒤 "다운로드"를 누르세요.',
       step4Title: '이 페이지로 돌아와 다운로드',
@@ -163,7 +163,7 @@ export default {
     unknownError: '알 수 없는 오류',
   },
   play: {
-    seoTitle: 'M3U8 온라인 재생 - Qiuyun M3U8 다운로더',
+    seoTitle: 'M3U8 온라인 재생 - M3U8 다운로더',
     seoDescription: 'M3U8 동영상을 무료로 온라인 재생. 다운로드 없이 HLS 동영상과 라이브 스트림을 미리 볼 수 있습니다. 화질 전환과 진행률 조절을 지원하며, 100% 프런트엔드 방식으로 서버를 거치지 않아 안전합니다.',
     title: '재생',
     back: '뒤로',
@@ -198,7 +198,7 @@ export default {
     initFailedGeneric: '플레이어 초기화 실패, 직접 다운로드해 주세요.',
   },
   settings: {
-    pageTitle: '설정 - Qiuyun M3U8 다운로더',
+    pageTitle: '설정 - M3U8 다운로더',
     heading: '설정',
     subheading: '다운로더 동작 사용자 지정',
     navTitle: '설정 분류',
@@ -223,12 +223,12 @@ export default {
     },
     about: {
       title: '소개',
-      productName: 'Qiuyun M3U8 다운로더',
-      alt: 'Qiuyun M3U8 다운로더',
+      productName: 'M3U8 다운로더',
+      alt: 'M3U8 다운로더',
       versionLabel: '버전',
       intro: '자동 감지, 일괄 다운로드, 형식 변환을 지원하는 깔끔하고 우아한 M3U8 동영상 다운로드 도구입니다. 100% 프런트엔드 구조에 Tampermonkey로 CORS를 우회하며, 서버 없이 완전 무료입니다.',
       docsBtn: '문서',
-      copyright: '© {year} Qiuyun M3U8 다운로더 · MIT 라이선스',
+      copyright: '© {year} M3U8 다운로더 · MIT 라이선스',
     },
     sections: {
       appearance: '화면',
@@ -237,8 +237,8 @@ export default {
     },
   },
   docs: {
-    pageTitle: '문서 - Qiuyun M3U8 다운로더',
-    description: 'Qiuyun M3U8 다운로더 전체 사용 문서: Tampermonkey 설치, 자동 감지, Docker 및 정적 배포 방법, 자주 묻는 질문.',
+    pageTitle: '문서 - M3U8 다운로더',
+    description: 'M3U8 다운로더 전체 사용 문서: Tampermonkey 설치, 자동 감지, Docker 및 정적 배포 방법, 자주 묻는 질문.',
     heading: '사용 문서',
     subheading: 'GitHub README와 동기화',
     githubLink: 'GitHub에서 보기',

@@ -5,8 +5,8 @@ export default {
     decline: '拒絕',
   },
   privacy: {
-    pageTitle: '隱私權政策 - 秋雲 M3U8 下載器',
-    description: '秋雲 M3U8 下載器的隱私權政策：影片資料全程在瀏覽器本機處理，統計腳本僅在使用者同意後載入，Cookie 使用與使用者權利說明。',
+    pageTitle: '隱私權政策 - M3U8 下載器',
+    description: 'M3U8 下載器的隱私權政策：影片資料全程在瀏覽器本機處理，統計腳本僅在使用者同意後載入，Cookie 使用與使用者權利說明。',
     heading: '隱私權政策',
     subheading: '更新日期：2026 年 11 月 11 日',
     notice: '',
@@ -41,18 +41,18 @@ export default {
     switchLang: 'EN',
   },
   footer: {
-    copyright: '© {year} 秋雲 M3U8 下載器 · 免費開源',
+    copyright: '© {year} M3U8 下載器 · 免費開源',
     privacy: '隱私權政策',
     docs: '說明文件',
     feedback: '意見回饋',
     about: '關於',
   },
   brand: {
-    name: '秋雲 M3U8 下載器',
+    name: 'M3U8 下載器',
     tagline: '簡潔 · 高效 · 免費',
   },
   home: {
-    seoTitle: '秋雲 M3U8 下載器 - 免費線上 M3U8 影片下載工具',
+    seoTitle: 'M3U8 下載器 - 免費線上 M3U8 影片下載工具',
     seoDescription: '免費開源的 M3U8 影片線上下載工具。搭配油猴腳本自動偵測網頁中的 M3U8 影片，支援多執行緒分片下載、AES-128 解密、MP4 轉檔、封面下載。純前端實作，影片不經過伺服器，保護隱私。',
     stats: {
       tasks: '下載任務',
@@ -139,8 +139,8 @@ export default {
       step1Desc: '瀏覽器擴充功能，用於執行偵測腳本。Chrome / Edge / Firefox 商店皆可安裝。',
       step1Link: '前往官網',
       step2Title: '安裝油猴腳本',
-      step2Desc: '「秋雲 M3U8 下載助手」，負責在影片頁自動偵測並跳轉到這裡。',
-      step2Link: 'GreasyFork 一鍵安裝',
+      step2Desc: '「M3U8 下載助手」，負責在影片頁自動偵測並跳轉到這裡。',
+      step2Link: '一鍵安裝腳本',
       step3Title: '開啟影片頁面',
       step3Desc: '頁面右側會出現懸浮按鈕，數字角標表示偵測到的影片數量。點擊按鈕，選擇畫質後點「下載」。',
       step4Title: '回到本頁下載',
@@ -163,7 +163,7 @@ export default {
     unknownError: '未知錯誤',
   },
   play: {
-    seoTitle: 'M3U8 線上播放 - 秋雲 M3U8 下載器',
+    seoTitle: 'M3U8 線上播放 - M3U8 下載器',
     seoDescription: '免費線上播放 M3U8 影片，無需下載即可預覽 HLS 影片與直播串流。支援畫質切換、進度控制，純前端實作，影片不經過伺服器，保護隱私。',
     title: '線上播放',
     back: '返回',
@@ -198,7 +198,7 @@ export default {
     initFailedGeneric: '播放器初始化失敗，請直接下載影片查看。',
   },
   settings: {
-    pageTitle: '設定 - 秋雲 M3U8 下載器',
+    pageTitle: '設定 - M3U8 下載器',
     heading: '設定',
     subheading: '自訂下載器行為',
     navTitle: '設定分類',
@@ -223,12 +223,12 @@ export default {
     },
     about: {
       title: '關於',
-      productName: '秋雲 M3U8 下載器',
-      alt: '秋雲 M3U8 下載器',
+      productName: 'M3U8 下載器',
+      alt: 'M3U8 下載器',
       versionLabel: '版本',
       intro: '一個簡潔優雅的 M3U8 影片下載工具，支援自動偵測、批次下載、格式轉換等功能。採用純前端架構，搭配油猴腳本實現跨域下載，無需伺服器，完全免費。',
       docsBtn: '說明文件',
-      copyright: '© {year} 秋雲 M3U8 下載器 · 基於 MIT 授權條款開源',
+      copyright: '© {year} M3U8 下載器 · 基於 MIT 授權條款開源',
     },
     sections: {
       appearance: '外觀',
@@ -237,8 +237,8 @@ export default {
     },
   },
   docs: {
-    pageTitle: '使用說明 - 秋雲 M3U8 下載器',
-    description: '秋雲 M3U8 下載器完整使用說明：油猴腳本安裝、影片自動偵測、Docker 與靜態部署教學、常見問題。',
+    pageTitle: '使用說明 - M3U8 下載器',
+    description: 'M3U8 下載器完整使用說明：油猴腳本安裝、影片自動偵測、Docker 與靜態部署教學、常見問題。',
     heading: '使用說明',
     subheading: '與 GitHub README 同步',
     githubLink: '在 GitHub 檢視',

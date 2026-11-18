@@ -13,8 +13,9 @@
  */
 import { CONSENT_STORAGE_KEY, useConsent } from '~/composables/useConsent'
 
-const GA4_ID = 'G-LSQXK5HXX2'
-const BAIDU_ID = '22e0597b5b3b4d2838a5243dd283b123'
+// 统计 ID 留空时不加载任何统计脚本，买家填入自己的 ID 即可启用
+const GA4_ID = ''
+const BAIDU_ID = ''
 
 export default defineNuxtPlugin(() => {
   const { consent } = useConsent()
@@ -29,29 +30,35 @@ export default defineNuxtPlugin(() => {
 
   const loadAnalytics = () => {
     if (analyticsLoaded) return
+    // 两个 ID 都为空时不注入任何脚本
+    if (!GA4_ID && !BAIDU_ID) return
     analyticsLoaded = true
 
     // ---- GA4 ----
-    // 先建 dataLayer 与 gtag stub，再注入脚本，保证 config 调用不丢
-    ;(window as any).dataLayer = (window as any).dataLayer || []
-    ;(window as any).gtag = function () {
-      ;(window as any).dataLayer.push(arguments)
-    }
-    const gtag = (window as any).gtag
-    gtag('js', new Date())
-    gtag('config', GA4_ID)
+    if (GA4_ID) {
+      // 先建 dataLayer 与 gtag stub，再注入脚本，保证 config 调用不丢
+      ;(window as any).dataLayer = (window as any).dataLayer || []
+      ;(window as any).gtag = function () {
+        ;(window as any).dataLayer.push(arguments)
+      }
+      const gtag = (window as any).gtag
+      gtag('js', new Date())
+      gtag('config', GA4_ID)
 
-    const ga = document.createElement('script')
-    ga.async = true
-    ga.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`
-    document.head.appendChild(ga)
+      const ga = document.createElement('script')
+      ga.async = true
+      ga.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`
+      document.head.appendChild(ga)
+    }
 
     // ---- 百度统计 ----
-    // 脚本加载完成后 _hmt 会从数组变成带 push 方法的对象
-    ;(window as any)._hmt = (window as any)._hmt || []
-    const hm = document.createElement('script')
-    hm.src = `https://hm.baidu.com/hm.js?${BAIDU_ID}`
-    document.head.appendChild(hm)
+    if (BAIDU_ID) {
+      // 脚本加载完成后 _hmt 会从数组变成带 push 方法的对象
+      ;(window as any)._hmt = (window as any)._hmt || []
+      const hm = document.createElement('script')
+      hm.src = `https://hm.baidu.com/hm.js?${BAIDU_ID}`
+      document.head.appendChild(hm)
+    }
   }
 
   // 历史已同意的访客：插件启动时立即注入

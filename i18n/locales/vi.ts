@@ -5,8 +5,8 @@ export default {
     decline: 'Từ chối',
   },
   privacy: {
-    pageTitle: 'Chính sách Bảo mật - Qiuyun M3U8 Downloader',
-    description: 'Chính sách bảo mật của Qiuyun M3U8 Downloader: video được xử lý hoàn toàn trong trình duyệt của bạn, phân tích chỉ được tải sau khi đồng ý, cách dùng cookie và các quyền của bạn.',
+    pageTitle: 'Chính sách Bảo mật - M3U8 Downloader',
+    description: 'Chính sách bảo mật của M3U8 Downloader: video được xử lý hoàn toàn trong trình duyệt của bạn, phân tích chỉ được tải sau khi đồng ý, cách dùng cookie và các quyền của bạn.',
     heading: 'Chính sách Bảo mật',
     subheading: 'Cập nhật lần cuối: 11 tháng 11, 2026',
     notice: 'Chính sách bảo mật hiện chỉ có bản tiếng Anh.',
@@ -41,18 +41,18 @@ export default {
     switchLang: '中文',
   },
   footer: {
-    copyright: '© {year} Qiuyun M3U8 Downloader · Miễn phí & Mã nguồn mở',
+    copyright: '© {year} M3U8 Downloader · Miễn phí & Mã nguồn mở',
     privacy: 'Chính sách Bảo mật',
     docs: 'Tài liệu',
     feedback: 'Phản hồi',
     about: 'Giới thiệu',
   },
   brand: {
-    name: 'Qiuyun M3U8 Downloader',
+    name: 'M3U8 Downloader',
     tagline: 'Đơn giản · Hiệu quả · Miễn phí',
   },
   home: {
-    seoTitle: 'Qiuyun M3U8 Downloader - Công cụ tải video M3U8 trực tuyến miễn phí',
+    seoTitle: 'M3U8 Downloader - Công cụ tải video M3U8 trực tuyến miễn phí',
     seoDescription: 'Công cụ tải video M3U8 trực tuyến miễn phí, mã nguồn mở. Kết hợp script Tampermonkey tự động phát hiện video M3U8 trên trang web; hỗ trợ tải phân đoạn đa luồng, giải mã AES-128, chuyển đổi MP4, tải ảnh bìa. Chạy hoàn toàn trên trình duyệt — video không đi qua máy chủ, bảo vệ quyền riêng tư.',
     stats: {
       tasks: 'Tác vụ tải',
@@ -139,8 +139,8 @@ export default {
       step1Desc: 'Tiện ích trình duyệt để chạy script phát hiện. Có trên cửa hàng Chrome / Edge / Firefox.',
       step1Link: 'Trang chủ',
       step2Title: 'Cài userscript',
-      step2Desc: '"Qiuyun M3U8 Helper" — tự động phát hiện trên trang video và chuyển đến đây.',
-      step2Link: 'Cài từ GreasyFork',
+      step2Desc: '"M3U8 Helper" — tự động phát hiện trên trang video và chuyển đến đây.',
+      step2Link: 'Cài đặt tập lệnh',
       step3Title: 'Mở trang video',
       step3Desc: 'Nút nổi sẽ xuất hiện bên phải. Số trên nút là số video được phát hiện. Nhấp nút, chọn chất lượng, nhấn Tải.',
       step4Title: 'Quay lại đây để tải',
@@ -163,7 +163,7 @@ export default {
     unknownError: 'Lỗi không xác định',
   },
   play: {
-    seoTitle: 'Phát M3U8 trực tuyến - Qiuyun M3U8 Downloader',
+    seoTitle: 'Phát M3U8 trực tuyến - M3U8 Downloader',
     seoDescription: 'Phát video M3U8 trực tuyến miễn phí — xem trước video HLS và livestream mà không cần tải. Hỗ trợ chuyển chất lượng và điều khiển tiến độ. Chạy hoàn toàn trên trình duyệt, không qua máy chủ, bảo vệ quyền riêng tư.',
     title: 'Phát',
     back: 'Quay lại',
@@ -198,7 +198,7 @@ export default {
     initFailedGeneric: 'Khởi tạo trình phát thất bại, hãy tải video trực tiếp.',
   },
   settings: {
-    pageTitle: 'Cài đặt - Qiuyun M3U8 Downloader',
+    pageTitle: 'Cài đặt - M3U8 Downloader',
     heading: 'Cài đặt',
     subheading: 'Tùy chỉnh hành vi của công cụ tải',
     navTitle: 'Danh mục',
@@ -223,12 +223,12 @@ export default {
     },
     about: {
       title: 'Giới thiệu',
-      productName: 'Qiuyun M3U8 Downloader',
-      alt: 'Qiuyun M3U8 Downloader',
+      productName: 'M3U8 Downloader',
+      alt: 'M3U8 Downloader',
       versionLabel: 'Phiên bản',
       intro: 'Công cụ tải video M3U8 gọn gàng, thanh lịch: tự động phát hiện, tải hàng loạt, chuyển đổi định dạng. Kiến trúc hoàn toàn trên trình duyệt với script Tampermonkey vượt CORS — không cần máy chủ, hoàn toàn miễn phí.',
       docsBtn: 'Tài liệu',
-      copyright: '© {year} Qiuyun M3U8 Downloader · Giấy phép MIT',
+      copyright: '© {year} M3U8 Downloader · Giấy phép MIT',
     },
     sections: {
       appearance: 'Giao diện',
@@ -237,8 +237,8 @@ export default {
     },
   },
   docs: {
-    pageTitle: 'Tài liệu - Qiuyun M3U8 Downloader',
-    description: 'Tài liệu đầy đủ của Qiuyun M3U8 Downloader: cài đặt script Tampermonkey, tự động phát hiện, hướng dẫn triển khai Docker & tĩnh, câu hỏi thường gặp.',
+    pageTitle: 'Tài liệu - M3U8 Downloader',
+    description: 'Tài liệu đầy đủ của M3U8 Downloader: cài đặt script Tampermonkey, tự động phát hiện, hướng dẫn triển khai Docker & tĩnh, câu hỏi thường gặp.',
     heading: 'Tài liệu',
     subheading: 'Đồng bộ với README trên GitHub',
     githubLink: 'Xem trên GitHub',

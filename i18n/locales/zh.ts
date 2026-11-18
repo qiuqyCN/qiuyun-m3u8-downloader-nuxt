@@ -5,8 +5,8 @@
     decline: '拒绝',
   },
   privacy: {
-    pageTitle: '隐私政策 - 秋云 M3U8 下载器',
-    description: '秋云 M3U8 下载器的隐私政策：视频数据全程在浏览器本地处理，统计脚本仅在用户同意后加载，Cookie 使用与用户权利说明。',
+    pageTitle: '隐私政策 - M3U8 下载器',
+    description: 'M3U8 下载器的隐私政策：视频数据全程在浏览器本地处理，统计脚本仅在用户同意后加载，Cookie 使用与用户权利说明。',
     heading: '隐私政策',
     subheading: '更新日期：2026 年 11 月 11 日',
     notice: '',
@@ -41,18 +41,18 @@
     switchLang: 'EN',
   },
   footer: {
-    copyright: '© {year} 秋云 M3U8 下载器 · 免费开源',
+    copyright: '© {year} M3U8 下载器 · 免费开源',
     privacy: '隐私政策',
     docs: '文档',
     feedback: '反馈',
     about: '关于',
   },
   brand: {
-    name: '秋云 M3U8 下载器',
+    name: 'M3U8 下载器',
     tagline: '简洁 · 高效 · 免费',
   },
   home: {
-    seoTitle: '秋云 M3U8 下载器 - 免费在线 M3U8 视频下载工具',
+    seoTitle: 'M3U8 下载器 - 免费在线 M3U8 视频下载工具',
     seoDescription: '免费开源的 M3U8 视频在线下载工具。配合油猴脚本自动检测网页中的 M3U8 视频，支持多线程分片下载、AES-128 解密、MP4 转换、封面下载。纯前端实现，视频不经过服务器，保护隐私。',
     stats: {
       tasks: '下载任务',
@@ -139,8 +139,8 @@
       step1Desc: '浏览器扩展，用于运行检测脚本。Chrome / Edge / Firefox 商店均可安装。',
       step1Link: '前往官网',
       step2Title: '安装油猴脚本',
-      step2Desc: '「秋云 M3U8 下载助手」，负责在视频页自动检测并跳转到这里。',
-      step2Link: 'GreasyFork 一键安装',
+      step2Desc: '「M3U8 下载助手」，负责在视频页自动检测并跳转到这里。',
+      step2Link: '一键安装脚本',
       step3Title: '打开视频页面',
       step3Desc: '页面右侧会出现悬浮按钮，数字角标表示检测到的视频数。点击按钮，选择清晰度后点「下载」。',
       step4Title: '回到本页下载',
@@ -163,7 +163,7 @@
     unknownError: '未知错误',
   },
   play: {
-    seoTitle: 'M3U8 在线播放 - 秋云 M3U8 下载器',
+    seoTitle: 'M3U8 在线播放 - M3U8 下载器',
     seoDescription: '免费在线播放 M3U8 视频，无需下载即可预览 HLS 视频与直播流。支持清晰度切换、进度控制，纯前端实现，视频不经过服务器，保护隐私。',
     title: '在线播放',
     back: '返回',
@@ -198,7 +198,7 @@
     initFailedGeneric: '播放器初始化失败，请直接下载视频查看。',
   },
   settings: {
-    pageTitle: '设置 - 秋云 M3U8 下载器',
+    pageTitle: '设置 - M3U8 下载器',
     heading: '设置',
     subheading: '自定义下载器行为',
     navTitle: '设置分类',
@@ -223,12 +223,12 @@
     },
     about: {
       title: '关于',
-      productName: '秋云 M3U8 下载器',
-      alt: '秋云 M3U8 下载器',
+      productName: 'M3U8 下载器',
+      alt: 'M3U8 下载器',
       versionLabel: '版本',
       intro: '一个简洁优雅的 M3U8 视频下载工具，支持自动检测、批量下载、格式转换等功能。采用纯前端架构，配合油猴脚本实现跨域下载，无需服务器，完全免费。',
       docsBtn: '文档',
-      copyright: '© {year} 秋云 M3U8 下载器 · 基于 MIT 协议开源',
+      copyright: '© {year} M3U8 下载器 · 基于 MIT 协议开源',
     },
     sections: {
       appearance: '外观',
@@ -237,8 +237,8 @@
     },
   },
   docs: {
-    pageTitle: '使用文档 - 秋云 M3U8 下载器',
-    description: '秋云 M3U8 下载器完整使用文档：油猴脚本安装、视频自动检测、Docker 与静态部署教程、常见问题。',
+    pageTitle: '使用文档 - M3U8 下载器',
+    description: 'M3U8 下载器完整使用文档：油猴脚本安装、视频自动检测、Docker 与静态部署教程、常见问题。',
     heading: '使用文档',
     subheading: '与 GitHub README 同步',
     githubLink: '在 GitHub 查看',

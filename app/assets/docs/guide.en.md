@@ -1,13 +1,13 @@
 # User Guide
 
-This guide covers everything about using Qiuyun M3U8 Downloader: workflows, features, HLS format knowledge, and troubleshooting.
+This guide covers everything about using M3U8 Downloader: workflows, features, HLS format knowledge, and troubleshooting.
 
 ## Quick Start
 
 ### Option 1: Userscript (Recommended)
 
 1. Install the [Tampermonkey](https://www.tampermonkey.net/) browser extension;
-2. Install the [Qiuyun M3U8 Download Helper](https://update.greasyfork.org/scripts/603547/%E7%A7%8B%E4%BA%91%20M3U8%20%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B.user.js) userscript;
+2. Install the bundled [m3u8-detector.user.js](/m3u8-detector.user.js) userscript;
 3. Open any page containing a video — a dark floating button appears on the right side, with the m3u8 link sniffed automatically;
 4. Click the button, confirm the video title and cover, and jump straight to the download page with the link pre-filled;
 5. Pick a save folder (optional) and hit "Start Download".

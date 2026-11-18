@@ -5,8 +5,8 @@ export default {
     decline: 'Refuser',
   },
   privacy: {
-    pageTitle: 'Politique de confidentialité - Qiuyun M3U8 Downloader',
-    description: "Politique de confidentialité de Qiuyun M3U8 Downloader : traitement vidéo entièrement dans le navigateur, analyses uniquement après consentement, cookies et vos droits.",
+    pageTitle: 'Politique de confidentialité - M3U8 Downloader',
+    description: "Politique de confidentialité de M3U8 Downloader : traitement vidéo entièrement dans le navigateur, analyses uniquement après consentement, cookies et vos droits.",
     heading: 'Politique de confidentialité',
     subheading: 'Dernière mise à jour : 11 novembre 2026',
     notice: "La politique de confidentialité est actuellement disponible en anglais uniquement.",
@@ -41,18 +41,18 @@ export default {
     switchLang: '中文',
   },
   footer: {
-    copyright: '© {year} Qiuyun M3U8 Downloader · Gratuit et open source',
+    copyright: '© {year} M3U8 Downloader · Gratuit et open source',
     privacy: 'Politique de confidentialité',
     docs: 'Documentation',
     feedback: 'Commentaires',
     about: 'À propos',
   },
   brand: {
-    name: 'Qiuyun M3U8 Downloader',
+    name: 'M3U8 Downloader',
     tagline: 'Simple · Efficace · Gratuit',
   },
   home: {
-    seoTitle: 'Qiuyun M3U8 Downloader - Téléchargeur de vidéos M3U8 en ligne gratuit',
+    seoTitle: 'M3U8 Downloader - Téléchargeur de vidéos M3U8 en ligne gratuit',
     seoDescription: 'Téléchargeur de vidéos M3U8 en ligne, gratuit et open source. Fonctionne avec un script Tampermonkey pour détecter automatiquement les vidéos M3U8 sur les pages web ; prend en charge le téléchargement multi-threads par segments, le déchiffrement AES-128, la conversion MP4 et le téléchargement de miniature. Entièrement côté navigateur — les vidéos ne transitent jamais par un serveur, préservant votre vie privée.',
     stats: {
       tasks: 'Tâches de téléchargement',
@@ -139,8 +139,8 @@ export default {
       step1Desc: 'Extension de navigateur pour exécuter les scripts de détection. Disponible sur les boutiques Chrome / Edge / Firefox.',
       step1Link: 'Site officiel',
       step2Title: 'Installez le userscript',
-      step2Desc: '« Qiuyun M3U8 Helper » — détection automatique sur les pages vidéo et redirection vers ici.',
-      step2Link: 'Installer depuis GreasyFork',
+      step2Desc: '« M3U8 Helper » — détection automatique sur les pages vidéo et redirection vers ici.',
+      step2Link: 'Installer le script',
       step3Title: 'Ouvrez une page vidéo',
       step3Desc: 'Un bouton flottant apparaît à droite. Le compteur indique le nombre de vidéos détectées. Cliquez, choisissez la qualité puis « Télécharger ».',
       step4Title: 'Revenez ici pour télécharger',
@@ -163,7 +163,7 @@ export default {
     unknownError: 'Erreur inconnue',
   },
   play: {
-    seoTitle: 'Lecture M3U8 en ligne - Qiuyun M3U8 Downloader',
+    seoTitle: 'Lecture M3U8 en ligne - M3U8 Downloader',
     seoDescription: 'Lisez des vidéos M3U8 en ligne gratuitement — prévisualisez des vidéos HLS et des flux en direct sans télécharger. Prise en charge du changement de qualité et du contrôle de la lecture. Entièrement côté navigateur, sans serveur, en préservant votre vie privée.',
     title: 'Lecture',
     back: 'Retour',
@@ -198,7 +198,7 @@ export default {
     initFailedGeneric: 'Échec de l’initialisation du lecteur, téléchargez la vidéo directement.',
   },
   settings: {
-    pageTitle: 'Paramètres - Qiuyun M3U8 Downloader',
+    pageTitle: 'Paramètres - M3U8 Downloader',
     heading: 'Paramètres',
     subheading: 'Personnalisez le comportement du téléchargeur',
     navTitle: 'Catégories',
@@ -223,12 +223,12 @@ export default {
     },
     about: {
       title: 'À propos',
-      productName: 'Qiuyun M3U8 Downloader',
-      alt: 'Qiuyun M3U8 Downloader',
+      productName: 'M3U8 Downloader',
+      alt: 'M3U8 Downloader',
       versionLabel: 'Version',
       intro: 'Un outil élégant et épuré de téléchargement de vidéos M3U8 : détection automatique, téléchargements par lot, conversion de formats. Architecture 100 % côté navigateur avec un script Tampermonkey pour contourner CORS — sans serveur, entièrement gratuit.',
       docsBtn: 'Documentation',
-      copyright: '© {year} Qiuyun M3U8 Downloader · Sous licence MIT',
+      copyright: '© {year} M3U8 Downloader · Sous licence MIT',
     },
     sections: {
       appearance: 'Apparence',
@@ -237,8 +237,8 @@ export default {
     },
   },
   docs: {
-    pageTitle: 'Documentation - Qiuyun M3U8 Downloader',
-    description: 'Documentation complète de Qiuyun M3U8 Downloader : installation du script Tampermonkey, détection automatique, tutoriels de déploiement Docker & statique, FAQ.',
+    pageTitle: 'Documentation - M3U8 Downloader',
+    description: 'Documentation complète de M3U8 Downloader : installation du script Tampermonkey, détection automatique, tutoriels de déploiement Docker & statique, FAQ.',
     heading: 'Documentation',
     subheading: 'Synchronisé avec le README GitHub',
     githubLink: 'Voir sur GitHub',

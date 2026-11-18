@@ -1,5 +1,5 @@
 // 统一的 fetcher：直接用 fetch，油猴脚本在 localhost:3000 上会自动 polyfill 代理跨域请求
-// 不需要显式调用 QiuyunM3U8Helper —— fetch polyfill 透明接管所有跨域请求
+// 不需要显式调用 M3U8Helper —— fetch polyfill 透明接管所有跨域请求
 
 /** 预检超时：预览/在线播放的跨域探测要快速失败，不沿用下载的 60s */
 const PREVIEW_PROBE_TIMEOUT = 8000;
@@ -16,16 +16,16 @@ export function useTampermonkey() {
     title: string;
     pageUrl: string;
     timestamp: number;
-  }>>('qiuyun-detected-m3u8', () => []);
+  }>>('m3u8-detected-m3u8', () => []);
 
-  const isTampermonkeyAvailable = useState('qiuyun-tm-available', () => false);
+  const isTampermonkeyAvailable = useState('m3u8-tm-available', () => false);
 
   function checkTampermonkey() {
-    isTampermonkeyAvailable.value = !!window.QiuyunM3U8Helper;
+    isTampermonkeyAvailable.value = !!window.M3U8Helper;
   }
 
   function handleMessage(event: MessageEvent) {
-    if (event.data?.source !== 'qiuyun-m3u8-detector') return;
+    if (event.data?.source !== 'm3u8-m3u8-detector') return;
     const { type, data } = event.data;
     if (type === 'm3u8-detected') {
       if (!detectedM3U8List.value.some(item => item.url === data.url)) {
@@ -41,7 +41,7 @@ export function useTampermonkey() {
     // 先同步检查一次，避免白等一个轮询周期
     checkTampermonkey();
     if (isTampermonkeyAvailable.value) {
-      console.log('[M3U8] 油猴脚本已检测到 (version:', window.QiuyunM3U8Helper?.version, ')');
+      console.log('[M3U8] 油猴脚本已检测到 (version:', window.M3U8Helper?.version, ')');
     }
 
     // 轮询检查油猴脚本是否可用（脚本可能在页面加载后才注入）
@@ -50,7 +50,7 @@ export function useTampermonkey() {
         checkTampermonkey();
         if (isTampermonkeyAvailable.value) {
           clearInterval(checkInterval);
-          console.log('[M3U8] 油猴脚本已检测到 (version:', window.QiuyunM3U8Helper?.version, ')');
+          console.log('[M3U8] 油猴脚本已检测到 (version:', window.M3U8Helper?.version, ')');
         }
       }, 500);
 
@@ -153,7 +153,7 @@ export function useTampermonkey() {
 
 declare global {
   interface Window {
-    QiuyunM3U8Helper?: {
+    M3U8Helper?: {
       version: string;
       available: boolean;
       isProxyEnabled: boolean;

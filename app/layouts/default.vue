@@ -58,13 +58,6 @@
             <Sun v-if="isDark" class="w-5 h-5" />
             <Moon v-else class="w-5 h-5" />
           </button>
-          <a 
-            href="https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt" 
-            target="_blank"
-            class="p-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <LucideGithub class="w-5 h-5" />
-          </a>
           <NuxtLinkLocale
             to="/settings"
             class="p-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -90,7 +83,6 @@
         <div class="flex items-center gap-4">
           <NuxtLinkLocale to="/privacy" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.privacy') }}</NuxtLinkLocale>
           <NuxtLinkLocale to="/docs" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.docs') }}</NuxtLinkLocale>
-          <a href="https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues" target="_blank" rel="noopener" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.feedback') }}</a>
           <NuxtLink :to="{ path: localePath('/settings'), query: { section: 'about' } }" class="text-muted-foreground hover:text-foreground text-sm transition-colors">{{ $t('footer.about') }}</NuxtLink>
         </div>
       </div>
@@ -100,7 +92,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { LucideGithub, Settings, Sun, Moon } from 'lucide-vue-next';
+import { Settings, Sun, Moon } from 'lucide-vue-next';
 
 const { isDark, toggleTheme } = useTheme();
 const { locale, locales } = useI18n({ useScope: 'global' });

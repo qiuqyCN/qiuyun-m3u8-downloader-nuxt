@@ -5,7 +5,7 @@ export default {
     decline: '拒否する',
   },
   privacy: {
-    pageTitle: 'プライバシーポリシー - Qiuyun M3U8 ダウンローダー',
+    pageTitle: 'プライバシーポリシー - M3U8 ダウンローダー',
     description: '当サイトのプライバシーポリシー：動画データはブラウザ内でのみ処理され、分析ツールは同意後にのみ読み込まれます。Cookie の利用とお客様の権利について説明します。',
     heading: 'プライバシーポリシー',
     subheading: '最終更新日：2026年11月11日',
@@ -41,18 +41,18 @@ export default {
     switchLang: '中文',
   },
   footer: {
-    copyright: '© {year} Qiuyun M3U8 ダウンローダー · 無料・オープンソース',
+    copyright: '© {year} M3U8 ダウンローダー · 無料・オープンソース',
     privacy: 'プライバシーポリシー',
     docs: 'ドキュメント',
     feedback: 'フィードバック',
     about: '概要',
   },
   brand: {
-    name: 'Qiuyun M3U8 ダウンローダー',
+    name: 'M3U8 ダウンローダー',
     tagline: 'シンプル · 高速 · 無料',
   },
   home: {
-    seoTitle: 'Qiuyun M3U8 ダウンローダー - 無料のオンライン M3U8 動画ダウンローダー',
+    seoTitle: 'M3U8 ダウンローダー - 無料のオンライン M3U8 動画ダウンローダー',
     seoDescription: '無料・オープンソースのオンライン M3U8 動画ダウンローダー。Tampermonkey スクリプトと連携して Web ページ上の M3U8 動画を自動検出。マルチスレッド分割ダウンロード、AES-128 復号、MP4 変換、サムネイルダウンロードに対応。完全フロントエンド実装で、動画はサーバーを経由せずプライバシーを保護します。',
     stats: {
       tasks: 'ダウンロードタスク',
@@ -139,8 +139,8 @@ export default {
       step1Desc: '検出スクリプトを実行するためのブラウザ拡張。Chrome / Edge / Firefox のストアから入手できます。',
       step1Link: '公式サイトへ',
       step2Title: 'ユーザースクリプトをインストール',
-      step2Desc: '「Qiuyun M3U8 Helper」が動画ページで自動検出し、ここへ誘導します。',
-      step2Link: 'GreasyFork からインストール',
+      step2Desc: '「M3U8 Helper」が動画ページで自動検出し、ここへ誘導します。',
+      step2Link: 'スクリプトをインストール',
       step3Title: '動画ページを開く',
       step3Desc: 'ページ右側に浮遊ボタンが現れ、バッジの数字は検出した動画の数です。ボタンをクリックし、画質を選んで「ダウンロード」を押します。',
       step4Title: 'このページでダウンロード',
@@ -163,7 +163,7 @@ export default {
     unknownError: '不明なエラー',
   },
   play: {
-    seoTitle: 'M3U8 オンライン再生 - Qiuyun M3U8 ダウンローダー',
+    seoTitle: 'M3U8 オンライン再生 - M3U8 ダウンローダー',
     seoDescription: 'M3U8 動画を無料でオンライン再生。ダウンロード不要で HLS 動画やライブ配信をプレビューできます。画質切替や進捗操作に対応。完全フロントエンド実装でサーバーを経由せずプライバシーを保護。',
     title: '再生',
     back: '戻る',
@@ -198,7 +198,7 @@ export default {
     initFailedGeneric: 'プレイヤーの初期化に失敗しました。直接ダウンロードしてください。',
   },
   settings: {
-    pageTitle: '設定 - Qiuyun M3U8 ダウンローダー',
+    pageTitle: '設定 - M3U8 ダウンローダー',
     heading: '設定',
     subheading: 'ダウンローダーの動作をカスタマイズ',
     navTitle: '設定カテゴリ',
@@ -223,12 +223,12 @@ export default {
     },
     about: {
       title: '概要',
-      productName: 'Qiuyun M3U8 ダウンローダー',
-      alt: 'Qiuyun M3U8 ダウンローダー',
+      productName: 'M3U8 ダウンローダー',
+      alt: 'M3U8 ダウンローダー',
       versionLabel: 'バージョン',
       intro: '自動検出・一括ダウンロード・形式変換に対応した、シンプルで美しい M3U8 動画ダウンロードツール。完全フロントエンド構成＋Tampermonkey で CORS を回避し、サーバー不要・完全無料。',
       docsBtn: 'ドキュメント',
-      copyright: '© {year} Qiuyun M3U8 ダウンローダー · MIT ライセンス',
+      copyright: '© {year} M3U8 ダウンローダー · MIT ライセンス',
     },
     sections: {
       appearance: '外観',
@@ -237,8 +237,8 @@ export default {
     },
   },
   docs: {
-    pageTitle: 'ドキュメント - Qiuyun M3U8 ダウンローダー',
-    description: 'Qiuyun M3U8 ダウンローダーの完全な使い方：Tampermonkey のインストール、自動検出、Docker・静的デプロイの手順、よくある質問。',
+    pageTitle: 'ドキュメント - M3U8 ダウンローダー',
+    description: 'M3U8 ダウンローダーの完全な使い方：Tampermonkey のインストール、自動検出、Docker・静的デプロイの手順、よくある質問。',
     heading: 'ドキュメント',
     subheading: 'GitHub README と同期',
     githubLink: 'GitHub で見る',

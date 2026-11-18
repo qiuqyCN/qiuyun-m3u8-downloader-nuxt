@@ -5,8 +5,8 @@ export default {
     decline: 'Reddet',
   },
   privacy: {
-    pageTitle: 'Gizlilik Politikası - Qiuyun M3U8 İndirici',
-    description: 'Qiuyun M3U8 İndirici gizlilik politikası: video işleme tamamen tarayıcınızda gerçekleşir, analizler yalnızca onay sonrası yüklenir, çerez kullanımı ve haklarınız.',
+    pageTitle: 'Gizlilik Politikası - M3U8 İndirici',
+    description: 'M3U8 İndirici gizlilik politikası: video işleme tamamen tarayıcınızda gerçekleşir, analizler yalnızca onay sonrası yüklenir, çerez kullanımı ve haklarınız.',
     heading: 'Gizlilik Politikası',
     subheading: 'Son güncelleme: 11 Kasım 2026',
     notice: 'Gizlilik politikası şu anda yalnızca İngilizce olarak mevcuttur.',
@@ -41,18 +41,18 @@ export default {
     switchLang: '中文',
   },
   footer: {
-    copyright: '© {year} Qiuyun M3U8 İndirici · Ücretsiz ve Açık Kaynak',
+    copyright: '© {year} M3U8 İndirici · Ücretsiz ve Açık Kaynak',
     privacy: 'Gizlilik Politikası',
     docs: 'Belgeler',
     feedback: 'Geri Bildirim',
     about: 'Hakkında',
   },
   brand: {
-    name: 'Qiuyun M3U8 İndirici',
+    name: 'M3U8 İndirici',
     tagline: 'Basit · Verimli · Ücretsiz',
   },
   home: {
-    seoTitle: 'Qiuyun M3U8 İndirici - Ücretsiz Çevrimiçi M3U8 Video İndirici',
+    seoTitle: 'M3U8 İndirici - Ücretsiz Çevrimiçi M3U8 Video İndirici',
     seoDescription: 'Ücretsiz ve açık kaynaklı bir çevrimiçi M3U8 video indirici. Tampermonkey betiği ile web sayfalarındaki M3U8 videolarını otomatik algılar; çok iş parçacıklı parça indirme, AES-128 şifre çözme, MP4 dönüştürme ve kapak görseli indirmeyi destekler. Tamamen tarayıcı tarafında çalışır — videolar sunucudan geçmez, gizliliğiniz korunur.',
     stats: {
       tasks: 'İndirme Görevi',
@@ -139,8 +139,8 @@ export default {
       step1Desc: 'Algılama betiklerini çalıştıran tarayıcı eklentisi. Chrome / Edge / Firefox mağazalarında mevcut.',
       step1Link: 'Resmî site',
       step2Title: 'Kullanıcı Betiğini Kurun',
-      step2Desc: '"Qiuyun M3U8 Helper" — video sayfalarında otomatik algılar ve buraya yönlendirir.',
-      step2Link: 'GreasyFork’tan kur',
+      step2Desc: '"M3U8 Helper" — video sayfalarında otomatik algılar ve buraya yönlendirir.',
+      step2Link: 'Betiği kur',
       step3Title: 'Bir Video Sayfası Açın',
       step3Desc: 'Sağ tarafta yüzen bir düğme görünür. Rozet algılanan video sayısını gösterir. Düğmeye tıklayın, kaliteyi seçin, İndir’e tıklayın.',
       step4Title: 'İndirmek için Buraya Dönün',
@@ -163,7 +163,7 @@ export default {
     unknownError: 'Bilinmeyen hata',
   },
   play: {
-    seoTitle: 'Çevrimiçi M3U8 Oynatma - Qiuyun M3U8 İndirici',
+    seoTitle: 'Çevrimiçi M3U8 Oynatma - M3U8 İndirici',
     seoDescription: 'M3U8 videolarını ücretsiz çevrimiçi oynatın — HLS videoları ve canlı akışları indirmeden önizleyin. Kalite değiştirme ve ilerleme kontrolü desteklenir. Tamamen tarayıcı tarafında, sunucu yok, gizlilik korunur.',
     title: 'Çevrimiçi Oynat',
     back: 'Geri',
@@ -198,7 +198,7 @@ export default {
     initFailedGeneric: 'Oynatıcı başlatılamadı, lütfen doğrudan indirin.',
   },
   settings: {
-    pageTitle: 'Ayarlar - Qiuyun M3U8 İndirici',
+    pageTitle: 'Ayarlar - M3U8 İndirici',
     heading: 'Ayarlar',
     subheading: 'İndirici davranışını özelleştirin',
     navTitle: 'Kategoriler',
@@ -223,12 +223,12 @@ export default {
     },
     about: {
       title: 'Hakkında',
-      productName: 'Qiuyun M3U8 İndirici',
-      alt: 'Qiuyun M3U8 İndirici',
+      productName: 'M3U8 İndirici',
+      alt: 'M3U8 İndirici',
       versionLabel: 'Sürüm',
       intro: 'Otomatik algılama, toplu indirme ve format dönüştürme özellikleri sunan sade ve şık bir M3U8 video indirme aracı. Tamamen tarayıcı tarafında çalışır, CORS engeli olmadan indirme için Tampermonkey betiği kullanır — sunucu gerekmez, tamamen ücretsiz.',
       docsBtn: 'Belgeler',
-      copyright: '© {year} Qiuyun M3U8 İndirici · MIT Lisansı altında yayınlanmıştır',
+      copyright: '© {year} M3U8 İndirici · MIT Lisansı altında yayınlanmıştır',
     },
     sections: {
       appearance: 'Görünüm',
@@ -237,8 +237,8 @@ export default {
     },
   },
   docs: {
-    pageTitle: 'Belgeler - Qiuyun M3U8 İndirici',
-    description: 'Qiuyun M3U8 İndirici için eksiksiz belgeler: Tampermonkey betiği kurulumu, otomatik algılama, Docker ve statik dağıtım eğitimleri, SSS.',
+    pageTitle: 'Belgeler - M3U8 İndirici',
+    description: 'M3U8 İndirici için eksiksiz belgeler: Tampermonkey betiği kurulumu, otomatik algılama, Docker ve statik dağıtım eğitimleri, SSS.',
     heading: 'Belgeler',
     subheading: 'GitHub README ile eşitlenmiştir',
     githubLink: 'GitHub’da Görüntüle',

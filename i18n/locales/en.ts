@@ -5,8 +5,8 @@
     decline: 'Decline',
   },
   privacy: {
-    pageTitle: 'Privacy Policy - Qiuyun M3U8 Downloader',
-    description: 'Privacy policy of Qiuyun M3U8 Downloader: video data processed fully in your browser, analytics loaded only after consent, cookie usage and your rights explained.',
+    pageTitle: 'Privacy Policy - M3U8 Downloader',
+    description: 'Privacy policy of M3U8 Downloader: video data processed fully in your browser, analytics loaded only after consent, cookie usage and your rights explained.',
     heading: 'Privacy Policy',
     subheading: 'Last updated: November 11, 2026',
     notice: '',
@@ -41,18 +41,18 @@
     switchLang: '中文',
   },
   footer: {
-    copyright: '© {year} Qiuyun M3U8 Downloader · Free & Open Source',
+    copyright: '© {year} M3U8 Downloader · Free & Open Source',
     privacy: 'Privacy Policy',
     docs: 'Docs',
     feedback: 'Feedback',
     about: 'About',
   },
   brand: {
-    name: 'Qiuyun M3U8 Downloader',
+    name: 'M3U8 Downloader',
     tagline: 'Simple · Efficient · Free',
   },
   home: {
-    seoTitle: 'Qiuyun M3U8 Downloader - Free Online M3U8 Video Downloader',
+    seoTitle: 'M3U8 Downloader - Free Online M3U8 Video Downloader',
     seoDescription: 'A free and open-source online M3U8 video downloader. Works with a Tampermonkey script to auto-detect M3U8 videos on web pages, supporting multi-threaded segment downloads, AES-128 decryption, MP4 conversion, and cover art download. Fully frontend — videos never pass through a server, protecting your privacy.',
     stats: {
       tasks: 'Download Tasks',
@@ -139,8 +139,8 @@
       step1Desc: 'Browser extension for running detection scripts. Available in Chrome / Edge / Firefox stores.',
       step1Link: 'Official site',
       step2Title: 'Install Userscript',
-      step2Desc: '"Qiuyun M3U8 Helper" — auto-detects on video pages and redirects here.',
-      step2Link: 'Install from GreasyFork',
+      step2Desc: '"M3U8 Helper" — auto-detects on video pages and redirects here.',
+      step2Link: 'Install the userscript',
       step3Title: 'Open a Video Page',
       step3Desc: 'A floating button appears on the right. Badge shows detected video count. Click button, choose quality, click Download.',
       step4Title: 'Back Here to Download',
@@ -163,7 +163,7 @@
     unknownError: 'Unknown error',
   },
   play: {
-    seoTitle: 'Online M3U8 Playback - Qiuyun M3U8 Downloader',
+    seoTitle: 'Online M3U8 Playback - M3U8 Downloader',
     seoDescription: 'Play M3U8 videos online for free — preview HLS videos and live streams without downloading. Supports quality switching and progress control. Fully frontend, no server involved, privacy preserved.',
     title: 'Online Play',
     back: 'Back',
@@ -198,7 +198,7 @@
     initFailedGeneric: 'Player initialization failed, please download directly.',
   },
   settings: {
-    pageTitle: 'Settings - Qiuyun M3U8 Downloader',
+    pageTitle: 'Settings - M3U8 Downloader',
     heading: 'Settings',
     subheading: 'Customize downloader behavior',
     navTitle: 'Categories',
@@ -223,12 +223,12 @@
     },
     about: {
       title: 'About',
-      productName: 'Qiuyun M3U8 Downloader',
-      alt: 'Qiuyun M3U8 Downloader',
+      productName: 'M3U8 Downloader',
+      alt: 'M3U8 Downloader',
       versionLabel: 'Version',
       intro: 'A clean and elegant M3U8 video download tool featuring auto-detection, batch downloads, and format conversion. Pure frontend architecture with a Tampermonkey script for CORS-free downloads — no server required, completely free.',
       docsBtn: 'Docs',
-      copyright: '© {year} Qiuyun M3U8 Downloader · Released under the MIT License',
+      copyright: '© {year} M3U8 Downloader · Released under the MIT License',
     },
     sections: {
       appearance: 'Appearance',
@@ -237,8 +237,8 @@
     },
   },
   docs: {
-    pageTitle: 'Documentation - Qiuyun M3U8 Downloader',
-    description: 'Complete documentation for Qiuyun M3U8 Downloader: Tampermonkey script installation, auto-detection, Docker & static deployment tutorials, FAQ.',
+    pageTitle: 'Documentation - M3U8 Downloader',
+    description: 'Complete documentation for M3U8 Downloader: Tampermonkey script installation, auto-detection, Docker & static deployment tutorials, FAQ.',
     heading: 'Documentation',
     subheading: 'Synced with GitHub README',
     githubLink: 'View on GitHub',

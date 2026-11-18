@@ -1,6 +1,6 @@
 import type { AppSettings } from '~/types';
 
-const STORAGE_KEY = 'qiuyun-settings';
+const STORAGE_KEY = 'm3u8-settings';
 
 export const defaultSettings: AppSettings = {
   defaultMaxConcurrentSegments: 6,

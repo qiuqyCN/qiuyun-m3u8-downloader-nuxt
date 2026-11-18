@@ -121,7 +121,7 @@ We may update this policy from time to time. The "Last updated" date at the top 
 
 ## 9. Contact
 
-Questions about this policy? Open an issue at [github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues](https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues)
+Questions about this policy? Please contact us at contact@your-domain.com
 `;
 
 const zhPolicy = `**更新日期：2026 年 11 月 11 日**
@@ -186,7 +186,7 @@ const zhPolicy = `**更新日期：2026 年 11 月 11 日**
 
 ## 9. 联系我们
 
-对本政策有疑问？请在 [github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues](https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues) 提交 Issue
+对本政策有疑问？请通过 contact@your-domain.com 联系我们
 `;
 
 const zhTwPolicy = `**更新日期：2026 年 11 月 11 日**
@@ -251,6 +251,6 @@ const zhTwPolicy = `**更新日期：2026 年 11 月 11 日**
 
 ## 9. 聯絡我們
 
-對本政策有疑問？請在 [github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues](https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt/issues) 提交 Issue
+對本政策有疑問？請透過 contact@your-domain.com 聯絡我們
 `;
 </script>

@@ -172,14 +172,6 @@
             </p>
 
             <div class="flex gap-3">
-              <a
-                href="https://github.com/qiuqyCN/qiuyun-m3u8-downloader-nuxt"
-                target="_blank"
-                class="inline-flex items-center gap-2 px-4 py-2 bg-muted border border-input rounded-xl text-foreground hover:bg-accent transition-colors"
-              >
-                <LucideGithub class="w-4 h-4" />
-                GitHub
-              </a>
               <NuxtLinkLocale
                 to="/docs"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-muted border border-input rounded-xl text-foreground hover:bg-accent transition-colors"
@@ -225,7 +217,6 @@ import {
   Settings,
   Download,
   Info,
-  LucideGithub,
   BookOpen,
   Minus,
   Plus,
