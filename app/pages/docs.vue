@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { marked } from 'marked';
-// 构建时内联指南文档，无运行时网络依赖；docs 页与 GitHub README 解耦，可独立扩充
+// 构建时内联指南文档，无运行时网络依赖，可独立扩充
 import guideEn from '~/assets/docs/guide.en.md?raw';
 import guideZh from '~/assets/docs/guide.zh.md?raw';
 import { ArrowLeft, BookOpen } from 'lucide-vue-next';
@@ -36,7 +36,7 @@ definePageMeta({
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 
-const SITE_URL = 'https://m3u8.qiuyun.dev';
+const { public: { siteUrl } } = useRuntimeConfig();
 
 useSeoMeta({
   title: () => t('docs.pageTitle'),
@@ -44,7 +44,7 @@ useSeoMeta({
   ogTitle: () => t('docs.pageTitle'),
   ogDescription: () => t('docs.description'),
   ogSiteName: () => t('brand.name'),
-  ogUrl: () => SITE_URL + localePath('/docs'),
+  ogUrl: () => siteUrl + localePath('/docs'),
 });
 
 marked.setOptions({ breaks: true, gfm: true });

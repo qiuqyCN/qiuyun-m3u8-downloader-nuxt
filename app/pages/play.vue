@@ -137,7 +137,7 @@ const localePath = useLocalePath();
 const { fetchM3U8, PREVIEW_PROBE_TIMEOUT } = useTampermonkey();
 const { t } = useI18n();
 
-const SITE_URL = 'https://m3u8.qiuyun.dev';
+const { public: { siteUrl } } = useRuntimeConfig();
 
 // 页面级 SEO 元数据（跟随当前语言）
 useSeoMeta({
@@ -146,7 +146,7 @@ useSeoMeta({
   ogTitle: () => t('play.seoTitle'),
   ogDescription: () => t('play.seoDescription'),
   ogSiteName: () => t('brand.name'),
-  ogUrl: () => `${SITE_URL}${localePath('/play')}`,
+  ogUrl: () => `${siteUrl}${localePath('/play')}`,
 });
 
 const url = ref('');

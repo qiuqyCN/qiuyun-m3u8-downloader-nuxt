@@ -642,7 +642,7 @@ const faqItems = computed(() =>
 const localePath = useLocalePath();
 const route = useRoute();
 
-const SITE_URL = 'https://your-domain.com';
+const { public: { siteUrl } } = useRuntimeConfig();
 
 // 页面级 SEO 元数据（跟随当前语言）
 useSeoMeta({
@@ -651,7 +651,7 @@ useSeoMeta({
   ogTitle: () => t('home.seoTitle'),
   ogDescription: () => t('home.seoDescription'),
   ogSiteName: () => t('brand.name'),
-  ogUrl: () => `${SITE_URL}${localePath('/')}`.replace(/\/$/, ''),
+  ogUrl: () => `${siteUrl}${localePath('/')}`.replace(/\/$/, ''),
 });
 
 const m3u8Url = ref('');

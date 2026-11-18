@@ -3,7 +3,7 @@ services:
     build:
       context: ..          # 构建上下文 = 仓库根目录
       dockerfile: docker/Dockerfile
-    container_name: qiuyun-m3u8-downloader
+    container_name: m3u8-downloader
     restart: unless-stopped
     ports:
       - "8080:80"

@@ -37,6 +37,13 @@ const settingsSitemapExcludes = settingsPaths.flatMap(p => [p, `${p}/**`])
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  // 站点根地址：页面侧统一通过 useRuntimeConfig().public.siteUrl 读取，
+  // 只需在文件顶部改一次，避免多处硬编码
+  runtimeConfig: {
+    public: {
+      siteUrl,
+    },
+  },
   modules: ['shadcn-nuxt', '@nuxtjs/i18n', '@nuxtjs/sitemap', '@nuxtjs/robots'],
   // Sitemap：v9 自动与 @nuxtjs/i18n 集成，为每个 locale 生成带 hreflang 的 sitemap
   // 输出结构：/sitemap_index.xml + /__sitemap__/{zh,en,es,pt,...}.xml
