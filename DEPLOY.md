@@ -28,14 +28,14 @@ npm -v
 打开 `nuxt.config.ts`，修改文件顶部的常量：
 
 ```ts
-const siteUrl = 'https://your-domain.com'
+const siteUrl = 'https://m3u8-demo.qiuyun.dev'
 ```
 
 改成你的正式域名，例如 `https://m3u8.example.com`。
 
 这一处会同时影响 canonical、hreflang、sitemap、robots、og:url、结构化数据，以及页面通过 `useRuntimeConfig()` 读取的站点地址。**只需改这一处**，不要在其他文件里再写域名。
 
-> 部署上线后如果 sitemap 里仍出现 `your-domain.com`，说明改完没有重新构建。
+> 部署上线后如果 sitemap 里仍出现 `m3u8-demo.qiuyun.dev`，说明改完没有重新构建。
 
 ### 2. 统计代码（不需要就留空）
 
@@ -54,8 +54,8 @@ const BAIDU_ID = ''
 油猴脚本里有两处地址常量，必须改成与 `siteUrl` 一致：
 
 ```js
-const DOWNLOADER_ORIGIN = "https://your-domain.com";
-const DOWNLOADER_HOSTS = ["your-domain.com", "localhost:3000", "127.0.0.1:3000"];
+const DOWNLOADER_ORIGIN = "https://m3u8-demo.qiuyun.dev";
+const DOWNLOADER_HOSTS = ["m3u8-demo.qiuyun.dev", "localhost:3000", "127.0.0.1:3000"];
 ```
 
 脚本只有一份，位于 `public/m3u8-detector.user.js`。构建时会原样复制到站点根目录，访客可从 `/m3u8-detector.user.js` 直接下载安装。
@@ -64,7 +64,7 @@ const DOWNLOADER_HOSTS = ["your-domain.com", "localhost:3000", "127.0.0.1:3000"]
 
 ### 4. 隐私政策联系邮箱
 
-`app/pages/privacy.vue` 中有 3 处 `contact@your-domain.com`（英文 / 简体 / 繁体各一处），替换成你的真实邮箱。
+`app/pages/privacy.vue` 中有 3 处 `contact@m3u8-demo.qiuyun.dev`（英文 / 简体 / 繁体各一处），替换成你的真实邮箱。
 
 ### 5. 站点图片
 
@@ -133,7 +133,7 @@ scp -r .output/public/* user@your-server:/var/www/m3u8/
 ```nginx
 server {
     listen 80;
-    server_name your-domain.com;
+    server_name m3u8-demo.qiuyun.dev;
 
     root /var/www/m3u8;
     index index.html;
@@ -192,7 +192,7 @@ sudo systemctl reload nginx
 | `https://你的域名/sitemap_index.xml` | 200，内容中的域名已是你的 |
 | `https://你的域名/robots.txt` | 200，`Sitemap:` 指向你的域名 |
 | `https://你的域名/m3u8-detector.user.js` | 200，可直接下载安装 |
-| 页面源码的 `<link rel="canonical">` | 指向你的域名，无 `your-domain.com` |
+| 页面源码的 `<link rel="canonical">` | 指向你的域名，无 `m3u8-demo.qiuyun.dev` |
 | 页面源码的 `og:url` | 指向你的域名 |
 | 浏览器控制台 | 无报错，无对旧统计 ID 的请求 |
 

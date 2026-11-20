@@ -63,7 +63,7 @@ const enPolicy = `**Last updated: November 11, 2026**
 
 ## 1. Overview
 
-M3U8 Downloader ("we", "this site") is a fully client-side web tool hosted at **https://your-domain.com**. All M3U8 parsing, segment downloading, decryption, and merging happen **entirely in your browser**. Your video links, video content, and downloaded files never pass through our servers — we do not operate any backend for user data.
+M3U8 Downloader ("we", "this site") is a fully client-side web tool hosted at **https://m3u8-demo.qiuyun.dev**. All M3U8 parsing, segment downloading, decryption, and merging happen **entirely in your browser**. Your video links, video content, and downloaded files never pass through our servers — we do not operate any backend for user data.
 
 ## 2. What we do NOT collect
 
@@ -121,14 +121,14 @@ We may update this policy from time to time. The "Last updated" date at the top 
 
 ## 9. Contact
 
-Questions about this policy? Please contact us at contact@your-domain.com
+Questions about this policy? Please contact us at contact@m3u8-demo.qiuyun.dev
 `;
 
 const zhPolicy = `**更新日期：2026 年 11 月 11 日**
 
 ## 1. 概述
 
-M3U8 下载器（"我们"、"本站"）是托管于 **https://your-domain.com** 的纯前端网页工具。M3U8 解析、分片下载、解密与合并**全部在你的浏览器中完成**。你输入的视频链接、视频内容与下载得到的文件**不会经过我们的服务器**——本站没有任何用于存储用户数据的服务端。
+M3U8 下载器（"我们"、"本站"）是托管于 **https://m3u8-demo.qiuyun.dev** 的纯前端网页工具。M3U8 解析、分片下载、解密与合并**全部在你的浏览器中完成**。你输入的视频链接、视频内容与下载得到的文件**不会经过我们的服务器**——本站没有任何用于存储用户数据的服务端。
 
 ## 2. 我们不收集的信息
 
@@ -186,14 +186,14 @@ M3U8 下载器（"我们"、"本站"）是托管于 **https://your-domain.com** 
 
 ## 9. 联系我们
 
-对本政策有疑问？请通过 contact@your-domain.com 联系我们
+对本政策有疑问？请通过 contact@m3u8-demo.qiuyun.dev 联系我们
 `;
 
 const zhTwPolicy = `**更新日期：2026 年 11 月 11 日**
 
 ## 1. 概述
 
-M3U8 下載器（"我們"、"本站"）是託管於 **https://your-domain.com** 的純前端網頁工具。M3U8 解析、分片下載、解密與合併**全部在你的瀏覽器中完成**。你輸入的影片連結、影片內容與下載得到的檔案**不會經過我們的伺服器**——本站沒有任何用於儲存使用者資料的伺服端。
+M3U8 下載器（"我們"、"本站"）是託管於 **https://m3u8-demo.qiuyun.dev** 的純前端網頁工具。M3U8 解析、分片下載、解密與合併**全部在你的瀏覽器中完成**。你輸入的影片連結、影片內容與下載得到的檔案**不會經過我們的伺服器**——本站沒有任何用於儲存使用者資料的伺服端。
 
 ## 2. 我們不收集的資訊
 
@@ -251,6 +251,6 @@ M3U8 下載器（"我們"、"本站"）是託管於 **https://your-domain.com** 
 
 ## 9. 聯絡我們
 
-對本政策有疑問？請透過 contact@your-domain.com 聯絡我們
+對本政策有疑問？請透過 contact@m3u8-demo.qiuyun.dev 聯絡我們
 `;
 </script>

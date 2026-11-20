@@ -41,7 +41,7 @@ m3u8-downloader-nuxt/
 
 ```js
 const DOWNLOADER_ORIGIN = "https://m3u8-demo.qiuyun.dev";
-const DOWNLOADER_HOSTS = ["your-domain.com", "localhost:3000", "127.0.0.1:3000"];
+const DOWNLOADER_HOSTS = ["m3u8-demo.qiuyun.dev", "localhost:3000", "127.0.0.1:3000"];
 ```
 
 The script only injects the cross-origin proxy for the domains/ports listed in `DOWNLOADER_HOSTS`. For local development, always use port 3000.
@@ -72,10 +72,10 @@ npm run generate        # output goes to .output/public
 
 ### 2. Upload
 
-Upload **all files** inside `.output/public` to your server, for example `/var/www/your-domain.com`:
+Upload **all files** inside `.output/public` to your server, for example `/var/www/m3u8-demo.qiuyun.dev`:
 
 ```bash
-scp -r .output/public/* user@server:/var/www/your-domain.com/
+scp -r .output/public/* user@server:/var/www/m3u8-demo.qiuyun.dev/
 ```
 
 On Windows you can also use the zip package in the repository's `dist/` directory, but that package is a historical archive; always deploy the latest `npm run generate` output.
@@ -85,9 +85,9 @@ On Windows you can also use the zip package in the repository's `dist/` director
 ```nginx
 server {
     listen 80;
-    server_name your-domain.com;
+    server_name m3u8-demo.qiuyun.dev;
 
-    root /var/www/your-domain.com;
+    root /var/www/m3u8-demo.qiuyun.dev;
     index index.html;
 
     # Use relative redirects when appending the trailing slash so internal
