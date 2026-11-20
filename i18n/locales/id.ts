@@ -1,12 +1,12 @@
 export default {
   cookieConsent: {
-    message: 'Kami menggunakan cookie untuk analitik lalu lintas (Google Analytics & Baidu Analytics) untuk meningkatkan situs. Video dan tugas unduhan Anda tidak pernah meninggalkan peramban.',
+    message: 'Kami menggunakan analitik Umami tanpa cookie untuk mengukur lalu lintas dan memuat cookie iklan (Google AdSense) hanya dengan persetujuan Anda. Video dan tugas unduhan Anda tidak pernah meninggalkan peramban.',
     accept: 'Terima',
     decline: 'Tolak',
   },
   privacy: {
     pageTitle: 'Kebijakan Privasi - Qiuyun M3U8 Downloader',
-    description: 'Kebijakan privasi Qiuyun M3U8 Downloader: video diproses sepenuhnya di peramban Anda, analitik hanya dimuat setelah persetujuan, penggunaan cookie dan hak-hak Anda.',
+    description: 'Kebijakan privasi Qiuyun M3U8 Downloader: video diproses sepenuhnya di peramban Anda, analitik Umami tanpa cookie, iklan hanya dimuat setelah persetujuan, penggunaan cookie dan hak-hak Anda.',
     heading: 'Kebijakan Privasi',
     subheading: 'Terakhir diperbarui: 11 November 2026',
     notice: 'Kebijakan privasi saat ini hanya tersedia dalam bahasa Inggris.',
@@ -27,7 +27,7 @@ export default {
     q6: 'Harus memilih TS atau MP4?',
     a6: 'Dengan "Konversi ke MP4" aktif, segmen TS berkodek H.264/AAC diremux tanpa kehilangan ke MP4 (tanpa enkode ulang, tanpa penurunan kualitas) untuk kompatibilitas lebih baik; kodek yang tidak didukung otomatis disimpan sebagai TS. Stream fMP4 terdeteksi otomatis dan segmen inisialisasinya ditangani dengan benar.',
     q7: 'Apakah situs menyimpan video atau tautan saya?',
-    a7: 'Tidak. Ini adalah alat sepenuhnya sisi klien — penguraian, pengunduhan, dekripsi, dan penggabungan semuanya terjadi di peramban Anda. Tautan dan file tidak pernah melewati server mana pun, dan skrip analitik hanya dimuat setelah persetujuan Anda.',
+    a7: 'Tidak. Ini adalah alat sepenuhnya sisi klien — penguraian, pengunduhan, dekripsi, dan penggabungan semuanya terjadi di peramban Anda. Tautan dan file tidak pernah melewati server mana pun, dan skrip iklan hanya dimuat setelah persetujuan Anda.',
     q8: 'Apakah alat ini gratis?',
     a8: 'Sepenuhnya gratis dan sumber terbuka, dihosting di GitHub, semua fitur tanpa batas.',
   },

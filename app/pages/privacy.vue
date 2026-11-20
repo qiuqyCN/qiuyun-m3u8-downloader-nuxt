@@ -73,19 +73,20 @@ Qiuyun M3U8 Downloader ("we", "this site") is a fully client-side web tool hoste
 - Any file or directory you select via the File System Access API
 - Account information (the site has no user accounts)
 
-## 3. Analytics (loaded only with your consent)
+## 3. Analytics and advertising
 
-With your consent, we use two third-party analytics services to understand aggregate traffic and improve the site:
+**Analytics — Umami (cookie-free).** We self-host **Umami** at https://umami.qiuyun.dev to understand aggregate traffic. Umami sets **no cookies** and does not track you across sites, so it needs no consent prompt.
 
-| Service | Provider | Data involved |
-|---|---|---|
-| Google Analytics 4 | Google Ireland Ltd. | Analytics cookies (e.g. \`_ga\`), page views, device/browser info, IP (truncated by Google) |
-| Baidu Analytics | Baidu, Inc. | Analytics cookies, page views, device/browser info |
+**Advertising — Google AdSense.** Advertising scripts are loaded **only after you accept** the cookie banner.
 
-- If you click **Decline** in the consent banner, **no analytics script is loaded and no analytics cookie is set**.
-- You can withdraw consent at any time by clearing this site's data in your browser settings. The banner will reappear, and analytics stay unloaded until you accept again.
-- Google Analytics privacy policy: https://support.google.com/analytics/answer/6004245
-- Baidu Analytics privacy policy: https://tongji.baidu.com/web/help/article?id=330&type=0
+| Service | Provider | Data involved | Loaded |
+|---|---|---|---|
+| Umami (analytics) | Self-hosted by us | Page views, referrer, device/browser type, approximate country. No cookies. | Always |
+| Google AdSense (ads) | Google Ireland Ltd. | Advertising cookies, ad impressions/clicks, device info, approximate location | Only after consent |
+
+- If you click **Decline**, **no advertising script is loaded and no advertising cookie is set**; Umami keeps running because it uses no cookies.
+- You can withdraw consent at any time by clearing this site's data in your browser settings; the banner will reappear.
+- Google advertising privacy policy: https://policies.google.com/technologies/ads
 
 ## 4. Cookies and localStorage
 
@@ -95,17 +96,17 @@ This site stores the following data **in your browser only**:
 |---|---|---|
 | \`qiuyun-cookie-consent\` | localStorage | Remembers your cookie consent choice |
 | \`theme\` | localStorage | Remembers your light/dark theme preference |
-| Analytics cookies (e.g. \`_ga\`) | Cookie | Set by the analytics providers listed in section 3, **only after consent** |
+| Advertising cookies | Cookie | Set by Google AdSense, **only after consent** |
 
-We do not use advertising cookies yet. If Google AdSense is enabled in the future, this policy will be updated accordingly before any advertising cookie is set.
+Umami sets no cookies at all. Advertising cookies are written only when you accept the banner.
 
 ## 5. Legal basis and your rights (EEA / UK)
 
-For visitors from the European Economic Area and the United Kingdom, the legal basis for loading analytics is your **consent** (GDPR Art. 6(1)(a) in conjunction with the ePrivacy Directive). You may:
+For visitors from the European Economic Area and the United Kingdom: Umami sets no cookies and no personal identifiers, so it is not subject to cookie consent. Loading **advertising cookies** relies on your **consent** (GDPR Art. 6(1)(a) and the ePrivacy Directive). You may:
 
 - **Withhold or withdraw consent** at any time via the consent banner or by clearing site data;
-- **Access, rectify, or erase** analytics personal data by contacting the analytics providers listed in section 3 (we have no user database of our own);
-- **Object to processing** by declining analytics.
+- **Object to advertising** by declining — ads remain disabled;
+- **Ask us** any privacy question via the contact link in section 9 (we have no user database of our own).
 
 ## 6. Tampermonkey userscript
 
@@ -138,19 +139,20 @@ const zhPolicy = `**更新日期：2026 年 11 月 11 日**
 - 你通过 File System Access API 选择的任何文件或目录
 - 账号信息（本站没有用户账号体系）
 
-## 3. 流量统计（仅在获得同意后加载）
+## 3. 流量统计与广告
 
-在你同意后，我们使用以下两个第三方统计服务了解整体流量、改进站点：
+**流量统计 —— Umami（无 Cookie）。** 本站自托管 **Umami**（https://umami.qiuyun.dev）用于了解整体访问量。Umami **不写入任何 Cookie**，也不跨站追踪，因此无需同意即可加载。
 
-| 服务 | 提供方 | 涉及的数据 |
-|---|---|---|
-| Google Analytics 4 | Google Ireland Ltd. | 统计 Cookie（如 \`_ga\`）、页面浏览、设备/浏览器信息、IP（Google 端截断） |
-| 百度统计 | 百度 | 统计 Cookie、页面浏览、设备/浏览器信息 |
+**广告 —— Google AdSense。** 广告脚本**仅在你于 Cookie 横幅中点击同意后**才加载。
 
-- 如果你在同意横幅中点击**拒绝**，**统计脚本不会被加载，也不会写入任何统计 Cookie**。
-- 你可以随时通过清除浏览器中本站数据的方式撤回同意，横幅会重新出现，统计脚本在你再次同意前保持不加载。
-- Google Analytics 隐私政策：https://support.google.com/analytics/answer/6004245
-- 百度统计隐私政策：https://tongji.baidu.com/web/help/article?id=330&type=0
+| 服务 | 提供方 | 涉及的数据 | 加载时机 |
+|---|---|---|---|
+| Umami（统计） | 本站自托管 | 页面浏览、来源、设备/浏览器类型、大致国家。不使用 Cookie。 | 始终加载 |
+| Google AdSense（广告） | Google Ireland Ltd. | 广告 Cookie、展示/点击、设备信息、大致位置 | 仅同意后加载 |
+
+- 如果你点击**拒绝**，**广告脚本不会被加载，也不会写入广告 Cookie**；Umami 因不使用 Cookie 继续运行。
+- 你可以随时通过清除浏览器中本站数据的方式撤回同意，横幅会重新出现。
+- Google 广告隐私政策：https://policies.google.com/technologies/ads
 
 ## 4. Cookie 与 localStorage
 
@@ -160,17 +162,17 @@ const zhPolicy = `**更新日期：2026 年 11 月 11 日**
 |---|---|---|
 | \`qiuyun-cookie-consent\` | localStorage | 记住你的 Cookie 同意选择 |
 | \`theme\` | localStorage | 记住亮色/暗色主题偏好 |
-| 统计 Cookie（如 \`_ga\`） | Cookie | 由第 3 节所列统计服务写入，**仅在同意后** |
+| 广告 Cookie | Cookie | 由 Google AdSense 写入，**仅在同意后** |
 
-本站目前未使用广告 Cookie。未来如启用 Google AdSense，将在写入任何广告 Cookie 之前先更新本政策。
+Umami 不写入任何 Cookie；广告 Cookie 仅在你同意横幅后才会写入。
 
 ## 5. 法律依据与你的权利（欧洲经济区 / 英国）
 
-对于来自欧洲经济区（EEA）和英国的访客，加载统计服务的法律依据是你的**同意**（GDPR 第 6(1)(a) 条及 ePrivacy 指令）。你可以：
+对于来自欧洲经济区（EEA）和英国的访客：Umami 不写入 Cookie、不存储可识别个人的信息，因此不属于 Cookie 同意范围；加载**广告 Cookie**的法律依据是你的**同意**（GDPR 第 6(1)(a) 条及 ePrivacy 指令）。你可以：
 
 - 随时通过同意横幅或清除站点数据**拒绝或撤回同意**；
-- 通过联系第 3 节所列统计服务提供方，**访问、更正或删除**分析类个人数据（本站自身没有用户数据库）；
-- 通过拒绝统计来**反对相关处理**。
+- 点击拒绝来**反对广告处理**——广告将保持关闭；
+- 通过第 9 节的联系方式**向我们**提出任何隐私问题（本站自身没有用户数据库）。
 
 ## 6. 油猴脚本
 
@@ -203,19 +205,20 @@ const zhTwPolicy = `**更新日期：2026 年 11 月 11 日**
 - 你透過 File System Access API 選擇的任何檔案或目錄
 - 帳號資訊（本站沒有使用者帳號體系）
 
-## 3. 流量統計（僅在取得同意後載入）
+## 3. 流量統計與廣告
 
-在你同意後，我們使用以下兩個第三方統計服務了解整體流量、改進網站：
+**流量統計 —— Umami（無 Cookie）。** 本站自架 **Umami**（https://umami.qiuyun.dev）用於了解整體訪問量。Umami **不寫入任何 Cookie**，也不跨站追蹤，因此無需同意即可載入。
 
-| 服務 | 提供方 | 涉及的資料 |
-|---|---|---|
-| Google Analytics 4 | Google Ireland Ltd. | 統計 Cookie（如 \`_ga\`）、頁面瀏覽、裝置/瀏覽器資訊、IP（Google 端截斷） |
-| 百度統計 | 百度 | 統計 Cookie、頁面瀏覽、裝置/瀏覽器資訊 |
+**廣告 —— Google AdSense。** 廣告腳本**僅在你於 Cookie 橫幅中點擊同意後**才載入。
 
-- 如果你在同意橫幅中點擊**拒絕**，**統計腳本不會被載入，也不會寫入任何統計 Cookie**。
-- 你可以隨時透過清除瀏覽器中本站資料的方式撤回同意，橫幅會重新出現，統計腳本在你再次同意前保持不載入。
-- Google Analytics 隱私權政策：https://support.google.com/analytics/answer/6004245
-- 百度統計隱私權政策：https://tongji.baidu.com/web/help/article?id=330&type=0
+| 服務 | 提供方 | 涉及的資料 | 載入時機 |
+|---|---|---|---|
+| Umami（統計） | 本站自架 | 頁面瀏覽、來源、裝置/瀏覽器類型、大致國家。不使用 Cookie。 | 始終載入 |
+| Google AdSense（廣告） | Google Ireland Ltd. | 廣告 Cookie、曝光/點擊、裝置資訊、大致位置 | 僅同意後載入 |
+
+- 如果你點擊**拒絕**，**廣告腳本不會被載入，也不會寫入廣告 Cookie**；Umami 因不使用 Cookie 繼續運作。
+- 你可以隨時透過清除瀏覽器中本站資料的方式撤回同意，橫幅會重新出現。
+- Google 廣告隱私權政策：https://policies.google.com/technologies/ads
 
 ## 4. Cookie 與 localStorage
 
@@ -225,17 +228,17 @@ const zhTwPolicy = `**更新日期：2026 年 11 月 11 日**
 |---|---|---|
 | \`qiuyun-cookie-consent\` | localStorage | 記住你的 Cookie 同意選擇 |
 | \`theme\` | localStorage | 記住亮色/暗色主題偏好 |
-| 統計 Cookie（如 \`_ga\`） | Cookie | 由第 3 節所列統計服務寫入，**僅在同意後** |
+| 廣告 Cookie | Cookie | 由 Google AdSense 寫入，**僅在同意後** |
 
-本站目前未使用廣告 Cookie。未來如啟用 Google AdSense，將在寫入任何廣告 Cookie 之前先更新本政策。
+Umami 不寫入任何 Cookie；廣告 Cookie 僅在你同意橫幅後才會寫入。
 
 ## 5. 法律依據與你的權利（歐洲經濟區 / 英國）
 
-對於來自歐洲經濟區（EEA）和英國的訪客，載入統計服務的法律依據是你的**同意**（GDPR 第 6(1)(a) 條及 ePrivacy 指令）。你可以：
+對於來自歐洲經濟區（EEA）和英國的訪客：Umami 不寫入 Cookie、不儲存可識別個人的資訊，因此不屬於 Cookie 同意範圍；載入**廣告 Cookie**的法律依據是你的**同意**（GDPR 第 6(1)(a) 條及 ePrivacy 指令）。你可以：
 
 - 隨時透過同意橫幅或清除站點資料**拒絕或撤回同意**；
-- 透過聯絡第 3 節所列統計服務提供方，**存取、更正或刪除**分析類個人資料（本站自身沒有使用者資料庫）；
-- 透過拒絕統計來**反對相關處理**。
+- 點擊拒絕來**反對廣告處理**——廣告將保持關閉；
+- 透過第 9 節的聯絡方式**向我們**提出任何隱私問題（本站自身沒有使用者資料庫）。
 
 ## 6. 油猴腳本
 

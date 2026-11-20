@@ -1,12 +1,12 @@
 ﻿﻿﻿﻿export default {
   cookieConsent: {
-    message: 'We use cookies for traffic analytics (Google Analytics & Baidu Analytics) to improve our site. Your videos and download tasks never leave your browser.',
+    message: 'We use cookie-free Umami analytics to measure traffic, and load advertising cookies (Google AdSense) only with your consent. Your videos and download tasks never leave your browser.',
     accept: 'Accept',
     decline: 'Decline',
   },
   privacy: {
     pageTitle: 'Privacy Policy - Qiuyun M3U8 Downloader',
-    description: 'Privacy policy of Qiuyun M3U8 Downloader: video data processed fully in your browser, analytics loaded only after consent, cookie usage and your rights explained.',
+    description: 'Privacy policy of Qiuyun M3U8 Downloader: video data processed fully in your browser, cookie-free Umami analytics, advertising loaded only after consent, cookie usage and your rights explained.',
     heading: 'Privacy Policy',
     subheading: 'Last updated: November 11, 2026',
     notice: '',
@@ -27,7 +27,7 @@
     q6: 'Should I choose TS or MP4?',
     a6: 'With "Convert to MP4" enabled, H.264/AAC TS segments are losslessly remuxed into MP4 (no re-encoding, no quality loss) for better compatibility; unsupported codecs fall back to TS automatically. fMP4 streams are detected automatically and their init segments handled correctly.',
     q7: 'Does the site store my videos or links?',
-    a7: 'No. This is a fully client-side tool — parsing, downloading, decryption, and merging all happen in your browser. Links and files never pass through any server, and analytics scripts load only after your consent.',
+    a7: 'No. This is a fully client-side tool — parsing, downloading, decryption, and merging all happen in your browser. Links and files never pass through any server, and advertising scripts load only after your consent.',
     q8: 'Is this tool free?',
     a8: 'Completely free and open source, hosted on GitHub, with all features unlimited.',
   },

@@ -1,12 +1,12 @@
 export default {
   cookieConsent: {
-    message: 'Sitemizi geliştirmek için trafik analizi çerezleri (Google Analytics ve Baidu Analytics) kullanıyoruz. Videolarınız ve indirme görevleriniz asla tarayıcınızdan çıkmaz.',
+    message: 'Trafiği ölçmek için çerezsiz Umami analitiği kullanıyoruz ve reklam çerezlerini (Google AdSense) yalnızca onayınızla yüklüyoruz. Videolarınız ve indirme görevleriniz asla tarayıcınızdan çıkmaz.',
     accept: 'Kabul et',
     decline: 'Reddet',
   },
   privacy: {
     pageTitle: 'Gizlilik Politikası - Qiuyun M3U8 İndirici',
-    description: 'Qiuyun M3U8 İndirici gizlilik politikası: video işleme tamamen tarayıcınızda gerçekleşir, analizler yalnızca onay sonrası yüklenir, çerez kullanımı ve haklarınız.',
+    description: 'Qiuyun M3U8 İndirici gizlilik politikası: video işleme tamamen tarayıcınızda gerçekleşir, çerezsiz Umami analizi, reklamlar yalnızca onay sonrası yüklenir, çerez kullanımı ve haklarınız.',
     heading: 'Gizlilik Politikası',
     subheading: 'Son güncelleme: 11 Kasım 2026',
     notice: 'Gizlilik politikası şu anda yalnızca İngilizce olarak mevcuttur.',
@@ -27,7 +27,7 @@ export default {
     q6: 'TS mi MP4 mi seçmeliyim?',
     a6: '"MP4e Dönüştür" açıkken H.264/AAC kodlu TS parçaları kayıpsız olarak MP4e remuxlanır (yeniden kodlama yok, kalite kaybı yok), uyumluluk artar; desteklenmeyen kodekler otomatik olarak TS olarak kaydedilir. fMP4 akışları otomatik algılanır ve başlatma parçaları doğru işlenir.',
     q7: 'Site videolarımı veya bağlantılarımı saklıyor mu?',
-    a7: 'Hayır. Bu tamamen istemci taraflı bir araçtır — çözümleme, indirme, şifre çözme ve birleştirme işlemlerinin tamamı tarayıcınızda gerçekleşir. Bağlantılar ve dosyalar hiçbir sunucudan geçmez; analiz betikleri yalnızca onayınızdan sonra yüklenir.',
+    a7: 'Hayır. Bu tamamen istemci taraflı bir araçtır — çözümleme, indirme, şifre çözme ve birleştirme işlemlerinin tamamı tarayıcınızda gerçekleşir. Bağlantılar ve dosyalar hiçbir sunucudan geçmez; reklam betikleri yalnızca onayınızdan sonra yüklenir.',
     q8: 'Bu araç ücretsiz mi?',
     a8: 'Tamamen ücretsiz ve açık kaynaklıdır, GitHubda barındırılır, tüm özellikler sınırsızdır.',
   },

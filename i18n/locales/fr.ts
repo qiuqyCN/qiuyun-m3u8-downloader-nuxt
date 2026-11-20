@@ -1,12 +1,12 @@
 export default {
   cookieConsent: {
-    message: "Nous utilisons des cookies pour l'analyse du trafic (Google Analytics & Baidu Analytics) afin d'améliorer le site. Vos vidéos et vos téléchargements ne quittent jamais votre navigateur.",
+    message: "Nous utilisons Umami, une analyse sans cookies, pour mesurer le trafic, et chargeons les cookies publicitaires (Google AdSense) uniquement avec votre consentement. Vos vidéos et téléchargements ne quittent jamais votre navigateur.",
     accept: 'Accepter',
     decline: 'Refuser',
   },
   privacy: {
     pageTitle: 'Politique de confidentialité - Qiuyun M3U8 Downloader',
-    description: "Politique de confidentialité de Qiuyun M3U8 Downloader : traitement vidéo entièrement dans le navigateur, analyses uniquement après consentement, cookies et vos droits.",
+    description: "Politique de confidentialité de Qiuyun M3U8 Downloader : traitement vidéo entièrement dans le navigateur, analyse Umami sans cookies, publicité uniquement après consentement, cookies et vos droits.",
     heading: 'Politique de confidentialité',
     subheading: 'Dernière mise à jour : 11 novembre 2026',
     notice: "La politique de confidentialité est actuellement disponible en anglais uniquement.",
@@ -27,7 +27,7 @@ export default {
     q6: 'Faut-il choisir TS ou MP4 ?',
     a6: "Avec « Convertir en MP4 » activé, les segments TS en codecs H.264/AAC sont remuxés sans perte en MP4 (sans ré-encodage, sans perte de qualité) pour une meilleure compatibilité ; les codecs non pris en charge retombent automatiquement en TS. Les flux fMP4 sont détectés automatiquement et leurs segments d'initialisation correctement traités.",
     q7: 'Le site enregistre-t-il mes vidéos ou mes liens ?',
-    a7: "Non. C'est un outil entièrement côté client — analyse, téléchargement, déchiffrement et assemblage se déroulent dans votre navigateur. Les liens et fichiers ne passent par aucun serveur, et les scripts d'analyse ne sont chargés qu'après votre consentement.",
+    a7: "Non. C'est un outil entièrement côté client — analyse, téléchargement, déchiffrement et assemblage se déroulent dans votre navigateur. Les liens et fichiers ne passent par aucun serveur, et les scripts publicitaires ne sont chargés qu'après votre consentement.",
     q8: 'Cet outil est-il gratuit ?',
     a8: 'Entièrement gratuit et open source, hébergé sur GitHub, toutes les fonctionnalités sans limite.',
   },

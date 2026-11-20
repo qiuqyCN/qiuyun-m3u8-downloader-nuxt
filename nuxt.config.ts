@@ -103,8 +103,14 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },
       ],
       script: [
-        // GA4 / 百度统计脚本移至 app/plugins/analytics.client.ts：
-        // 两者都会写 Cookie，必须在用户同意（GDPR/ePrivacy）后才动态注入
+        // Umami 统计：无 Cookie、不做跨站追踪，无需 Cookie 同意门控，直接静态注入。
+        // script.js 默认自动追踪 SPA 路由切换，无需手动上报 pageview。
+        // 广告脚本（会写 Cookie）仍由 app/plugins/analytics.client.ts 在同意后动态注入。
+        {
+          defer: true,
+          src: 'https://umami.qiuyun.dev/script.js',
+          'data-website-id': '559879c0-6422-4c27-a672-d46448d063c9',
+        },
         {
           type: 'application/ld+json',
           innerHTML: JSON.stringify({

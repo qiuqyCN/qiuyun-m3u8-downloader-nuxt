@@ -1,12 +1,12 @@
 export default {
   cookieConsent: {
-    message: "Utilizziamo cookie per l'analisi del traffico (Google Analytics e Baidu Analytics) per migliorare il sito. I tuoi video e le attività di download non lasciano mai il browser.",
+    message: "Utilizziamo l'analisi Umami senza cookie per misurare il traffico e carichiamo i cookie pubblicitari (Google AdSense) solo con il tuo consenso. I tuoi video e le attività di download non lasciano mai il browser.",
     accept: 'Accetta',
     decline: 'Rifiuta',
   },
   privacy: {
     pageTitle: 'Informativa sulla Privacy - Qiuyun M3U8 Downloader',
-    description: "Informativa sulla privacy di Qiuyun M3U8 Downloader: elaborazione video interamente nel browser, analisi caricate solo dopo il consenso, uso dei cookie e tuoi diritti.",
+    description: "Informativa sulla privacy di Qiuyun M3U8 Downloader: elaborazione video interamente nel browser, analisi Umami senza cookie, pubblicità caricata solo dopo il consenso, uso dei cookie e tuoi diritti.",
     heading: 'Informativa sulla Privacy',
     subheading: 'Ultimo aggiornamento: 11 novembre 2026',
     notice: "L'informativa sulla privacy è attualmente disponibile solo in inglese.",
@@ -27,7 +27,7 @@ export default {
     q6: 'Devo scegliere TS o MP4?',
     a6: 'Con "Converti in MP4" attivo, i segmenti TS con codec H.264/AAC vengono rimuxati senza perdita in MP4 (senza ricodifica, senza perdita di qualità) per una migliore compatibilità; i codec non supportati vengono salvati automaticamente come TS. Gli stream fMP4 vengono rilevati automaticamente e i loro segmenti di init gestiti correttamente.',
     q7: 'Il sito salva i miei video o i miei link?',
-    a7: 'No. È uno strumento interamente client-side — analisi, download, decifratura e unione avvengono nel tuo browser. Link e file non passano mai per alcun server, e gli script di analisi vengono caricati solo dopo il tuo consenso.',
+    a7: 'No. È uno strumento interamente client-side — analisi, download, decifratura e unione avvengono nel tuo browser. Link e file non passano mai per alcun server, e gli script pubblicitari vengono caricati solo dopo il tuo consenso.',
     q8: 'Questo strumento è gratuito?',
     a8: 'Completamente gratuito e open source, ospitato su GitHub, tutte le funzionalità senza limiti.',
   },

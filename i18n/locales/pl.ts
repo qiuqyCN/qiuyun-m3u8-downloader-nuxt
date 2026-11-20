@@ -1,12 +1,12 @@
 export default {
   cookieConsent: {
-    message: 'Używamy plików cookie do analizy ruchu (Google Analytics i Baidu Analytics), aby ulepszać witrynę. Twoje filmy i zadania pobierania nigdy nie opuszczają przeglądarki.',
+    message: 'Używamy analityki Umami bez plików cookie do pomiaru ruchu i ładujemy pliki cookie reklamowe (Google AdSense) tylko za Twoją zgodą. Twoje filmy i zadania pobierania nigdy nie opuszczają przeglądarki.',
     accept: 'Akceptuj',
     decline: 'Odrzuć',
   },
   privacy: {
     pageTitle: 'Polityka prywatności - Qiuyun M3U8 Downloader',
-    description: 'Polityka prywatności Qiuyun M3U8 Downloader: przetwarzanie wideo w całości w przeglądarce, analityka ładowana tylko za zgodą, pliki cookie i Twoje prawa.',
+    description: 'Polityka prywatności Qiuyun M3U8 Downloader: przetwarzanie wideo w całości w przeglądarce, analityka Umami bez plików cookie, reklamy tylko za zgodą, pliki cookie i Twoje prawa.',
     heading: 'Polityka prywatności',
     subheading: 'Ostatnia aktualizacja: 11 listopada 2026 r.',
     notice: 'Polityka prywatności jest obecnie dostępna tylko w języku angielskim.',
@@ -27,7 +27,7 @@ export default {
     q6: 'Co wybrać: TS czy MP4?',
     a6: 'Przy włączonej opcji „Konwertuj na MP4" segmenty TS z kodekami H.264/AAC są bezstratnie remuxowane do MP4 (bez ponownego kodowania, bez utraty jakości) dla lepszej kompatybilności; nieobsługiwane kodeki automatycznie zapisywane są jako TS. Strumienie fMP4 są wykrywane automatycznie, a ich segmenty inicjujące poprawnie obsługiwane.',
     q7: 'Czy strona przechowuje moje filmy lub linki?',
-    a7: 'Nie. To w pełni klienckie narzędzie — analiza, pobieranie, odszyfrowywanie i scalanie odbywają się w Twojej przeglądarce. Linki i pliki nigdy nie przechodzą przez żaden serwer, a skrypty analityczne ładowane są dopiero po Twojej zgodzie.',
+    a7: 'Nie. To w pełni klienckie narzędzie — analiza, pobieranie, odszyfrowywanie i scalanie odbywają się w Twojej przeglądarce. Linki i pliki nigdy nie przechodzą przez żaden serwer, a skrypty reklamowe ładowane są dopiero po Twojej zgodzie.',
     q8: 'Czy to narzędzie jest darmowe?',
     a8: 'Całkowicie darmowe i open source, hostowane na GitHubie, wszystkie funkcje bez ograniczeń.',
   },

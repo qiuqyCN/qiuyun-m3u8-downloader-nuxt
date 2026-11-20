@@ -1,12 +1,12 @@
 export default {
   cookieConsent: {
-    message: 'Usamos cookies para analíticas de tráfico (Google Analytics y Baidu Analytics) para mejorar el sitio. Tus vídeos y tareas de descarga nunca salen de tu navegador.',
+    message: 'Usamos análisis Umami sin cookies para medir el tráfico y cargamos cookies publicitarias (Google AdSense) solo con tu consentimiento. Tus vídeos y tareas de descarga nunca salen de tu navegador.',
     accept: 'Aceptar',
     decline: 'Rechazar',
   },
   privacy: {
     pageTitle: 'Política de Privacidad - Qiuyun M3U8 Downloader',
-    description: 'Política de privacidad de Qiuyun M3U8 Downloader: el vídeo se procesa íntegramente en tu navegador, las analíticas solo se cargan tras tu consentimiento, uso de cookies y tus derechos.',
+    description: 'Política de privacidad de Qiuyun M3U8 Downloader: el vídeo se procesa íntegramente en tu navegador, analítica Umami sin cookies, publicidad solo tras tu consentimiento, uso de cookies y tus derechos.',
     heading: 'Política de Privacidad',
     subheading: 'Última actualización: 11 de noviembre de 2026',
     notice: 'Esta política de privacidad está disponible actualmente solo en inglés.',
@@ -27,7 +27,7 @@ export default {
     q6: '¿Debo elegir TS o MP4?',
     a6: 'Con "Convertir a MP4" activado, los segmentos TS con códecs H.264/AAC se remuxean sin pérdida a MP4 (sin recodificar, sin pérdida de calidad) para mejor compatibilidad; los códecs no compatibles se guardan como TS automáticamente. Los flujos fMP4 se detectan solos y sus segmentos de inicialización se procesan correctamente.',
     q7: '¿El sitio guarda mis vídeos o enlaces?',
-    a7: 'No. Es una herramienta totalmente del lado del cliente: el análisis, la descarga, el descifrado y la mezcla ocurren en tu navegador. Los enlaces y archivos nunca pasan por ningún servidor, y los scripts de analítica solo se cargan tras tu consentimiento.',
+    a7: 'No. Es una herramienta totalmente del lado del cliente: el análisis, la descarga, el descifrado y la mezcla ocurren en tu navegador. Los enlaces y archivos nunca pasan por ningún servidor, y los scripts de publicidad solo se cargan tras tu consentimiento.',
     q8: '¿Es gratis esta herramienta?',
     a8: 'Es completamente gratuita y de código abierto, alojada en GitHub, con todas las funciones sin límites.',
   },

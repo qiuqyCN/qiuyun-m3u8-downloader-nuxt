@@ -2,8 +2,11 @@
  * Cookie 同意状态管理（GDPR / ePrivacy）
  *
  * 三态：null = 未选择（需显示横幅）| 'granted' = 同意 | 'denied' = 拒绝
- * 持久化到 localStorage；GA4 / 百度统计脚本仅在 granted 后注入
+ * 持久化到 localStorage；广告脚本（AdSense）仅在 granted 后注入
  * （见 app/plugins/analytics.client.ts）。
+ *
+ * 说明：Umami 统计无 Cookie、不做跨站追踪，直接在 nuxt.config.ts 静态注入，
+ * 不受本同意状态门控。
  *
  * 插件与组件共享同一个 useState 单例，localStorage 读取只做一次。
  */

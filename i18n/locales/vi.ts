@@ -1,12 +1,12 @@
 export default {
   cookieConsent: {
-    message: 'Chúng tôi sử dụng cookie để phân tích lưu lượng (Google Analytics & Baidu Analytics) nhằm cải thiện trang web. Video và tác vụ tải xuống của bạn không bao giờ rời khỏi trình duyệt.',
+    message: 'Chúng tôi dùng Umami không cookie để đo lưu lượng và chỉ tải cookie quảng cáo (Google AdSense) khi bạn đồng ý. Video và tác vụ tải xuống của bạn không bao giờ rời khỏi trình duyệt.',
     accept: 'Chấp nhận',
     decline: 'Từ chối',
   },
   privacy: {
     pageTitle: 'Chính sách Bảo mật - Qiuyun M3U8 Downloader',
-    description: 'Chính sách bảo mật của Qiuyun M3U8 Downloader: video được xử lý hoàn toàn trong trình duyệt của bạn, phân tích chỉ được tải sau khi đồng ý, cách dùng cookie và các quyền của bạn.',
+    description: 'Chính sách bảo mật của Qiuyun M3U8 Downloader: video được xử lý hoàn toàn trong trình duyệt của bạn, phân tích Umami không cookie, quảng cáo chỉ tải sau khi đồng ý, cách dùng cookie và các quyền của bạn.',
     heading: 'Chính sách Bảo mật',
     subheading: 'Cập nhật lần cuối: 11 tháng 11, 2026',
     notice: 'Chính sách bảo mật hiện chỉ có bản tiếng Anh.',
@@ -27,7 +27,7 @@ export default {
     q6: 'Nên chọn TS hay MP4?',
     a6: 'Khi bật "Chuyển sang MP4", các phân đoạn TS mã hóa H.264/AAC được đóng gói lại không mất dữ liệu thành MP4 (không mã hóa lại, không giảm chất lượng) để tương thích tốt hơn; codec không hỗ trợ sẽ tự động lưu thành TS. Luồng fMP4 được tự động nhận diện và xử lý đúng phân đoạn khởi tạo.',
     q7: 'Trang web có lưu video hoặc liên kết của tôi không?',
-    a7: 'Không. Đây là công cụ hoàn toàn phía máy khách — phân tích, tải, giải mã, ghép đều diễn ra trong trình duyệt của bạn. Liên kết và tệp không bao giờ qua máy chủ nào, và kịch bản phân tích chỉ được tải sau khi bạn đồng ý.',
+    a7: 'Không. Đây là công cụ hoàn toàn phía máy khách — phân tích, tải, giải mã, ghép đều diễn ra trong trình duyệt của bạn. Liên kết và tệp không bao giờ qua máy chủ nào, và kịch bản quảng cáo chỉ được tải sau khi bạn đồng ý.',
     q8: 'Công cụ này có miễn phí không?',
     a8: 'Hoàn toàn miễn phí và mã nguồn mở, lưu trữ trên GitHub, mọi tính năng không giới hạn.',
   },

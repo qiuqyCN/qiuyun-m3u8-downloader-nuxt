@@ -1,12 +1,12 @@
 export default {
   cookieConsent: {
-    message: 'Wir verwenden Cookies für die Verkehrsanalyse (Google Analytics & Baidu Analytics), um die Website zu verbessern. Ihre Videos und Download-Aufgaben verlassen niemals Ihren Browser.',
+    message: 'Wir verwenden cookiefreie Umami-Statistiken zur Traffic-Messung und laden Werbe-Cookies (Google AdSense) nur mit Ihrer Einwilligung. Ihre Videos und Download-Aufgaben verlassen niemals Ihren Browser.',
     accept: 'Akzeptieren',
     decline: 'Ablehnen',
   },
   privacy: {
     pageTitle: 'Datenschutzerklärung - Qiuyun M3U8 Downloader',
-    description: 'Datenschutzerklärung von Qiuyun M3U8 Downloader: Videoverarbeitung vollständig im Browser, Analyse nur nach Zustimmung, Cookie-Nutzung und Ihre Rechte.',
+    description: 'Datenschutzerklärung von Qiuyun M3U8 Downloader: Videoverarbeitung vollständig im Browser, cookiefreie Umami-Analyse, Werbung erst nach Zustimmung, Cookie-Nutzung und Ihre Rechte.',
     heading: 'Datenschutzerklärung',
     subheading: 'Zuletzt aktualisiert: 11. November 2026',
     notice: 'Diese Datenschutzerklärung ist derzeit nur auf Englisch verfügbar.',
@@ -27,7 +27,7 @@ export default {
     q6: 'Sollte ich TS oder MP4 wählen?',
     a6: 'Mit aktiviertem „Zu MP4 konvertieren“ werden TS-Segmente mit H.264/AAC verlustfrei zu MP4 remuxt (ohne Neukodierung, ohne Qualitätsverlust) für bessere Kompatibilität; nicht unterstützte Codecs fallen automatisch auf TS zurück. fMP4-Streams werden automatisch erkannt, ihre Init-Segmente korrekt behandelt.',
     q7: 'Speichert die Seite meine Videos oder Links?',
-    a7: 'Nein. Dies ist ein vollständig clientseitiges Tool — Parsen, Herunterladen, Entschlüsseln und Zusammenfügen geschehen alle in Ihrem Browser. Links und Dateien passieren niemals einen Server, und Analyse-Skripte werden erst nach Ihrer Zustimmung geladen.',
+    a7: 'Nein. Dies ist ein vollständig clientseitiges Tool — Parsen, Herunterladen, Entschlüsseln und Zusammenfügen geschehen alle in Ihrem Browser. Links und Dateien passieren niemals einen Server, und Werbe-Skripte werden erst nach Ihrer Zustimmung geladen.',
     q8: 'Ist dieses Tool kostenlos?',
     a8: 'Vollkommen kostenlos und Open Source, gehostet auf GitHub, alle Funktionen unbegrenzt.',
   },
