@@ -90,6 +90,8 @@ export default defineNuxtConfig({
         { property: 'og:url', content: siteUrl },
         { property: 'og:image', content: `${siteUrl}/og-image.jpg` },
         { property: 'og:locale', content: 'zh_CN' },
+        // Google AdSense 账户声明（必须，审核要求）
+        { name: 'google-adsense-account', content: 'ca-pub-5598459476681539' },
         // Twitter Card
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: siteTitle },
